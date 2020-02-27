@@ -1,0 +1,7 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="dimeUserWidthMargin">30dp</dimen>
+    <dimen name="dimeRadius">2dp</dimen>
+    <dimen name="dimenEtVertical">12dp</dimen>
+
+</resources>

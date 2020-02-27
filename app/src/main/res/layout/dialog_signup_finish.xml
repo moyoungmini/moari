@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="180dp"
+    android:background="@drawable/empty_white_background"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="#424242"
+        android:lineSpacingExtra="6sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical"
+        android:text="가입이 완료되었습니다!"
+        android:fontFamily="@font/noto_light_font"
+        android:layout_weight="1"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightBorder"/>
+
+    <TextView
+        android:id="@+id/dialog_finish_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:textColor="@color/colorEditPinkText"
+        android:fontFamily="@font/noto_light_font"
+        android:gravity="center_horizontal"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="닫기"
+        />
+
+</LinearLayout>

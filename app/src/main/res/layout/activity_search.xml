@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".activities.SearchActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/search_back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="30dp"
+            android:src="@drawable/back_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/noto_light_font"
+            android:gravity="center"
+            android:text="계정/비밀번호 찾기"
+            android:textColor="@color/colorSearchText"
+            android:textSize="18sp" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorEditText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/dimeUserWidthMargin"
+        android:paddingRight="@dimen/dimeUserWidthMargin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:lineSpacingExtra="5sp"
+            android:text="먼저 가입된 계정인지 확인 후,\n임시 비밀번호를 발송할 수 있습니다."
+            android:textColor="#757575"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/search_email_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/input_et_background"
+            android:fontFamily="@font/noto_light_font"
+            android:hint="이메일"
+            android:includeFontPadding="false"
+            android:inputType="textEmailAddress"
+            android:lineSpacingExtra="10.2sp"
+            android:paddingLeft="11dp"
+            android:paddingTop="@dimen/dimenEtVertical"
+            android:paddingBottom="@dimen/dimenEtVertical"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorEditText"
+            android:textCursorDrawable="@drawable/et_cursor"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/search_email_result_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="6sp"
+            android:text="* 가입된 계정입니다!"
+            android:textColor="#c2185b"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/search_email_check_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/button_black_background"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="10.2sp"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="가입된 계정인지 확인하기"
+            android:textColor="@color/colorBlack"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/search_pw_recall_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_pink_background"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="10.2sp"
+            android:onClick="onClick"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="위의 계정으로 임시 비밀번호 발송"
+            android:textColor="@color/colorEditPinkText"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/search_pw_result_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:textColor="#c2185b"
+            android:lineSpacingExtra="6sp"
+            android:text="* 임시 비밀번호가 전송되었습니다."
+            />
+    </LinearLayout>
+</LinearLayout>
