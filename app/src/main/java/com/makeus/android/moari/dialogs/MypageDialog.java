@@ -20,7 +20,7 @@ public class MypageDialog implements View.OnClickListener{
 
     public MypageDialog(Context context, String text, int isSelect) {
         mContext = context;
-        mDialog = new Dialog(mContext);
+        mDialog = new Dialog(mContext);  
 
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(R.layout.dialog_mypage);
