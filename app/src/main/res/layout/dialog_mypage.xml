@@ -14,7 +14,7 @@
         android:textColor="#424242"
         android:lineSpacingExtra="6sp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:text="가입이 완료되었습니다!"
         android:fontFamily="@font/noto_light_font"
         android:layout_weight="1"

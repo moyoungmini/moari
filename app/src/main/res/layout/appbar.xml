@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_img"
+    android:orientation="vertical"
+    tools:context=".activities.MainActivity"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:contentInsetStartWithNavigation="0dp"
+            android:stateListAnimator="@null">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_line"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/plus_img"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="7sp"
+            android:fontFamily="@font/noto_light_font"
+            android:text="감성님의 리뷰\n20개가 모였습니다."
+            android:layout_marginTop="70dp"
+            />
+
+        <GridLayout
+            android:id="@+id/main_gridlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:columnCount="3"
+            android:orientation="horizontal"
+            android:layout_marginTop="40dp"
+            android:rowCount="3">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:background="@drawable/main_exist_img"
+                android:text="나의 하루"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:background="@drawable/main_exist_img"
+                android:text="나의 하루"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:background="@drawable/main_exist_img"
+                android:text="나의 하루"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:background="@drawable/main_exist_img"
+                android:text="나의 하루"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:background="@drawable/main_exist_img"
+                android:text="나의 하루"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="#33ffffff"
+                android:gravity="center"
+                android:background="@drawable/main_empty_img"
+                android:text="나의 하루"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="#33ffffff"
+                android:gravity="center"
+                android:background="@drawable/main_empty_img"
+                android:text="나의 하루"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:textSize="18sp"
+                android:textColor="#33ffffff"
+                android:gravity="center"
+                android:background="@drawable/main_empty_img"
+                android:text="나의 하루"
+                />
+
+        </GridLayout>
+    </LinearLayout>
+
+</LinearLayout>
