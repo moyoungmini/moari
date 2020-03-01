@@ -144,6 +144,9 @@ public class SignupActivity extends SuperActivity {
                             Intent intent = new Intent(activity, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.putExtra("flag", 0);
+                            intent.putExtra("id", mEtEmail.getText().toString());
+                            intent.putExtra("pw", mEtPw.getText().toString());
+
                             startActivity(intent);
                         }
                         else {

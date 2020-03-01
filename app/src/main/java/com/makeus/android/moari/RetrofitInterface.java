@@ -35,7 +35,7 @@ public interface RetrofitInterface {
     Observable<BasicResponse> updateUser(@Body RequestBody params);
 
     @DELETE("user")
-    Observable<BasicResponse> deleteUser(@Body RequestBody params);
+    Observable<BasicResponse> deleteUser();
 
 
 }

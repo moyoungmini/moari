@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorEditPinkText"
+    android:orientation="vertical"
+   >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:contentInsetStartWithNavigation="0dp"
+            android:stateListAnimator="@null">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/category_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+        <ImageView
+            android:id="@+id/category_logo_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_line"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"
+            android:layout_centerVertical="true"/>
+        <ImageView
+            android:id="@+id/category_plus_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/plus_img"
+            android:onClick="onClick"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+   <androidx.viewpager.widget.ViewPager
+       android:id="@+id/category_viewpager"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"/>
+
+</LinearLayout>

@@ -12,7 +12,9 @@
     <string name="download">Download</string>
     <string name="write_file">This app needs access to your file storage so that it can write files.</string>
     <string name="download_Pdf">Download pdf</string>
-
+    <string name="permission_string">권한요청에 동의 해주셔야 이용 가능합니다. 설정에서 권한 허용 하시기 바랍니다</string>
+    <string name="review_edit_image_error">이미지 처리 오류입니다. 다시 시도해주세요.</string>
+    
     <string name="open">open</string>
     <string name="closed">closed</string>
 </resources>

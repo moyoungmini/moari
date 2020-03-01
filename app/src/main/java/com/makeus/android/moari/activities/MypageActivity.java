@@ -184,7 +184,7 @@ public class MypageActivity extends SuperActivity {
                     public void onNext(BasicResponse res) {
 
                         if (res.getCode() == 200) {
-                            intent = new Intent(activity, MypageActivity.class);
+                            intent = new Intent(activity, MainActivity.class);
                             startActivity(intent);
                             finish();
                             // login success
@@ -217,8 +217,7 @@ public class MypageActivity extends SuperActivity {
     public void delete() {
 
         JsonObject params = new JsonObject();
-
-        MoariApp.getRetrofitMethod(getApplicationContext()).updateUser(RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+        MoariApp.getRetrofitMethod(getApplicationContext()).deleteUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BasicResponse>() {

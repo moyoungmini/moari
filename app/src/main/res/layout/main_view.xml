@@ -29,16 +29,20 @@
                 />
         </com.google.android.material.appbar.AppBarLayout>
         <ImageView
+            android:id="@+id/main_logo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClick"
             android:src="@drawable/logo_line"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"/>
         <ImageView
+            android:id="@+id/main_plus_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/plus_img"
+            android:onClick="onClick"
             android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
