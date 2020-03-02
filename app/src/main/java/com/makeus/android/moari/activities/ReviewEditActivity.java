@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,7 +48,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.dialogs.LoadingDialog;
+import com.makeus.android.moari.dialogs.ReviewCameraDialog;
 import com.makeus.android.moari.dialogs.SignupDialog;
+import com.makeus.android.moari.interfaces.DialogCameraInterface;
+import com.makeus.android.moari.interfaces.DialogRatingInterface;
 
 import org.json.JSONException;
 
@@ -84,6 +88,25 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     LoadingDialog loadingDialog ;
 
     private int year, month, dates;
+    private TextView mTvDate, mTvCategory;
+    private DialogRatingInterface mRatingInterface = new DialogRatingInterface() {
+        @Override
+        public void rating(double tmp) {
+
+        }
+    };
+
+    private DialogCameraInterface mCameraInterface = new DialogCameraInterface() {
+        @Override
+        public void album() {
+            goToAlbum();
+        }
+
+        @Override
+        public void camera() {
+            takePhoto();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,7 +178,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.review_edit_picture_select_iv:
                 if (mMode == BEFORE_IMAGE || mMode == AFTER_IMAGE) {
-                    Toast.makeText(activity, "click", Toast.LENGTH_SHORT).show();
                     imageUploadChoiceDialog();
                 } else if (mMode == AFTER_SEVER_UPLOAD) {
                     startActivity(new Intent(getApplication(), LoginActivity.class));
@@ -180,7 +202,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                         int y = year;
                         int m = month+1;
                         int d = dayOfMonth;
-                        Toast.makeText(activity, String.valueOf(y) + "년 "+ String.valueOf(m)+"월 " + String.valueOf(d)+"일", Toast.LENGTH_SHORT).show();
+                        String tmpDate = String.valueOf(y)+". " + String.valueOf(m)+". " + String.valueOf(d);
+                        mTvDate.setText(tmpDate);
                     }
                 },year, month, dates);
 
@@ -192,33 +215,36 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     @Override
     void initViews() {
         mIvPictureShow = findViewById(R.id.review_edit_picture_show_iv);
+        mTvDate = findViewById(R.id.review_edit_date_tv);
+        mTvCategory = findViewById(R.id.review_edit_category_tv);
     }
 
     void imageUploadChoiceDialog() {
-        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                takePhoto();
-            }
-        };
-        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                goToAlbum();
-            }
-        };
-        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        };
-        new AlertDialog.Builder(this)
-                .setTitle("업로드할 이미지 선택")
-                .setPositiveButton("사진촬영", cameraListener)
-                .setNeutralButton("앨범선택", albumListener)
-                .setNegativeButton("취소", cancelListener)
-                .show();
+        ReviewCameraDialog dialog = new ReviewCameraDialog(activity, mCameraInterface);
+//        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                takePhoto();
+//            }
+//        };
+//        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                goToAlbum();
+//            }
+//        };
+//        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        };
+//        new AlertDialog.Builder(this)
+//                .setTitle("업로드할 이미지 선택")
+//                .setPositiveButton("사진촬영", cameraListener)
+//                .setNeutralButton("앨범선택", albumListener)
+//                .setNegativeButton("취소", cancelListener)
+//                .show();
     }
 
     private void takePhoto() {
@@ -270,6 +296,19 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i("activity_request", String.valueOf(requestCode));
+        Log.i("activity_result", String.valueOf(resultCode));
+        if(requestCode == 2 && resultCode == 0) {
+            return;
+        }
+        // 앨범선택 뒤로가기했을때 처리
+
+        if(requestCode ==1 && resultCode ==0) {
+            return;
+        }
+        // 카메라 선택후 뒤로가기했을때 처리
+
+
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
         }
@@ -315,8 +354,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 //            } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
 //            uploadImage(photoUri);
-            uploadImage(data.getData());
-
+            if(data != null) {
+                uploadImage(data.getData());
+            }
 
 //            }
         }

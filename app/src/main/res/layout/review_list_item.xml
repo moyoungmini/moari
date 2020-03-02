@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/category_item_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@color/colorEditText" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dimeUserWidthMargin"
+                    android:paddingTop="@dimen/dimeUserWidthMargin"
+                    android:paddingRight="@dimen/dimeUserWidthMargin"
+                    android:paddingBottom="@dimen/dimeUserWidthMargin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:textColor="#ffffff"
+                        android:lineSpacingExtra="5sp"
+                        android:gravity="center_horizontal"
+                        tools:text="제목은 25자 제한 어떠신가요? 띄어쓰기도?"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/edit_review_background"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="5dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dimenStar"
+                            android:src="@drawable/start_empty_img" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dimenStar"
+                            android:src="@drawable/start_empty_img" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dimenStar"
+                            android:src="@drawable/start_empty_img" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dimenStar"
+                            android:src="@drawable/start_empty_img" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/start_empty_img" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/category_item_oneline_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/edit_review_background"
+                        android:fontFamily="@font/noto_light_font"
+                        android:gravity="center_horizontal"
+                        android:hint="한줄평 (100자)"
+                        android:includeFontPadding="false"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/colorWhite"
+                        android:textColorHint="@color/colorBorder"
+                        android:textCursorDrawable="@drawable/et_cursor"
+                        android:textSize="17sp" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/category_item_content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimeUserWidthMargin"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="@dimen/dimeUserWidthMargin"
+                android:background="@drawable/edit_review_background"
+                android:fontFamily="@font/noto_light_font"
+                android:hint="내용을 써주세요."
+                android:includeFontPadding="false"
+                android:textColor="@color/colorEditText"
+                android:textColorHint="@color/colorEditText"
+                android:textCursorDrawable="@drawable/et_cursor"
+                android:textSize="17sp" />
+        </LinearLayout>
+</ScrollView>

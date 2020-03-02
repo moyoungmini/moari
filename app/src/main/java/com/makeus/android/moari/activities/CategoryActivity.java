@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.navigation.NavigationView;
 import com.makeus.android.moari.R;
@@ -25,7 +25,7 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
 
     private TextView mTvSearch, mTvChange;
     private Intent intent;
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private CategoryAdapter mCategoryAdapter;
 
     @Override
@@ -50,7 +50,7 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
         }
         mCategoryAdapter = new CategoryAdapter(this, list);
         mViewPager.setAdapter(mCategoryAdapter);
-        Log.i("TEST", String.valueOf(mViewPager.getAdapter().getCount()));
+        mViewPager.setOrientation(mViewPager.ORIENTATION_VERTICAL);
     }
 
     public void startFlag() {

@@ -72,6 +72,7 @@ public class MypageActivity extends SuperActivity {
         activity = this;
         getUser();
 
+
     }
 
     @Override
@@ -215,8 +216,6 @@ public class MypageActivity extends SuperActivity {
     }
 
     public void delete() {
-
-        JsonObject params = new JsonObject();
         MoariApp.getRetrofitMethod(getApplicationContext()).deleteUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

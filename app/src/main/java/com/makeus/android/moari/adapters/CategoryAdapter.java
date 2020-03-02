@@ -27,46 +27,74 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class CategoryAdapter extends PagerAdapter {
-    private Context context;
-    private ArrayList<CategoryData> listData;
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
 
-    public CategoryAdapter(Context _context, ArrayList<CategoryData> _listData) {
-        this.context = _context;
-        this.listData = _listData;
+    private Activity activity;
+    private ArrayList<CategoryData> listData = new ArrayList<>();
+
+    public CategoryAdapter(Activity activity, ArrayList<CategoryData> listData) {
+        this.activity = activity;
+        this.listData = listData;
+    }
+    // constructor
+
+
+    public ArrayList<CategoryData> getListData() {
+        return listData;
     }
 
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View)object);
+    public void clearData() {
+        this.listData.clear();
     }
 
-    @Override
-    public int getCount() {
-        return listData.size();
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return (view == (View)object);
+    public void  addData(CategoryData data) {
+        listData.add(data);
     }
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.category_item, null);
-
-        TextView title, content, oneLine;
-        title = view.findViewById(R.id.category_item_title_tv);
-        content = view.findViewById(R.id.category_item_content_tv);
-        oneLine = view.findViewById(R.id.category_item_oneline_tv);
-
-        title.setText(listData.get(position).getTitle());
-
-        container.addView(view);
-
-        return view;
+    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
+        return new ItemViewHolder(view);
     }
 
+
+    @Override
+    public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
+        holder.onBind(listData.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return listData.size();
+    }
+
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+        TextView title, content, oneLine;
+
+        ItemViewHolder(View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.category_item_title_tv);
+            content = itemView.findViewById(R.id.category_item_content_tv);
+            oneLine = itemView.findViewById(R.id.category_item_oneline_tv);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                }
+            });
+            // item click method
+        }
+
+        void onBind(CategoryData data) {
+            int position = getAdapterPosition();
+
+
+            title.setText(data.getTitle());
+
+        }
+        // set views
+    }
 }
