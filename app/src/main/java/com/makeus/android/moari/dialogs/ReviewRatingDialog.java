@@ -20,14 +20,14 @@ public class ReviewRatingDialog implements View.OnClickListener{
     private TextView mTvNo, mTvYes;
     private DialogRatingInterface mInetface;
     private RatingBar mRB;
-    private  double rating;
+    private  double rate;
 
     public Dialog mDialog;
 
     public ReviewRatingDialog(Context context, double rating, DialogRatingInterface tmpInterface) {
         mContext = context;
         mDialog = new Dialog(mContext);
-        this.rating = rating;
+        this.rate = rating;
 
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(R.layout.dialog_review_edit_rating);
@@ -43,16 +43,23 @@ public class ReviewRatingDialog implements View.OnClickListener{
         mDialog.show();
 
         mInetface = tmpInterface;
+
+        mRB.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rate = rating;
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.dialog_mypage_yes_tv:
+            case R.id.dialog_review_rating_yes_tv:
                 mDialog.dismiss();
-                mInetface.rating(rating);
+                mInetface.rating(rate);
                 break;
-            case R.id.dialog_mypage_no_tv:
+            case R.id.dialog_review_rating_no_tv:
                 mDialog.dismiss();
                 break;
         }

@@ -10,7 +10,7 @@
 //import androidx.recyclerview.widget.RecyclerView;
 //
 //import com.makeus.android.moari.R;
-//import com.makeus.android.moari.datas.CategoryData;
+//import com.makeus.android.moari.datas.CategoryTMPData;
 //import com.makeus.android.moari.datas.ReviewListData;
 //
 //import java.util.ArrayList;
@@ -76,7 +76,7 @@
 //            // item click method
 //        }
 //
-//        void onBind(CategoryData data) {
+//        void onBind(CategoryTMPData data) {
 //            int position = getAdapterPosition();
 //
 //

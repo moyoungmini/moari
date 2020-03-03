@@ -8,28 +8,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.dialogs.SignupDialog;
 import com.makeus.android.moari.responses.LoginResponse;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
-
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -60,7 +55,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
             login(id, pw);
             SignupDialog dialog = new SignupDialog(this);
         }
-        // when signup finish
+        // start dialog when signup finish
     }
 
 
@@ -159,10 +154,11 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                                 editor.commit();
 
                                 SignupDialog dialog = new SignupDialog(activity);
+                                // receive token and show success signup
                             } else {
                                 Toast.makeText(MainActivity.this, "receive token error", Toast.LENGTH_SHORT).show();
+                                // receive from server token error
                             }
-                            // login success
                         } else if (res.getCode() == 403) {
                             SharedPreferences mSharedPreferences = MainActivity.this.getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
@@ -187,4 +183,5 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                     }
                 });
     }
+    // receivew jwt when signup
 }

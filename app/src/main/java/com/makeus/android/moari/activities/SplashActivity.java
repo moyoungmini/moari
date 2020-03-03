@@ -31,8 +31,6 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class SplashActivity extends SuperActivity {
 
-    private Thread splashThread;
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +55,7 @@ public class SplashActivity extends SuperActivity {
                     finish();
                 }
             }
-        }, 2000);
+        }, 200);
     }
 
     public String getVersionInfo(Context context) {
@@ -69,6 +67,7 @@ public class SplashActivity extends SuperActivity {
         }
         return version;
     }
+    // set version
 
     public void login() {
 
@@ -91,20 +90,19 @@ public class SplashActivity extends SuperActivity {
                             startActivity(intent);
                             finish();
                         }
-                        // Auto Login success
+                        // success auto login
 
                         else if (res.getCode() == 403) {
                             SharedPreferences mSharedPreferences = SplashActivity.this.getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                             editor.remove(X_ACCESS_TOKEN);
                             editor.commit();
-                            // reset token sharedpreference
+                            // remove token when token error
 
                             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }
-                        // token error
                         else {
                             Toast.makeText(SplashActivity.this, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -123,6 +121,7 @@ public class SplashActivity extends SuperActivity {
                     }
                 });
     }
+    // auto login
 
     @Override
     public void onClick(View v) {}

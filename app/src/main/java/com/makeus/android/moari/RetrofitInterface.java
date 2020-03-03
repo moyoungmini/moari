@@ -3,6 +3,7 @@ package com.makeus.android.moari;
 
 
 import com.makeus.android.moari.responses.BasicResponse;
+import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.LoginResponse;
 import com.makeus.android.moari.responses.SignupResponse;
 import com.makeus.android.moari.responses.UserResponse;
@@ -37,5 +38,10 @@ public interface RetrofitInterface {
     @DELETE("user")
     Observable<BasicResponse> deleteUser();
 
+    @GET("category")
+    Observable<CategoryResponse> getCategory();
+
+    @POST("category/{categoryId}/review")
+    Observable<BasicResponse> postReview(@Path("categoryId") int categoryId, @Body RequestBody params);
 
 }

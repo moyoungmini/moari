@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
@@ -22,13 +21,11 @@ import com.makeus.android.moari.interfaces.MypageInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.LoginResponse;
 import com.makeus.android.moari.responses.UserResponse;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
-
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -56,12 +53,14 @@ public class MypageActivity extends SuperActivity {
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.remove(X_ACCESS_TOKEN);
             editor.commit();
+            // remove token
 
             Intent intent = new Intent(activity, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // set intent flag
             startActivity(intent);
         }
     };
+    // dialog interface
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +68,12 @@ public class MypageActivity extends SuperActivity {
         setContentView(R.layout.activity_mypage);
 
         initViews();
-        activity = this;
         getUser();
+        init();
+    }
 
-
+    public void init() {
+        activity =this;
     }
 
     @Override
@@ -98,14 +99,15 @@ public class MypageActivity extends SuperActivity {
                     Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                // validation
 
                 dialog = new MypageDialog(this, 0, mypageInterface);
-
                 break;
-            case R.id.mypage_logout_tv:
 
+            case R.id.mypage_logout_tv:
                 dialog = new MypageDialog(this, 3, mypageInterface);
                 break;
+
             case R.id.mypage_delete_user_tv:
                 dialog = new MypageDialog(this, 1, mypageInterface);
                 break;
@@ -119,7 +121,6 @@ public class MypageActivity extends SuperActivity {
         mEtRePw = findViewById(R.id.mypage_re_pw_et);
         mTvEmail = findViewById(R.id.mypage_email_tv);
     }
-
 
     public void getUser() {
         MoariApp.getRetrofitMethod(getApplicationContext()).getUser()
@@ -135,7 +136,6 @@ public class MypageActivity extends SuperActivity {
                     @Override
                     public void onNext(final UserResponse res) {
                         if (res.getCode() == 200) {
-                            Log.i("TEST", "200");
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -148,6 +148,7 @@ public class MypageActivity extends SuperActivity {
                             startActivity(intent);
                             finish();
                         }
+                        // go to login activity when token error
 
                     }
 
@@ -188,18 +189,17 @@ public class MypageActivity extends SuperActivity {
                             intent = new Intent(activity, MainActivity.class);
                             startActivity(intent);
                             finish();
-                            // login success
                         } else {
                             SharedPreferences mSharedPreferences = MypageActivity.this.getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                             editor.remove(X_ACCESS_TOKEN);
                             editor.commit();
+                            // reset token when token error
 
                             intent = new Intent(activity, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }
-                        // token error
                     }
 
                     @Override
@@ -236,13 +236,9 @@ public class MypageActivity extends SuperActivity {
                             intent = new Intent(activity, LoginActivity.class);
                             startActivity(intent);
                             finish();
-                            // login success
                         } else {
-                            intent = new Intent(activity, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        // token error
                     }
 
                     @Override

@@ -1,24 +1,18 @@
 package com.makeus.android.moari.activities;
 
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.android.material.navigation.NavigationView;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.CategoryAdapter;
-import com.makeus.android.moari.datas.CategoryData;
-import com.makeus.android.moari.dialogs.SignupDialog;
-
+import com.makeus.android.moari.datas.CategoryTMPData;
 import java.util.ArrayList;
 
 public class CategoryActivity extends SuperActivity implements View.OnClickListener {
@@ -33,7 +27,6 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        startFlag();
         initViews();
         initListener();
         InitializeLayout();
@@ -42,24 +35,15 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
     }
 
     public void init() {
-        ArrayList<CategoryData> list = new ArrayList<>();
+        ArrayList<CategoryTMPData> list = new ArrayList<>();
         for(int i=0;i<10;i++) {
-            CategoryData tmp = new CategoryData();
+            CategoryTMPData tmp = new CategoryTMPData();
             tmp.setTitle("TESTSETEST");
             list.add(tmp);
         }
         mCategoryAdapter = new CategoryAdapter(this, list);
         mViewPager.setAdapter(mCategoryAdapter);
         mViewPager.setOrientation(mViewPager.ORIENTATION_VERTICAL);
-    }
-
-    public void startFlag() {
-        int flag = getIntent().getIntExtra("flag", -1);
-
-        if(flag ==0) {
-            SignupDialog dialog = new SignupDialog(this);
-        }
-        // when signup finish
     }
 
 

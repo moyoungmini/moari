@@ -19,9 +19,6 @@ public class SearchActivity extends SuperActivity {
         setContentView(R.layout.activity_search);
 
         initViews();
-
-        mTvResultEmail.setVisibility(View.INVISIBLE);
-        mTvResultPw.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -35,6 +32,11 @@ public class SearchActivity extends SuperActivity {
             case R.id.search_pw_recall_btn:
                 break;
         }
+    }
+
+    public void init() {
+        mTvResultEmail.setVisibility(View.INVISIBLE);
+        mTvResultPw.setVisibility(View.INVISIBLE);
     }
 
     @Override

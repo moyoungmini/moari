@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/empty_white_background"
     android:orientation="vertical"
@@ -8,11 +8,11 @@
 
     <TextView
         android:id="@+id/dialog_review_album_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textColor="@color/colorSearchText"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:text="앨범에서 가져오기"
         android:fontFamily="@font/noto_light_font"
         android:paddingTop="10dp"
@@ -25,11 +25,11 @@
         android:background="@color/colorLightBorder"/>
     <TextView
         android:id="@+id/dialog_review_camera_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textColor="@color/colorSearchText"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:fontFamily="@font/noto_light_font"
         android:text="사진 촬영하기"
         android:paddingTop="10dp"

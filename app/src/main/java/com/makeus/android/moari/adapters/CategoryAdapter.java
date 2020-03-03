@@ -1,45 +1,32 @@
 package com.makeus.android.moari.adapters;
 
 import android.app.Activity;
-import android.content.Context;
-import android.transition.TransitionManager;
-import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.makeus.android.moari.R;
-import com.makeus.android.moari.datas.CategoryData;
+import com.makeus.android.moari.datas.CategoryTMPData;
 
 import java.util.ArrayList;
-import java.util.Collections;
-
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
 
     private Activity activity;
-    private ArrayList<CategoryData> listData = new ArrayList<>();
+    private ArrayList<CategoryTMPData> listData = new ArrayList<>();
 
-    public CategoryAdapter(Activity activity, ArrayList<CategoryData> listData) {
+    public CategoryAdapter(Activity activity, ArrayList<CategoryTMPData> listData) {
         this.activity = activity;
         this.listData = listData;
     }
     // constructor
 
 
-    public ArrayList<CategoryData> getListData() {
+    public ArrayList<CategoryTMPData> getListData() {
         return listData;
     }
 
@@ -47,7 +34,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
         this.listData.clear();
     }
 
-    public void  addData(CategoryData data) {
+    public void  addData(CategoryTMPData data) {
         listData.add(data);
     }
 
@@ -88,7 +75,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemVi
             // item click method
         }
 
-        void onBind(CategoryData data) {
+        void onBind(CategoryTMPData data) {
             int position = getAdapterPosition();
 
 

@@ -34,13 +34,16 @@ public class SignupActivity extends SuperActivity {
     private ImageView mIvMoariAgree, mIvBasicAgree;
     private boolean mIsMoari, mIsBasic;
     private Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
         initViews();
+    }
 
+    public void init() {
         activity = this;
         mIsBasic = false;
         mIsMoari = false;
@@ -76,7 +79,7 @@ public class SignupActivity extends SuperActivity {
             case R.id.signup_moari_tobasic_iv:
             case R.id.signup_moari_tobasic_tv:
                 break;
-                // web 이동
+                // go to webview
 
             case R.id.signup_btn:
                 if(mEtEmail.getText().toString().equals("")) {
@@ -103,6 +106,7 @@ public class SignupActivity extends SuperActivity {
                     Toast.makeText(this, "약관 동의를 부탁드립니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                // validation
 
                 signup();
                 break;
@@ -143,7 +147,7 @@ public class SignupActivity extends SuperActivity {
                         if(res.getCode() == 200) {
                             Intent intent = new Intent(activity, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            intent.putExtra("flag", 0);
+                            intent.putExtra("flag", 0); // flag is starting dialog when move to main
                             intent.putExtra("id", mEtEmail.getText().toString());
                             intent.putExtra("pw", mEtPw.getText().toString());
 

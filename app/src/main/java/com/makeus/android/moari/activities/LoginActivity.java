@@ -8,21 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.responses.LoginResponse;
-import com.makeus.android.moari.responses.SignupResponse;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
-
-import com.makeus.android.moari.MoariApp;
-
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -51,6 +45,7 @@ public class LoginActivity extends SuperActivity {
                     Toast.makeText(this, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                // login validation
                 login();
                 break;
             case R.id.login_to_search_tv:
@@ -72,7 +67,6 @@ public class LoginActivity extends SuperActivity {
     }
 
     public void login() {
-
         JsonObject params = new JsonObject();
         params.addProperty("email", mEtEmail.getText().toString());
         params.addProperty("password", mEtPw.getText().toString());
@@ -96,6 +90,7 @@ public class LoginActivity extends SuperActivity {
                                 SharedPreferences.Editor editor = mSharedPreferences.edit();
                                 editor.putString(X_ACCESS_TOKEN, res.getJwt());
                                 editor.commit();
+                                // renewal token
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
@@ -103,14 +98,15 @@ public class LoginActivity extends SuperActivity {
                             } else {
                                 Toast.makeText(LoginActivity.this, "receive token error", Toast.LENGTH_SHORT).show();
                             }
-                            // login success
+                            // token error but login success
+                            //
                         } else if (res.getCode() == 403) {
                             SharedPreferences mSharedPreferences = LoginActivity.this.getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = mSharedPreferences.edit();
                             editor.remove(X_ACCESS_TOKEN);
                             editor.commit();
                         }
-                        // token error
+                        // remove token to token error
                         else {
                             Toast.makeText(LoginActivity.this, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }

@@ -18,10 +18,13 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +49,22 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.JsonObject;
+import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
+import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.dialogs.LoadingDialog;
 import com.makeus.android.moari.dialogs.ReviewCameraDialog;
+import com.makeus.android.moari.dialogs.ReviewCategoryDialog;
+import com.makeus.android.moari.dialogs.ReviewRatingDialog;
 import com.makeus.android.moari.dialogs.SignupDialog;
 import com.makeus.android.moari.interfaces.DialogCameraInterface;
+import com.makeus.android.moari.interfaces.DialogCategoryInterface;
 import com.makeus.android.moari.interfaces.DialogRatingInterface;
+import com.makeus.android.moari.responses.BasicResponse;
+import com.makeus.android.moari.responses.CategoryResponse;
+import com.makeus.android.moari.responses.SignupResponse;
+import com.makeus.android.moari.responses.UserResponse;
 
 import org.json.JSONException;
 
@@ -64,34 +77,88 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.RequestBody;
+
+import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
+import static com.makeus.android.moari.MoariApp.catchAllThrowable;
+
 public class ReviewEditActivity extends SuperActivity implements View.OnClickListener {
 
-    private ImageView mIvPictureShow;
-    private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; //권한 설정 변수
-    private static final int MULTIPLE_PERMISSIONS = 101; //권한 동의 여부 문의 후 CallBack 함수에 쓰일 변수
-
-    private static final int PICK_FROM_CAMERA = 1; //카메라 촬영으로 사진 가져오기
-    private static final int PICK_FROM_ALBUM = 2; //앨범에서 사진 가져오기
-    private static final int CROP_FROM_CAMERA = 3; //가져온 사진을 자르기 위한 변수
-    private static final int BEFORE_IMAGE = 4; //가져온 사진을 자르기 위한 변수
-    private static final int AFTER_IMAGE = 5; //가져온 사진을 자르기 위한 변수
-    private static final int AFTER_SEVER_UPLOAD = 6; //가져온 사진을 자르기 위한 변수
-    private int mMode = BEFORE_IMAGE;
-
+    private String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; // permission check variable
+    private static final int MULTIPLE_PERMISSIONS = 101; //use callback function after permession check
+    private static final int PICK_FROM_CAMERA = 1; // bring picture using camera
+    private static final int PICK_FROM_ALBUM = 2; // bring album using camera
+    private static final int CROP_FROM_CAMERA = 3; // using crop
+    private static final int BEFORE_IMAGE = 4; // using crop
+    private static final int AFTER_IMAGE = 5; // using crop
+    private static final int AFTER_SEVER_UPLOAD = 6; // using crop
+    private int mMode = BEFORE_IMAGE; // use in onActivityResult function for distinguishing flag
     private Activity activity;
     private Uri photoUri;
-
     public static final String FILE_NAME = "temp.jpg";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MAX_DIMENSION = 1200;
-    String url;
-    LoadingDialog loadingDialog ;
-
+    private String url;
+    private LoadingDialog loadingDialog;
     private int year, month, dates;
+    private ImageView mIvPictureShow, mIvRating;
     private TextView mTvDate, mTvCategory;
+    private EditText mEtTitle, mEtOneLine, mEtContent;
+    private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
+
+    private String postTitle, postOneLine, postContent, postDate, postUri;
+    private int postId;
+    private double postRating;
+
+    private DialogCategoryInterface mCategoryInterface = new DialogCategoryInterface() {
+        @Override
+        public void selectCategory(int id, String name) {
+            mTvCategory.setText(name);
+            postId = id;
+        }
+    };
     private DialogRatingInterface mRatingInterface = new DialogRatingInterface() {
         @Override
-        public void rating(double tmp) {
+        public void rating(double rate) {
+            postRating = rate;
+            if(rate ==0) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_00);
+            }
+            else if(rate == 0.5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_01);
+            }
+            else if(rate == 1) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_10);
+            }
+            else if(rate == 1.5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_11);
+            }
+            else if(rate == 2) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_20);
+            }
+            else if(rate == 2.5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_21);
+            }
+            else if(rate == 3) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_30);
+            }
+            else if(rate == 3.5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_31);
+            }
+            else if(rate == 4) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_40);
+            }
+            else if(rate == 4.5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_41);
+            }
+            else if(rate == 5) {
+                mIvRating.setBackgroundResource(R.drawable.rate_white_50);
+            }
+
 
         }
     };
@@ -107,24 +174,35 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             takePhoto();
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_edit);
 
-        activity = this;
-        loadingDialog = new LoadingDialog(this);
         initViews();
         checkPermissions();
-
         init();
+        getCategory();
     }
 
     public void init() {
         Calendar cal = Calendar.getInstance();
         year = cal.get(cal.YEAR);
-        month = cal.get(cal.MONTH) +1;
-        dates = cal.get(cal.DATE) +1;
+        month = cal.get(cal.MONTH) + 1;
+        dates = cal.get(cal.DATE) + 1;
+
+        loadingDialog = new LoadingDialog(this);
+        activity = this;
+
+        postTitle = "";
+        postRating = -1;
+        postId = -1;
+        postDate = "";
+
+        postOneLine = "";
+        postContent = "";
+        postUri = "";
     }
 
     private boolean checkPermissions() {
@@ -132,16 +210,17 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         List<String> permissionList = new ArrayList<>();
         for (String pm : permissions) {
             result = ContextCompat.checkSelfPermission(this, pm);
-            if (result != PackageManager.PERMISSION_GRANTED) { //사용자가 해당 권한을 가지고 있지 않을 경우 리스트에 해당 권한명 추가
+            if (result != PackageManager.PERMISSION_GRANTED) {
                 permissionList.add(pm);
             }
         }
-        if (!permissionList.isEmpty()) { //권한이 추가되었으면 해당 리스트가 empty가 아니므로 request 즉 권한을 요청합니다.
+        if (!permissionList.isEmpty()) {
             ActivityCompat.requestPermissions(this, permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
             return false;
         }
         return true;
     }
+    // set permission
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -170,7 +249,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             }
         }
     }
-
+    // set onResult permission
 
 
     @Override
@@ -178,36 +257,68 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.review_edit_picture_select_iv:
                 if (mMode == BEFORE_IMAGE || mMode == AFTER_IMAGE) {
-                    imageUploadChoiceDialog();
+                    ReviewCameraDialog dialog = new ReviewCameraDialog(activity, mCameraInterface);
                 } else if (mMode == AFTER_SEVER_UPLOAD) {
                     startActivity(new Intent(getApplication(), LoginActivity.class));
-                    // ??
+                    // I don't know
                 }
                 break;
             case R.id.review_edit_finish_iv:
-                if(photoUri == null) {
-                    return;
+                postTitle = mEtTitle.getText().toString();
+                postContent = mEtContent.getText().toString();
+                postOneLine = mEtOneLine.getText().toString();
+
+                if (mTvDate.getText().equals("날짜")) {
+                    Toast.makeText(activity, "날짜를 선택 해주세요", Toast.LENGTH_SHORT).show();
+                    break;
                 }
-                try {
-                    uploadFileToFireBase(photoUri);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (postTitle.equals("")) {
+                    Toast.makeText(activity, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    break;
                 }
+
+                if(postId == -1) {
+                    Toast.makeText(activity, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                if(postRating == -1) {
+                    Toast.makeText(activity, "평점을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
+                if (photoUri == null) {
+                    postUri = "";
+                    eidtReview();
+                } else {
+                    try {
+                        uploadFileToFireBase(photoUri);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                }
+
+                // make review
                 break;
             case R.id.review_edit_date_tv:
-                Toast.makeText(activity, "CLICK", Toast.LENGTH_SHORT).show();
                 DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        int y = year;
-                        int m = month+1;
-                        int d = dayOfMonth;
-                        String tmpDate = String.valueOf(y)+". " + String.valueOf(m)+". " + String.valueOf(d);
+                    public void onDateSet(DatePicker view, int tmpYear, int tmpMonth, int tmpDayOfMonth) {
+                        year = tmpYear;
+                        month = tmpMonth + 1;
+                        dates = tmpDayOfMonth;
+                        String tmpDate = String.valueOf(year) + ". " + String.valueOf(month) + ". " + String.valueOf(dates);
                         mTvDate.setText(tmpDate);
                     }
-                },year, month, dates);
-
+                }, year, month, dates);
                 datePickerDialog.show();
+                break;
+
+            case R.id.review_edit_rating_layout:
+                ReviewRatingDialog dialog = new ReviewRatingDialog(activity, postRating, mRatingInterface);
+                break;
+            case R.id.review_edit_category_tv:
+                ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity, mCategoryList, mCategoryInterface);
                 break;
         }
     }
@@ -217,39 +328,15 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         mIvPictureShow = findViewById(R.id.review_edit_picture_show_iv);
         mTvDate = findViewById(R.id.review_edit_date_tv);
         mTvCategory = findViewById(R.id.review_edit_category_tv);
-    }
-
-    void imageUploadChoiceDialog() {
-        ReviewCameraDialog dialog = new ReviewCameraDialog(activity, mCameraInterface);
-//        DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                takePhoto();
-//            }
-//        };
-//        DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                goToAlbum();
-//            }
-//        };
-//        DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.dismiss();
-//            }
-//        };
-//        new AlertDialog.Builder(this)
-//                .setTitle("업로드할 이미지 선택")
-//                .setPositiveButton("사진촬영", cameraListener)
-//                .setNeutralButton("앨범선택", albumListener)
-//                .setNegativeButton("취소", cancelListener)
-//                .show();
+        mEtTitle = findViewById(R.id.review_edit_title_et);
+        mEtOneLine = findViewById(R.id.review_edit_line_et);
+        mEtContent = findViewById(R.id.review_edit_content_et);
+        mIvRating = findViewById(R.id.review_edit_rating_iv);
     }
 
     private void takePhoto() {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //사진을 찍기 위하여 설정합니다.
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try {
             photoFile = createImageFile();
@@ -259,29 +346,17 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         }
         if (photoFile != null) {
             photoUri = FileProvider.getUriForFile(this,
-                    "com.makeus.android.moari.provider", photoFile); //FileProvider의 경우 이전 포스트를 참고하세요.
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
+                    "com.makeus.android.moari.provider", photoFile);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
         }
-
-//        if (PermissionUtils.requestPermission(
-//                this,
-//                CAMERA_PERMISSIONS_REQUEST,
-//                Manifest.permission.READ_EXTERNAL_STORAGE,
-//                Manifest.permission.CAMERA)) {
-//            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            startActivityForResult(intent, CAMERA_IMAGE_REQUEST);
-//        }
     }
+    // camera
 
     private File createImageFile() throws IOException {
-        // Create an image file name
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "IP" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/inha/"); //test라는 경로에 이미지를 저장하기 위함
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/moari/");
         if (!storageDir.exists()) {
             storageDir.mkdirs();
         }
@@ -296,14 +371,12 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("activity_request", String.valueOf(requestCode));
-        Log.i("activity_result", String.valueOf(resultCode));
-        if(requestCode == 2 && resultCode == 0) {
+        if (requestCode == 2 && resultCode == 0) {
             return;
         }
         // 앨범선택 뒤로가기했을때 처리
 
-        if(requestCode ==1 && resultCode ==0) {
+        if (requestCode == 1 && resultCode == 0) {
             return;
         }
         // 카메라 선택후 뒤로가기했을때 처리
@@ -336,29 +409,13 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
 
                 mIvPictureShow.setImageBitmap(thumbImage);
-//                Glide.with(activity).load(R.drawable.btn_school_certification).into(mImageViewButton);
                 mMode = AFTER_IMAGE;
             } catch (Exception e) {
             }
-//        }
-
-//
-//            if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-//            } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
-//                Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-//                uploadImage(photoUri);
-//            }
-
-//            if (requestCode == GALLERY_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
-//            uploadImage(data.getData());
-//            } else if (requestCode == CAMERA_IMAGE_REQUEST && resultCode == RESULT_OK) {
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-//            uploadImage(photoUri);
-            if(data != null) {
+            if (data != null) {
                 uploadImage(data.getData());
             }
-
-//            }
         }
     }
 
@@ -368,7 +425,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     }
 
     private void goToAlbum() {
-
         Intent intent = new Intent(Intent.ACTION_PICK); //ACTION_PICK 즉 사진을 고르겠다!
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
@@ -384,11 +440,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                                 MAX_DIMENSION);
 
                 bitmap = rotate(bitmap, 90); //샘플이미지파일
-//                callCloudVision(bitmap);
-
-
-//                mMainImage.setImageBitmap(bitmap);
-
             } catch (IOException e) {
                 Log.d(TAG, "Image picking failed because " + e.getMessage());
                 Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_LONG).show();
@@ -397,13 +448,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             Log.d(TAG, "Image picker gave us a null image.");
             Toast.makeText(this, "다시 시도해주세요", Toast.LENGTH_LONG).show();
         }
-        loadingDialog.show();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                dialog.dismiss();
-//            }
-//        }, 1500); //1초 있다가 메인으로 넘어가게.
     }
 
     private Bitmap scaleBitmapDown(Bitmap bitmap, int maxDimension) {
@@ -450,8 +494,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 16);
-            intent.putExtra("aspectY", 10);
+//            intent.putExtra("aspectX", 16);
+//            intent.putExtra("aspectY", 16);
             intent.putExtra("scale", true);
             File croppedFileName = null;
             try {
@@ -490,11 +534,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
     void uploadFileToFireBase(Uri mImageUri) throws JSONException {
         final LoadingDialog loadingDialog = new LoadingDialog(activity);
-        loadingDialog.show();
-//        progressDialog.setTitle("업로드중...");
-//        progressDialog.show();
+        showProgressDialog();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        Date now = new Date();
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://fir-login-4684d.appspot.com/").child("user/" + mImageUri.getLastPathSegment());
         UploadTask uploadTask = storageRef.putFile(mImageUri);
         storageRef.putFile(mImageUri)
@@ -502,6 +543,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        dismissProgressDialog();
 //                        progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
                     }
                 })
@@ -517,9 +559,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                        @SuppressWarnings("VisibleForTests")
-//                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-//                        progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
                     }
                 });
 
@@ -536,36 +575,100 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-//                    mProfileImageUrl = downloadUri.toString();
 
+                    postUri = downloadUri.toString();
 
+                    Log.i("SDFSDF", postUri);
                     Glide.with(activity)
                             .load(downloadUri.toString())
                             .fitCenter()
-//                            .placeholder(R.drawable.placeholder)
-//                            .error(R.drawable.imagenotfound)
                             .into(mIvPictureShow);
-//                    mImageViewThumbnail
 
                     url = downloadUri.toString();
-                    //Log.d("로그", url);
-
                     loadingDialog.dismiss();
-//                    mTextViewTitle.setText("이미지 첨부가\n완료되었습니다.");
-//                    mTextViewContent.setText("빠른 시일 내에 처리하겠습니다.");
-
-//                    Glide.with(mContext).load(R.drawable.btn_yellow_ok).into(mImageViewButton);
-
-                    mMode = AFTER_SEVER_UPLOAD;//                    try {
-////                        postPofileImage();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    showCustomToast(mContext, "업로드!");
+                    mMode = AFTER_SEVER_UPLOAD;
+                    eidtReview();
                 } else {
                     //실패시
                 }
             }
         });
+    }
+
+    public void getCategory() {
+        MoariApp.getRetrofitMethod(getApplicationContext()).getCategory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CategoryResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(final CategoryResponse res) {
+                        if (res.getCode() == 200) {
+                            mCategoryList = res.getResult();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void eidtReview() {
+
+        JsonObject params = new JsonObject();
+        params.addProperty("title", postTitle);
+        params.addProperty("content", postContent);
+        params.addProperty("image", postUri);
+        params.addProperty("grade", postRating);
+        params.addProperty("review", postOneLine);
+
+        MoariApp.getRetrofitMethod(getApplicationContext()).postReview(postId, RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if(res.getCode() == 200) {
+                            finish();
+                        }
+                        else {
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
     }
 }
