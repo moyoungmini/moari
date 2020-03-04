@@ -3,11 +3,8 @@ package com.makeus.android.moari.activities;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -18,8 +15,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -30,13 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
@@ -44,7 +35,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -56,15 +46,14 @@ import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.dialogs.LoadingDialog;
 import com.makeus.android.moari.dialogs.ReviewCameraDialog;
 import com.makeus.android.moari.dialogs.ReviewCategoryDialog;
+import com.makeus.android.moari.dialogs.ReviewEditExitDialog;
 import com.makeus.android.moari.dialogs.ReviewRatingDialog;
-import com.makeus.android.moari.dialogs.SignupDialog;
 import com.makeus.android.moari.interfaces.DialogCameraInterface;
 import com.makeus.android.moari.interfaces.DialogCategoryInterface;
 import com.makeus.android.moari.interfaces.DialogRatingInterface;
+import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
-import com.makeus.android.moari.responses.SignupResponse;
-import com.makeus.android.moari.responses.UserResponse;
 
 import org.json.JSONException;
 
@@ -105,7 +94,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private String url;
     private LoadingDialog loadingDialog;
     private int year, month, dates;
-    private ImageView mIvPictureShow, mIvRating;
+    private ImageView mIvPictureShow, mIvRating, mIvDelete;
     private TextView mTvDate, mTvCategory;
     private EditText mEtTitle, mEtOneLine, mEtContent;
     private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
@@ -125,41 +114,29 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         @Override
         public void rating(double rate) {
             postRating = rate;
-            if(rate ==0) {
+            if (rate == 0) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_00);
-            }
-            else if(rate == 0.5) {
+            } else if (rate == 0.5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_01);
-            }
-            else if(rate == 1) {
+            } else if (rate == 1) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_10);
-            }
-            else if(rate == 1.5) {
+            } else if (rate == 1.5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_11);
-            }
-            else if(rate == 2) {
+            } else if (rate == 2) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_20);
-            }
-            else if(rate == 2.5) {
+            } else if (rate == 2.5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_21);
-            }
-            else if(rate == 3) {
+            } else if (rate == 3) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_30);
-            }
-            else if(rate == 3.5) {
+            } else if (rate == 3.5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_31);
-            }
-            else if(rate == 4) {
+            } else if (rate == 4) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_40);
-            }
-            else if(rate == 4.5) {
+            } else if (rate == 4.5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_41);
-            }
-            else if(rate == 5) {
+            } else if (rate == 5) {
                 mIvRating.setBackgroundResource(R.drawable.rate_white_50);
             }
-
-
         }
     };
 
@@ -175,6 +152,13 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         }
     };
 
+    private DialogReviewExitInterface mExitInterface = new DialogReviewExitInterface() {
+        @Override
+        public void exit() {
+            finish();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,26 +166,48 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
         initViews();
         checkPermissions();
+
+        int flag = getIntent().getIntExtra("flag", 0);
+        if (flag == 0) {
+            init();
+        } else {
+            updateInit();
+        }
         init();
         getCategory();
+    }
+
+    public void updateInit() {
+        Calendar cal = Calendar.getInstance();
+        year = cal.get(cal.YEAR);
+        month = cal.get(cal.MONTH);
+        dates = cal.get(cal.DATE);
+
+        mIvDelete.setVisibility(View.INVISIBLE);
+
+        loadingDialog = new LoadingDialog(this);
+        activity = this;
+
+        postRating = -1;
+        postId = -1;
+
+        postUri = "";
     }
 
     public void init() {
         Calendar cal = Calendar.getInstance();
         year = cal.get(cal.YEAR);
-        month = cal.get(cal.MONTH) + 1;
-        dates = cal.get(cal.DATE) + 1;
+        month = cal.get(cal.MONTH);
+        dates = cal.get(cal.DATE);
+
+        mIvDelete.setVisibility(View.INVISIBLE);
 
         loadingDialog = new LoadingDialog(this);
         activity = this;
 
-        postTitle = "";
         postRating = -1;
         postId = -1;
-        postDate = "";
 
-        postOneLine = "";
-        postContent = "";
         postUri = "";
     }
 
@@ -277,14 +283,18 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     break;
                 }
 
-                if(postId == -1) {
+                if (postId == -1) {
                     Toast.makeText(activity, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                if(postRating == -1) {
+                if (postRating == -1) {
                     Toast.makeText(activity, "평점을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     break;
                 }
+
+                postDate = mTvDate.getText().toString();
+                postDate = postDate.replace(".", "-");
+                postDate = postDate.replace(" ", "");
 
                 if (photoUri == null) {
                     postUri = "";
@@ -305,9 +315,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     @Override
                     public void onDateSet(DatePicker view, int tmpYear, int tmpMonth, int tmpDayOfMonth) {
                         year = tmpYear;
-                        month = tmpMonth + 1;
+                        month = tmpMonth;
                         dates = tmpDayOfMonth;
-                        String tmpDate = String.valueOf(year) + ". " + String.valueOf(month) + ". " + String.valueOf(dates);
+                        String tmpDate = String.valueOf(year) + ". " + String.valueOf(month + 1) + ". " + String.valueOf(dates);
                         mTvDate.setText(tmpDate);
                     }
                 }, year, month, dates);
@@ -319,6 +329,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 break;
             case R.id.review_edit_category_tv:
                 ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity, mCategoryList, mCategoryInterface);
+                break;
+            case R.id.review_edit_exit_iv:
+                ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, mExitInterface);
                 break;
         }
     }
@@ -332,6 +345,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         mEtOneLine = findViewById(R.id.review_edit_line_et);
         mEtContent = findViewById(R.id.review_edit_content_et);
         mIvRating = findViewById(R.id.review_edit_rating_iv);
+        mIvDelete = findViewById(R.id.review_edit_delete_iv);
     }
 
     private void takePhoto() {
@@ -403,7 +417,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
 
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 800, 500);
+                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 800, 800);
                 ByteArrayOutputStream bs = new ByteArrayOutputStream();
                 thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
 
@@ -494,8 +508,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.putExtra("crop", "true");
-//            intent.putExtra("aspectX", 16);
-//            intent.putExtra("aspectY", 16);
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
             intent.putExtra("scale", true);
             File croppedFileName = null;
             try {
@@ -637,6 +651,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         params.addProperty("image", postUri);
         params.addProperty("grade", postRating);
         params.addProperty("review", postOneLine);
+        params.addProperty("reviewDate", postDate);
 
         MoariApp.getRetrofitMethod(getApplicationContext()).postReview(postId, RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
                 .subscribeOn(Schedulers.io())
@@ -651,10 +666,10 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     @Override
                     public void onNext(BasicResponse res) {
 
-                        if(res.getCode() == 200) {
+                        if (res.getCode() == 200) {
                             finish();
-                        }
-                        else {
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
 
                     }

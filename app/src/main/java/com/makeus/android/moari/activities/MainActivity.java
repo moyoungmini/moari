@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,10 +69,11 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                 break;
             case R.id.main_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
+                intent.putExtra("flag", 0); // insert
                 startActivity(intent);
                 break;
             case R.id.main_logo_iv:
-                Intent intent = new Intent(this, CategoryActivity.class);
+                Intent intent = new Intent(this, CurationActivity.class);
                 startActivity(intent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);

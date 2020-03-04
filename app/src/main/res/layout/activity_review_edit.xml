@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
-        android:paddingBottom="@dimen/dimenTopLayoutPadding"
-        >
+        android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
             android:id="@+id/review_edit_exit_iv"
@@ -67,7 +66,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:src="@color/colorEditText" />
+                    />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#80000000"
+                   />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,12 +83,27 @@
                     android:paddingRight="@dimen/dimeUserWidthMargin"
                     android:paddingBottom="@dimen/dimeUserWidthMargin">
 
-                    <ImageView
-                        android:id="@+id/review_edit_picture_select_iv"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:onClick="onClick"
-                        android:src="@drawable/picture_select_img" />
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/review_edit_picture_select_iv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:onClick="onClick"
+                            android:src="@drawable/picture_select_img" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/logo_line"/>
+                    </LinearLayout>
 
                     <EditText
                         android:id="@+id/review_edit_title_et"
@@ -110,11 +130,11 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/edit_review_background"
+                        android:onClick="onClick"
                         android:orientation="horizontal"
                         android:paddingLeft="10dp"
                         android:paddingTop="5dp"
                         android:paddingRight="10dp"
-                        android:onClick="onClick"
                         android:paddingBottom="5dp">
 
                         <ImageView
@@ -145,18 +165,37 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/review_edit_category_tv"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimeUserWidthMargin"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
-                android:onClick="onClick"
-                android:text="카테고리 선택"
-                android:fontFamily="@font/noto_light_font"
-                android:textColor="@color/colorEditText"
-                android:textSize="18sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/review_edit_category_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/noto_light_font"
+                    android:onClick="onClick"
+                    android:text="카테고리 선택"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/colorEditText"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/review_edit_delete_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/delete_img" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/review_edit_date_tv"
@@ -165,9 +204,9 @@
                 android:layout_marginLeft="@dimen/dimeUserWidthMargin"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
+                android:fontFamily="@font/noto_light_font"
                 android:onClick="onClick"
                 android:text="날짜"
-                android:fontFamily="@font/noto_light_font"
                 android:textColor="@color/colorEditText"
                 android:textSize="15sp" />
 

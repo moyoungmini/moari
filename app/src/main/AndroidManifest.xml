@@ -43,7 +43,7 @@
         <activity android:name=".activities.SignupActivity"/>
         <activity android:name=".activities.SearchActivity"/>
         <activity android:name=".activities.MypageActivity"/>
-        <activity android:name=".activities.CategoryActivity"/>
+        <activity android:name=".activities.CurationActivity"/>
         <activity android:name=".activities.ReviewEditActivity"/>
 
         <provider

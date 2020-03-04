@@ -4,6 +4,7 @@ package com.makeus.android.moari;
 
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
+import com.makeus.android.moari.responses.CurationResponse;
 import com.makeus.android.moari.responses.LoginResponse;
 import com.makeus.android.moari.responses.SignupResponse;
 import com.makeus.android.moari.responses.UserResponse;
@@ -44,4 +45,12 @@ public interface RetrofitInterface {
     @POST("category/{categoryId}/review")
     Observable<BasicResponse> postReview(@Path("categoryId") int categoryId, @Body RequestBody params);
 
+    @POST("validation/user")
+    Observable<BasicResponse> postValidationUser(@Body RequestBody params);
+
+    @POST("find/user")
+    Observable<BasicResponse> postFindUser(@Body RequestBody params);
+
+    @GET("curation")
+    Observable<CurationResponse> getCuration();
 }

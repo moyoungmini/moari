@@ -2,25 +2,40 @@ package com.makeus.android.moari.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.navigation.NavigationView;
+import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.CategoryAdapter;
-import com.makeus.android.moari.datas.CategoryTMPData;
+import com.makeus.android.moari.datas.CurationData;
+import com.makeus.android.moari.responses.CategoryResponse;
+import com.makeus.android.moari.responses.CurationResponse;
+
 import java.util.ArrayList;
 
-public class CategoryActivity extends SuperActivity implements View.OnClickListener {
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.makeus.android.moari.MoariApp.catchAllThrowable;
+
+public class CurationActivity extends SuperActivity implements View.OnClickListener {
 
     private TextView mTvSearch, mTvChange;
     private Intent intent;
     private ViewPager2 mViewPager;
     private CategoryAdapter mCategoryAdapter;
+    ArrayList<CurationData> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +45,11 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
         initViews();
         initListener();
         InitializeLayout();
-        init();
-
+        getCur();
     }
 
     public void init() {
-        ArrayList<CategoryTMPData> list = new ArrayList<>();
-        for(int i=0;i<10;i++) {
-            CategoryTMPData tmp = new CategoryTMPData();
-            tmp.setTitle("TESTSETEST");
-            list.add(tmp);
-        }
+
         mCategoryAdapter = new CategoryAdapter(this, list);
         mViewPager.setAdapter(mCategoryAdapter);
         mViewPager.setOrientation(mViewPager.ORIENTATION_VERTICAL);
@@ -58,6 +67,7 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
                 break;
             case R.id.category_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
+                intent.putExtra("flag", 0); // insert
                 startActivity(intent);
                 break;
             case R.id.category_logo_iv:
@@ -114,4 +124,41 @@ public class CategoryActivity extends SuperActivity implements View.OnClickListe
         }
     }
     // set navigation drawaer backpress
+
+    public void getCur() {
+        MoariApp.getRetrofitMethod(getApplicationContext()).getCuration()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CurationResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(final CurationResponse res) {
+                        if (res.getCode() == 200) {
+                            list = res.getResult();
+                            Log.i("TESF", "SDV");
+                            init();
+                        }
+                        else {
+                            Toast.makeText(CurationActivity.this, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
 }

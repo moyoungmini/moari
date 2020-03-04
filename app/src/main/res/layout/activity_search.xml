@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:lineSpacingExtra="6sp"
-            android:text="* 가입된 계정입니다!"
+            tools:text="* 가입된 계정입니다!"
             android:textColor="#c2185b"
             android:textSize="14sp" />
 
@@ -122,7 +122,7 @@
             android:textSize="14sp"
             android:textColor="#c2185b"
             android:lineSpacingExtra="6sp"
-            android:text="* 임시 비밀번호가 전송되었습니다."
+            tools:text="* 임시 비밀번호가 전송되었습니다."
             />
     </LinearLayout>
 </LinearLayout>

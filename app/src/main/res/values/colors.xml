@@ -12,4 +12,10 @@
     <color name="colorSearchText">#424242</color>
     <color name="colorBorder">#bdbdbd</color>
     <color name="colorLightBorder">#e0e0e0</color>
+    <color name="colorCuration1">#91626e</color>
+    <color name="colorCuration2">#426d88</color>
+    <color name="colorCuration3">#3c3c3c</color>
+    <color name="colorCuration4">#5b715b</color>
+    <color name="colorCuration5">#7c6b60</color>
+    <color name="colorCurationDefault">#7c6b60</color>
 </resources>
