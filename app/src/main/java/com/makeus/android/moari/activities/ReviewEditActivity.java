@@ -43,6 +43,7 @@ import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.datas.CategoryData;
+import com.makeus.android.moari.datas.ReviewDetailData;
 import com.makeus.android.moari.dialogs.LoadingDialog;
 import com.makeus.android.moari.dialogs.ReviewCameraDialog;
 import com.makeus.android.moari.dialogs.ReviewCategoryDialog;
@@ -54,6 +55,7 @@ import com.makeus.android.moari.interfaces.DialogRatingInterface;
 import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
+import com.makeus.android.moari.responses.ReviewDetailResponse;
 
 import org.json.JSONException;
 
@@ -100,8 +102,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
 
     private String postTitle, postOneLine, postContent, postDate, postUri;
-    private int postId;
-    private double postRating;
+    private int postId; // 카테고리 아이디
+    private float postRating; // 별점
+    private int updateId;
 
     private DialogCategoryInterface mCategoryInterface = new DialogCategoryInterface() {
         @Override
@@ -112,33 +115,37 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     };
     private DialogRatingInterface mRatingInterface = new DialogRatingInterface() {
         @Override
-        public void rating(double rate) {
+        public void rating(float rate) {
             postRating = rate;
-            if (rate == 0) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_00);
-            } else if (rate == 0.5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_01);
-            } else if (rate == 1) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_10);
-            } else if (rate == 1.5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_11);
-            } else if (rate == 2) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_20);
-            } else if (rate == 2.5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_21);
-            } else if (rate == 3) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_30);
-            } else if (rate == 3.5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_31);
-            } else if (rate == 4) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_40);
-            } else if (rate == 4.5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_41);
-            } else if (rate == 5) {
-                mIvRating.setBackgroundResource(R.drawable.rate_white_50);
-            }
+            setRate(rate);
         }
     };
+
+    public void setRate(float rate) {
+        if (rate == 0) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_00);
+        } else if (rate == 0.5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_01);
+        } else if (rate == 1) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_10);
+        } else if (rate == 1.5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_11);
+        } else if (rate == 2) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_20);
+        } else if (rate == 2.5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_21);
+        } else if (rate == 3) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_30);
+        } else if (rate == 3.5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_31);
+        } else if (rate == 4) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_40);
+        } else if (rate == 4.5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_41);
+        } else if (rate == 5) {
+            mIvRating.setBackgroundResource(R.drawable.rate_white_50);
+        }
+    }
 
     private DialogCameraInterface mCameraInterface = new DialogCameraInterface() {
         @Override
@@ -166,6 +173,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
         initViews();
         checkPermissions();
+        getCategory();
 
         int flag = getIntent().getIntExtra("flag", 0);
         if (flag == 0) {
@@ -173,8 +181,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         } else {
             updateInit();
         }
-        init();
-        getCategory();
     }
 
     public void updateInit() {
@@ -183,7 +189,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         month = cal.get(cal.MONTH);
         dates = cal.get(cal.DATE);
 
-        mIvDelete.setVisibility(View.INVISIBLE);
+//        mIvDelete.setVisibility(View.VISIBLE);
 
         loadingDialog = new LoadingDialog(this);
         activity = this;
@@ -192,6 +198,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         postId = -1;
 
         postUri = "";
+
+        int id = getIntent().getIntExtra("id", -1);
+        gerReviewDetail(id);
     }
 
     public void init() {
@@ -297,7 +306,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 postDate = postDate.replace(" ", "");
 
                 if (photoUri == null) {
-                    postUri = "";
+                    if (postUri == "" || postUri == null) {
+                        postUri = "";
+                    }
                     eidtReview();
                 } else {
                     try {
@@ -317,7 +328,20 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                         year = tmpYear;
                         month = tmpMonth;
                         dates = tmpDayOfMonth;
-                        String tmpDate = String.valueOf(year) + ". " + String.valueOf(month + 1) + ". " + String.valueOf(dates);
+                        String tmpStrMonth = "";
+                        String tmpStrDate = "";
+                        if (month + 1 < 10) {
+                            tmpStrMonth = "0" + String.valueOf(month + 1);
+                        } else {
+                            tmpStrMonth = String.valueOf(month + 1);
+                        }
+
+                        if (dates < 10) {
+                            tmpStrDate = "0" + String.valueOf(dates);
+                        } else {
+                            tmpStrDate = String.valueOf(dates);
+                        }
+                        String tmpDate = String.valueOf(year) + ". " + tmpStrMonth + ". " + tmpStrDate;
                         mTvDate.setText(tmpDate);
                     }
                 }, year, month, dates);
@@ -325,6 +349,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 break;
 
             case R.id.review_edit_rating_layout:
+                Log.i("RATING", String.valueOf(postRating));
                 ReviewRatingDialog dialog = new ReviewRatingDialog(activity, postRating, mRatingInterface);
                 break;
             case R.id.review_edit_category_tv:
@@ -686,4 +711,69 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     }
                 });
     }
+
+
+    public void gerReviewDetail(int id) {
+        MoariApp.getRetrofitMethod(getApplicationContext()).getReviewDetail(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ReviewDetailResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(final ReviewDetailResponse res) {
+                        if (res.getCode() == 200) {
+                            ReviewDetailData data = res.getResult().get(0);
+                            updateId = data.getIdboard();
+                            postId = data.getCategoryType();
+                            mTvDate.setText(data.getReviewDate());
+                            if (data.getReviewDate().length() >= 10) {
+                                year = Integer.parseInt(data.getReviewDate().substring(0, 4));
+                                month = Integer.parseInt(data.getReviewDate().substring(5, 7))-1;
+                                dates = Integer.parseInt(data.getReviewDate().substring(8, 10));
+                                Log.i("TESF", String.valueOf(year));
+                                Log.i("TESF", String.valueOf(month));
+                                Log.i("TESF", String.valueOf(dates));
+                            }
+                            for (int i = 0; i < mCategoryList.size(); i++) {
+                                Log.i("TESETET", mCategoryList.get(i).getCategoryName());
+                                if (postId == mCategoryList.get(i).getIdcategory()) {
+                                    mTvCategory.setText(mCategoryList.get(i).categoryName);
+                                    break;
+                                }
+                            }
+                            postRating = data.getGrade();
+                            setRate(postRating);
+                            mEtContent.setText(data.getContent());
+                            mEtOneLine.setText(data.getReview());
+                            mEtTitle.setText(data.getTitle());
+                            postUri = data.getImage();
+                            Glide.with(activity)
+                                    .load(data.getImage())
+                                    .fitCenter()
+                                    .into(mIvPictureShow);
+
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
 }

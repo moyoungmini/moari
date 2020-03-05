@@ -20,11 +20,11 @@ public class ReviewRatingDialog implements View.OnClickListener{
     private TextView mTvNo, mTvYes;
     private DialogRatingInterface mInetface;
     private RatingBar mRB;
-    private  double rate;
+    private  float rate;
 
     public Dialog mDialog;
 
-    public ReviewRatingDialog(Context context, double rating, DialogRatingInterface tmpInterface) {
+    public ReviewRatingDialog(Context context, float rating, DialogRatingInterface tmpInterface) {
         mContext = context;
         mDialog = new Dialog(mContext);
         this.rate = rating;
@@ -44,6 +44,7 @@ public class ReviewRatingDialog implements View.OnClickListener{
 
         mInetface = tmpInterface;
 
+        mRB.setRating(rating);
         mRB.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {

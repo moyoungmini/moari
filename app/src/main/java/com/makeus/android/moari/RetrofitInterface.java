@@ -6,6 +6,7 @@ import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.CurationResponse;
 import com.makeus.android.moari.responses.LoginResponse;
+import com.makeus.android.moari.responses.ReviewDetailResponse;
 import com.makeus.android.moari.responses.SignupResponse;
 import com.makeus.android.moari.responses.UserResponse;
 
@@ -53,4 +54,7 @@ public interface RetrofitInterface {
 
     @GET("curation")
     Observable<CurationResponse> getCuration();
+
+    @GET("review/{reviewId}")
+    Observable<ReviewDetailResponse> getReviewDetail(@Path("reviewId") int reviewId);
 }
