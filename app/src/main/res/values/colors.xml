@@ -18,4 +18,5 @@
     <color name="colorCuration4">#5b715b</color>
     <color name="colorCuration5">#7c6b60</color>
     <color name="colorCurationDefault">#7c6b60</color>
+    <color name="colorWhiteOpacity">#33ffffff</color>
 </resources>

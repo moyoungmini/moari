@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,12 +14,22 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
+import com.makeus.android.moari.adapters.CategoryAdapter;
+import com.makeus.android.moari.adapters.MainCategoryAdapter;
+import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.dialogs.SignupDialog;
+import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.LoginResponse;
+
+import java.util.ArrayList;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -33,6 +44,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     private TextView mTvSearch, mTvChange;
     private Intent intent;
     private Activity activity;
+    private RecyclerView mRVCategory;
+    private MainCategoryAdapter mCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +56,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         initViews();
         initListener();
         InitializeLayout();
+        getCategory();
     }
 
     public void startFlag() {
@@ -85,6 +99,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     void initViews() {
         mTvSearch = findViewById(R.id.main_search_tv);
         mTvChange = findViewById(R.id.main_change_tv);
+        mRVCategory = findViewById(R.id.main_category_rv);
     }
 
     public void initListener() {
@@ -183,5 +198,53 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                     }
                 });
     }
-    // receivew jwt when signup
+    // receive jwt when signup
+
+    public void getCategory() {
+        MoariApp.getRetrofitMethod(getApplicationContext()).getCategory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CategoryResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(final CategoryResponse res) {
+                        if (res.getCode() == 200) {
+                            ArrayList<CategoryData> list = res.getResult();
+                            int count = 8 - list.size();
+                            for(int i=0;i<list.size();i++){
+                                list.get(i).setSelct(true);
+                            }
+                            for(int i=0;i<count;i++) {
+                                CategoryData tmpData = new CategoryData();
+                                tmpData.setCategoryName("추가하기");
+                                tmpData.setSelct(false);
+                                list.add(tmpData);
+                            }
+
+                            mRVCategory.setLayoutManager(new GridLayoutManager(activity,3));
+                            mCategoryAdapter = new MainCategoryAdapter(activity, list);
+                            mRVCategory.setAdapter(mCategoryAdapter);
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
 }

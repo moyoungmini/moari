@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/empty_white_background"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/dialog_category_select_change_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/colorSearchText"
+        android:gravity="center"
+        android:text="이름 수정하기"
+        android:fontFamily="@font/noto_light_font"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightBorder"/>
+    <TextView
+        android:id="@+id/dialog_category_select_delete_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="@color/colorSearchText"
+        android:gravity="center"
+        android:fontFamily="@font/noto_light_font"
+        android:text="삭제하기"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        />
+
+</LinearLayout>

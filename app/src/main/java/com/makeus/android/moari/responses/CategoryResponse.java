@@ -2,6 +2,7 @@ package com.makeus.android.moari.responses;
 
 import com.google.gson.annotations.SerializedName;
 import com.makeus.android.moari.datas.CategoryData;
+import com.makeus.android.moari.datas.CategoryUserInfoData;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,13 @@ public class CategoryResponse {
 
     @SerializedName("message")
     private String message;
+
+    @SerializedName("userInfo")
+    private CategoryUserInfoData userInfo;
+
+    public CategoryUserInfoData getUserInfo() {
+        return userInfo;
+    }
 
     @SerializedName("result")
     private ArrayList<CategoryData> result;
@@ -34,4 +42,6 @@ public class CategoryResponse {
     public String getMessage() {
         return message;
     }
+
+
 }

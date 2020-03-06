@@ -10,6 +10,16 @@ public class CategoryData {
     @SerializedName("idcategory")
     private int idcategory;
 
+    private boolean isSelct = false;
+
+    public boolean isSelct() {
+        return isSelct;
+    }
+
+    public void setSelct(boolean selct) {
+        isSelct = selct;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

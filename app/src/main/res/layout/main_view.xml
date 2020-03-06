@@ -6,165 +6,72 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_img"
     android:orientation="vertical"
-    tools:context=".activities.MainActivity"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingRight="20dp"
+    tools:context=".activities.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            app:contentInsetStartWithNavigation="0dp"
-            android:stateListAnimator="@null">
+            android:stateListAnimator="@null"
+            app:contentInsetStartWithNavigation="0dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
+
         <ImageView
             android:id="@+id/main_logo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClick"
-            android:src="@drawable/logo_line"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:onClick="onClick"
+            android:src="@drawable/logo_line" />
+
         <ImageView
             android:id="@+id/main_plus_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/plus_img"
             android:onClick="onClick"
-            android:layout_alignParentRight="true"/>
+            android:src="@drawable/plus_img" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textColor="@color/colorWhite"
-            android:lineSpacingExtra="7sp"
+            android:layout_marginTop="70dp"
             android:fontFamily="@font/noto_light_font"
             android:text="감성님의 리뷰\n20개가 모였습니다."
-            android:layout_marginTop="70dp"
-            />
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp" />
 
-        <GridLayout
-            android:id="@+id/main_gridlayout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:columnCount="3"
-            android:orientation="horizontal"
-            android:layout_marginTop="40dp"
-            android:rowCount="3">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:background="@drawable/main_exist_img"
-                android:text="나의 하루"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:background="@drawable/main_exist_img"
-                android:text="나의 하루"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:background="@drawable/main_exist_img"
-                android:text="나의 하루"
-                />
+            android:layout_marginTop="40dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_category_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:background="@drawable/main_exist_img"
-                android:text="나의 하루"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="@color/colorWhite"
-                android:gravity="center"
-                android:background="@drawable/main_exist_img"
-                android:text="나의 하루"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="#33ffffff"
-                android:gravity="center"
-                android:background="@drawable/main_empty_img"
-                android:text="나의 하루"
-                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="#33ffffff"
-                android:gravity="center"
-                android:background="@drawable/main_empty_img"
-                android:text="나의 하루"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="1"
-                android:textSize="18sp"
-                android:textColor="#33ffffff"
-                android:gravity="center"
-                android:background="@drawable/main_empty_img"
-                android:text="나의 하루"
-                />
-
-        </GridLayout>
     </LinearLayout>
 
 </LinearLayout>
