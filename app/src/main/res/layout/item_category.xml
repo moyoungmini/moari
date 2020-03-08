@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:onClick="onClick"
         android:fontFamily="@font/noto_light_font"
         android:text="나의 하루"
         android:textColor="@color/colorWhite"

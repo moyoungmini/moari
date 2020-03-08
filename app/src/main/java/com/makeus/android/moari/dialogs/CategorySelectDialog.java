@@ -47,9 +47,9 @@ public class CategorySelectDialog implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.dialog_category_select_change_tv:
                 mDialog.dismiss();
-                CategoryChangeDialog categoryDialog = new CategoryChangeDialog(mContext, id, mInetface);
+                CategoryChangeDialog categoryDialog = new CategoryChangeDialog(mContext, id, name, mInetface);
                 break;
-            case R.id.dialog_mypage_no_tv:
+            case R.id.dialog_category_select_delete_tv:
                 mDialog.dismiss();
                 CategoryDeleteDialog deleteDialog = new CategoryDeleteDialog(mContext, id, name, mInetface);
                 break;

@@ -1,12 +1,13 @@
 package com.makeus.android.moari.activities;
 
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +22,12 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
-import com.makeus.android.moari.adapters.CategoryAdapter;
 import com.makeus.android.moari.adapters.MainCategoryAdapter;
 import com.makeus.android.moari.datas.CategoryData;
+import com.makeus.android.moari.datas.CategoryUserInfoData;
 import com.makeus.android.moari.dialogs.SignupDialog;
+import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
+import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.LoginResponse;
 
@@ -41,11 +44,33 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class MainActivity extends SuperActivity implements View.OnClickListener {
 
-    private TextView mTvSearch, mTvChange;
+    private TextView mTvSearch, mTvChange, mTvUserInfo;
     private Intent intent;
     private Activity activity;
     private RecyclerView mRVCategory;
     private MainCategoryAdapter mCategoryAdapter;
+    private String userName = "";
+    private int userCnt = 0;
+    int count =0;
+    private DialogCategorySelectInterface selectInterface = new DialogCategorySelectInterface() {
+        @Override
+        public void change(int id, String name) {
+            changeCategory(id,name);
+        }
+
+        @Override
+        public void remove(int id) {
+            if(id==1 || id ==2 || id==3 || id ==4) {
+                return;
+            }
+            deleteCategory(id);
+        }
+
+        @Override
+        public void plus(String name) {
+            plusCategory(name);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +125,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         mTvSearch = findViewById(R.id.main_search_tv);
         mTvChange = findViewById(R.id.main_change_tv);
         mRVCategory = findViewById(R.id.main_category_rv);
+        mTvUserInfo = findViewById(R.id.main_user_info_tv);
     }
 
     public void initListener() {
@@ -214,6 +240,19 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                     @Override
                     public void onNext(final CategoryResponse res) {
                         if (res.getCode() == 200) {
+//                            myTextView.setText(Html.fromHtml(text + "<font color=white>" + CepVizyon.getPhoneCode() + "</font><br><br>"
+//                                    + getText(R.string.currentversion) + CepVizyon.getLicenseText()));
+                            CategoryUserInfoData categoryData = res.getUserInfo();
+//                            mTvUserInfo.setText(categoryData.getName()+"님의 리뷰\n"+String.valueOf(categoryData.getCnt())+"개가 모였습니다.");
+//                            String text = "<font color='#ffffff'>"+categoryData.getName()+"님의 "+"</font><font color='#757575'>"+"리뷰<br>"+String.valueOf(categoryData.getCnt())+"개가 모였습니다."+"</font>";
+
+//                            String text = "<b>"+categoryData.getName()+"님의 "+"</b><font color='#ffffff'>"+"리뷰<br>"+String.valueOf(categoryData.getCnt())+"개가 모였습니다."+"</font>";
+//                            mTvUserInfo.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+//
+
+                            count = res.getResult().size();
+                            userName = categoryData.getName();
+                            userCnt = categoryData.getCnt();
                             ArrayList<CategoryData> list = res.getResult();
                             int count = 8 - list.size();
                             for(int i=0;i<list.size();i++){
@@ -227,8 +266,10 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                             }
 
                             mRVCategory.setLayoutManager(new GridLayoutManager(activity,3));
-                            mCategoryAdapter = new MainCategoryAdapter(activity, list);
+                            mCategoryAdapter = new MainCategoryAdapter(activity, list, selectInterface);
                             mRVCategory.setAdapter(mCategoryAdapter);
+
+                            startCounterAnimator();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -246,5 +287,133 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                         dismissProgressDialog();
                     }
                 });
+    }
+
+    public void plusCategory(String name) {
+        if(count>=8) {
+            return;
+        }
+
+        JsonObject params = new JsonObject();
+        params.addProperty("categoryName", name);
+
+        MoariApp.getRetrofitMethod(getApplicationContext()).plusCategory(RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            getCategory();
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void changeCategory(int id, String name) {
+        JsonObject params = new JsonObject();
+        params.addProperty("categoryName", name);
+        MoariApp.getRetrofitMethod(getApplicationContext()).changeCategory(id, RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            getCategory();
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void deleteCategory(int id) {
+        JsonObject params = new JsonObject();
+        MoariApp.getRetrofitMethod(getApplicationContext()).deleteCategory(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            getCategory();
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void startCounterAnimator() {
+        ValueAnimator animator = ValueAnimator.ofInt(0, userCnt); //0 is min number, 600 is max number
+        animator.setDuration(1000); //Duration is in milliseconds
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+//                mTvUserInfo.setText(userName+"님의 리뷰\n"+animation.getAnimatedValue().toString()+"개가 모였습니다.");
+                String text = "<font color='#ffffff'>"+userName+"</font><font color='#bebebe'>"+"님의 리뷰<br>"+animation.getAnimatedValue().toString()+"개가 모였습니다."+"</font>";
+                mTvUserInfo.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+            }
+        });
+        animator.start();
     }
 }

@@ -22,6 +22,7 @@
             android:fontFamily="@font/noto_light_font"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:hint="카테고리 제목"
             android:gravity="center"
             android:lineSpacingExtra="6sp"
             android:textColor="#424242"

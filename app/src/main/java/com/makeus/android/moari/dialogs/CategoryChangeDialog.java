@@ -19,12 +19,21 @@ public class CategoryChangeDialog implements View.OnClickListener{
     private TextView mTvNo, mTvYes;
     private DialogCategorySelectInterface mInetface;
     private int id;
+    private String name;
+    private boolean select;
     public Dialog mDialog;
 
-    public CategoryChangeDialog(Context context, int id, DialogCategorySelectInterface tmpInterface) {
+    public CategoryChangeDialog(Context context, int id, String name, DialogCategorySelectInterface tmpInterface) {
         mContext = context;
         this.id = id;
+        this.name = name;
         mInetface = tmpInterface;
+        if(id == -1) {
+            select = false; // category 추가
+        }
+        else {
+            select = false;
+        }
 
         mDialog = new Dialog(mContext);
 
@@ -34,6 +43,7 @@ public class CategoryChangeDialog implements View.OnClickListener{
         mEtCategory = mDialog.findViewById(R.id.dialog_category_change_et);
         mTvYes = mDialog.findViewById(R.id.dialog_category_change_yes_tv);
         mTvNo = mDialog.findViewById(R.id.dialog_category_change_no_tv);
+        mEtCategory.setText(name);
 
         mTvYes.setOnClickListener(this);
         mTvNo.setOnClickListener(this);
@@ -48,6 +58,12 @@ public class CategoryChangeDialog implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.dialog_category_change_yes_tv:
                 mDialog.dismiss();
+                if(select) {
+                    mInetface.change(id, mEtCategory.getText().toString());
+                }
+                else {
+                    mInetface.plus(mEtCategory.getText().toString());
+                }
                 mInetface.change(id, mEtCategory.getText().toString());
                 break;
             case R.id.dialog_category_change_no_tv:

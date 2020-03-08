@@ -53,12 +53,13 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/main_user_info_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:fontFamily="@font/noto_light_font"
-            android:text="감성님의 리뷰\n20개가 모였습니다."
             android:textColor="@color/colorWhite"
+            android:text="감성님의 리뷰\n20개가 모였습니다."
             android:textSize="28sp" />
 
         <RelativeLayout

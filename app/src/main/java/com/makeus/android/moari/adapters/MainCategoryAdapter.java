@@ -19,6 +19,9 @@ import com.makeus.android.moari.R;
 import com.makeus.android.moari.activities.ReviewEditActivity;
 import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.datas.CurationData;
+import com.makeus.android.moari.dialogs.CategoryChangeDialog;
+import com.makeus.android.moari.dialogs.CategorySelectDialog;
+import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 
 import java.util.ArrayList;
 
@@ -26,10 +29,12 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
 
     private Activity activity;
     private ArrayList<CategoryData> listData;
+    private DialogCategorySelectInterface selectInterface;
 
-    public MainCategoryAdapter(Activity activity, ArrayList<CategoryData> listData) {
+    public MainCategoryAdapter(Activity activity, ArrayList<CategoryData> listData, DialogCategorySelectInterface selectInterface) {
         this.activity = activity;
         this.listData = listData;
+        this.selectInterface = selectInterface;
     }
     // constructor
 
@@ -74,22 +79,19 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
             super(itemView);
             category = itemView.findViewById(R.id.main_category_item_tv);
             layout = itemView.findViewById(R.id.main_category_item_layout);
-            int position = getAdapterPosition();
-            if(position<0) {
-                return;
-            }
-            Log.i("SDF", String.valueOf(position));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
-                    if(listData.get(position).isSelct()) {
-
+                    if (listData.get(position).isSelct()) {
+                        Log.i("CLICK", "YES");
                     }
+                    // intent 시작
                     // 존재 o - 해당 카테고리로 들어간다.
                     else {
-
+                        CategoryChangeDialog plusDialog = new CategoryChangeDialog(activity, -1, "", selectInterface);
+                        Log.i("CLICK", "NO");
                     }
                     // 존재 x - 카테고리 추가
 
@@ -97,16 +99,16 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
             });
             // item click method
 
-            if(listData.get(position).isSelct()) {
-                itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-
-                        return false;
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listData.get(getAdapterPosition()).isSelct()) {
+                        CategorySelectDialog selectDialog = new CategorySelectDialog(activity, listData.get(getAdapterPosition()).getIdcategory(), listData.get(getAdapterPosition()).getCategoryName(), selectInterface);
                     }
-                });
+                    return true;
+                }
                 // 선택 다이어로그 시작
-            }
+            });
         }
 
         void onBind(CategoryData data) {

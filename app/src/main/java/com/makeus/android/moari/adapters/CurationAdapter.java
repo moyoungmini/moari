@@ -20,12 +20,12 @@ import com.makeus.android.moari.datas.CurationData;
 
 import java.util.ArrayList;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ItemViewHolder> {
+public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemViewHolder> {
 
     private Activity activity;
     private ArrayList<CurationData> listData = new ArrayList<>();
 
-    public CategoryAdapter(Activity activity, ArrayList<CurationData> listData) {
+    public CurationAdapter(Activity activity, ArrayList<CurationData> listData) {
         this.activity = activity;
         this.listData = listData;
     }

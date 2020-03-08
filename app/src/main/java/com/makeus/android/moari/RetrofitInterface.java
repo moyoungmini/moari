@@ -57,4 +57,13 @@ public interface RetrofitInterface {
 
     @GET("review/{reviewId}")
     Observable<ReviewDetailResponse> getReviewDetail(@Path("reviewId") int reviewId);
+
+    @POST("category")
+    Observable<BasicResponse> plusCategory(@Body RequestBody params);
+
+    @PATCH("category/{categoryId}")
+    Observable<BasicResponse> changeCategory(@Path("categoryId") int categoryId, @Body RequestBody params);
+
+    @DELETE("category/{categoryId}")
+    Observable<BasicResponse> deleteCategory(@Path("categoryId") int categoryId);
 }

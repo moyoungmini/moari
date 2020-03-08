@@ -15,9 +15,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.navigation.NavigationView;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
-import com.makeus.android.moari.adapters.CategoryAdapter;
+import com.makeus.android.moari.adapters.CurationAdapter;
 import com.makeus.android.moari.datas.CurationData;
-import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.CurationResponse;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     private TextView mTvSearch, mTvChange;
     private Intent intent;
     private ViewPager2 mViewPager;
-    private CategoryAdapter mCategoryAdapter;
+    private CurationAdapter mCurationAdapter;
     ArrayList<CurationData> list = new ArrayList<>();
 
     @Override
@@ -50,8 +49,8 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
 
     public void init() {
 
-        mCategoryAdapter = new CategoryAdapter(this, list);
-        mViewPager.setAdapter(mCategoryAdapter);
+        mCurationAdapter = new CurationAdapter(this, list);
+        mViewPager.setAdapter(mCurationAdapter);
         mViewPager.setOrientation(mViewPager.ORIENTATION_VERTICAL);
     }
 

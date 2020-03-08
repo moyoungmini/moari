@@ -41,6 +41,7 @@ public class SignupActivity extends SuperActivity {
         setContentView(R.layout.activity_signup);
 
         initViews();
+        init();
     }
 
     public void init() {
