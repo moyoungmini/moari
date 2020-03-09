@@ -45,6 +45,7 @@
         <activity android:name=".activities.MypageActivity"/>
         <activity android:name=".activities.CurationActivity"/>
         <activity android:name=".activities.ReviewEditActivity"/>
+        <activity android:name=".activities.ReviewListActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

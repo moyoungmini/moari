@@ -1,42 +1,61 @@
 package com.makeus.android.moari.datas;
 
-public class ReviewListData {
-    private String title;
-    private String content;
-    private double star;
+import com.google.gson.annotations.SerializedName;
 
-    public ReviewListData() {
-        title = "";
-        content = "";
-        star = 0;
+public class ReviewListData {
+    @SerializedName("idboard")
+    public int idboard;
+
+    @SerializedName("categoryType")
+    private int categoryType;
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("content")
+    private String content;
+
+    @SerializedName("image")
+    private String image;
+
+    @SerializedName("grade")
+    private float grade;
+
+    @SerializedName("review")
+    private String review;
+
+    @SerializedName("reviewDate")
+    private String reviewDate;
+
+    public int getIdboard() {
+        return idboard;
     }
-    public ReviewListData(String title, String content, double star) {
-        this.title = title;
-        this.content = content;
-        this.star = star;
+
+    public int getCategoryType() {
+        return categoryType;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public String getImage() {
+        return image;
     }
 
-    public double getStar() {
-        return star;
+    public float getGrade() {
+        return grade;
     }
 
-    public void setStar(double star) {
-        this.star = star;
+    public String getReview() {
+        return review;
+    }
+
+    public String getReviewDate() {
+        return reviewDate;
     }
 }

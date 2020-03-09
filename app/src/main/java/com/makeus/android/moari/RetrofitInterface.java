@@ -7,6 +7,7 @@ import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.CurationResponse;
 import com.makeus.android.moari.responses.LoginResponse;
 import com.makeus.android.moari.responses.ReviewDetailResponse;
+import com.makeus.android.moari.responses.ReviewListResponse;
 import com.makeus.android.moari.responses.SignupResponse;
 import com.makeus.android.moari.responses.UserResponse;
 
@@ -66,4 +67,7 @@ public interface RetrofitInterface {
 
     @DELETE("category/{categoryId}")
     Observable<BasicResponse> deleteCategory(@Path("categoryId") int categoryId);
+
+    @GET("category/{categoryId}/review/{reviewId}")
+    Observable<ReviewListResponse> getReviewList(@Path("categoryId") int categoryId, @Path("reviewId") int reviewId);
 }

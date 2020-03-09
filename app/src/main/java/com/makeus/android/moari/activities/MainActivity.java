@@ -11,6 +11,8 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -82,6 +84,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         initListener();
         InitializeLayout();
         getCategory();
+
     }
 
     public void startFlag() {
@@ -136,6 +139,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     public void InitializeLayout()
     {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setContentInsetsAbsolute(0, 0);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -152,7 +156,6 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                 R.string.open,
                 R.string.closed
         );
-
         drawLayout.addDrawerListener(actionBarDrawerToggle);
     }
     // set toolbar & main_view

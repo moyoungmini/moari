@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.activities.ReviewEditActivity;
+import com.makeus.android.moari.activities.ReviewListActivity;
 import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.datas.CurationData;
 import com.makeus.android.moari.dialogs.CategoryChangeDialog;
@@ -85,6 +86,10 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listData.get(position).isSelct()) {
+                        Intent intent = new Intent(activity, ReviewListActivity.class);
+                        intent.putExtra("categoryId",listData.get(position).getIdcategory());
+                        intent.putExtra("categoryName",listData.get(position).getCategoryName());
+                        activity.startActivity(intent);
                         Log.i("CLICK", "YES");
                     }
                     // intent 시작
