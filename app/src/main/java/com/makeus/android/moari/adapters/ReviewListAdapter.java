@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.activities.ReviewEditActivity;
+import com.makeus.android.moari.activities.ReviewNonEditActivity;
 import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.datas.CurationData;
 import com.makeus.android.moari.datas.ReviewListData;
@@ -91,6 +92,9 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
+                    Intent intent = new Intent(activity, ReviewNonEditActivity.class);
+                    intent.putExtra("id", listData.get(position).idboard);
+                    activity.startActivity(intent);
                     // 리뷰 상세 수정x인걸로 ㄱㄱ
                 }
             });
