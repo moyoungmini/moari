@@ -3,9 +3,11 @@ package com.makeus.android.moari.activities;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -46,7 +48,7 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class MainActivity extends SuperActivity implements View.OnClickListener {
 
-    private TextView mTvSearch, mTvChange, mTvUserInfo;
+    private TextView mTvSearch, mTvChange, mTvUserInfo, mTvNavigation;
     private Intent intent;
     private Activity activity;
     private RecyclerView mRVCategory;
@@ -120,6 +122,18 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                 break;
+            case R.id.main_instagram_tv:
+                Uri uri = Uri.parse("https://www.instagram.com/moari_review/?hl=ko");
+                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+                likeIng.setPackage("com.instagram.android");
+
+                try {
+                    startActivity(likeIng);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://instagram.com")));
+                }
+                break;
         }
     }
 
@@ -129,6 +143,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         mTvChange = findViewById(R.id.main_change_tv);
         mRVCategory = findViewById(R.id.main_category_rv);
         mTvUserInfo = findViewById(R.id.main_user_info_tv);
+        mTvNavigation = findViewById(R.id.main_hamburgerbar_tv);
     }
 
     public void initListener() {
@@ -272,6 +287,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                             mCategoryAdapter = new MainCategoryAdapter(activity, list, selectInterface);
                             mRVCategory.setAdapter(mCategoryAdapter);
 
+                            String text = "<b>"+userName+"</b>"+"님의<br>"+"모아 놓은 리뷰"+"";
+                            mTvNavigation.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
                             startCounterAnimator();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();

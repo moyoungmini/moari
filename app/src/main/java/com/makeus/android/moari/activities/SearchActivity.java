@@ -88,8 +88,8 @@ public class SearchActivity extends SuperActivity {
                         mTvResultEmail.setText("* " + res.getMessage());
                         if(res.getCode() == 200) {
                            mBtnPw.setVisibility(View.VISIBLE);
+                            mEtEmail.setFocusable(false);
                         }
-                        mEtEmail.setFocusable(false);
                     }
 
                     @Override

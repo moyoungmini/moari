@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
-    android:layout_height="180dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
     android:background="@drawable/empty_white_background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/dialog_category_change_et"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:includeFontPadding="false"
-            android:textCursorDrawable="@drawable/et_cursor"
-            android:fontFamily="@font/noto_light_font"
+            android:orientation="horizontal"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:hint="카테고리 제목"
-            android:gravity="center"
-            android:lineSpacingExtra="6sp"
-            android:textColor="#424242"
-            android:textSize="17sp" />
+            android:layout_gravity="center"
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp">
+
+            <EditText
+                android:id="@+id/dialog_category_change_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_light_font"
+                android:gravity="center"
+                android:hint="카테고리 제목"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="6sp"
+                android:textColor="#424242"
+                android:textCursorDrawable="@drawable/et_cursor"
+                android:textSize="17sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <View
@@ -41,7 +51,7 @@
 
         <TextView
             android:id="@+id/dialog_category_change_no_tv"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/noto_light_font"
@@ -59,7 +69,7 @@
 
         <TextView
             android:id="@+id/dialog_category_change_yes_tv"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/noto_light_font"

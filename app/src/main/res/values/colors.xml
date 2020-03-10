@@ -19,4 +19,7 @@
     <color name="colorCuration5">#7c6b60</color>
     <color name="colorCurationDefault">#7c6b60</color>
     <color name="colorWhiteOpacity">#33ffffff</color>
+    <color name="colorSoftPink">#f8bbd0</color>
+    <color name="colorSoftBlack">#bdbdbd</color>
+    <color name="colorPinkLogin">#d4005b</color>
 </resources>

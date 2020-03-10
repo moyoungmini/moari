@@ -65,6 +65,7 @@
                     android:id="@+id/review_edit_picture_show_iv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:src="@drawable/default_background_img"
                     android:scaleType="fitXY"
                     />
 
@@ -72,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#80000000"
-                   />
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"

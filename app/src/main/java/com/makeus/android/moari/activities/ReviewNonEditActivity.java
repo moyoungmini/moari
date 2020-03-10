@@ -125,12 +125,13 @@ public class ReviewNonEditActivity extends SuperActivity {
        mTvCategory = findViewById(R.id.review_non_edit_category_tv);
        mTvDate = findViewById(R.id.review_non_edit_date_tv);
        mTvContent = findViewById(R.id.review_non_edit_content_tv);
-       mIvRating = findViewById(R.id.review_non_edit_picture_show_iv);
+       mIvRating = findViewById(R.id.review_non_edit_rank_iv);
        mIvBackground = findViewById(R.id.review_non_edit_picture_show_iv);
        layout = findViewById(R.id.review_non_edit_layout);
     }
 
     public void setRate(float rate) {
+        Log.i("SVD", String.valueOf(rate));
         if (rate == 0) {
             mIvRating.setBackgroundResource(R.drawable.rate_white_00);
         } else if (rate == 0.5) {
@@ -151,7 +152,8 @@ public class ReviewNonEditActivity extends SuperActivity {
             mIvRating.setBackgroundResource(R.drawable.rate_white_40);
         } else if (rate == 4.5) {
             mIvRating.setBackgroundResource(R.drawable.rate_white_41);
-        } else if (rate == 5) {
+        } else if (rate == 5 || rate == 5.0) {
+            Log.i("V123DS", "TEST");
             mIvRating.setBackgroundResource(R.drawable.rate_white_50);
         }
     }

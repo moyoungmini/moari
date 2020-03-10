@@ -30,11 +30,13 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_marginTop="120dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/main_hamburgerbar_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="6sp"
@@ -43,25 +45,23 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="22sp" />
 
-
-
                 <TextView
                     android:id="@+id/main_search_tv"
                     android:layout_marginTop="120dp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_light_font"
                     android:text="검색"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@drawable/button_text_black_selector_background"
                     android:textSize="17sp" />
 
                 <TextView
                     android:id="@+id/main_change_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_light_font"
                     android:text="계정정보 수정"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@drawable/button_text_black_selector_background"
                     android:textSize="17sp" />
             </LinearLayout>
 
@@ -75,44 +75,47 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="20dp">
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/instagram_img"
-                        android:layout_marginRight="10dp"/>
+                        android:src="@drawable/instagram_background"
+                        />
                     <TextView
+                        android:id="@+id/main_instagram_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
-                        android:textColor="#c2185b"
+                        android:textColor="@drawable/button_text_pink_selector_background"
                         android:fontFamily="@font/noto_light_font"
                         android:layout_gravity="center_vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:onClick="onClick"
                         android:gravity="center_horizontal"
                         android:text="모아리 인스타그램"
                         />
                 </LinearLayout>
 
                 <TextView
+                    android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
                     android:textColor="#8b8b8b"
-                    android:fontFamily="@font/noto_light_font"
                     android:lineSpacingExtra="5sp"
                     android:gravity="center_horizontal"
                     android:text="Team Gamgsung"
+                    android:layout_marginBottom="2dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="13sp"
-                    android:textColor="#808080"
+                    android:textColor="@color/colorSoftBlack"
                     android:lineSpacingExtra="5sp"
-                    android:fontFamily="@font/noto_light_font"
                     android:gravity="center_horizontal"
                     android:text="RubinㅣMoominㅣBoYumiㅣSuzie"
                     android:layout_marginBottom="20dp"

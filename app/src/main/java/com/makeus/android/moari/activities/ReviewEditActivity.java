@@ -218,6 +218,13 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         postId = -1;
 
         postUri = "";
+
+        Glide.with(activity)
+                .load(R.drawable.default_background_img)
+                .fitCenter()
+                .into(mIvPictureShow);
+
+
     }
 
     private boolean checkPermissions() {
@@ -712,7 +719,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 });
     }
 
-
     public void gerReviewDetail(int id) {
         MoariApp.getRetrofitMethod(getApplicationContext()).getReviewDetail(id)
                 .subscribeOn(Schedulers.io())
@@ -776,4 +782,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, mExitInterface);
+    }
 }

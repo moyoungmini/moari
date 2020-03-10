@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/dialog_review_rating_no_tv"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/noto_light_font"
@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/dialog_review_rating_yes_tv"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/noto_light_font"

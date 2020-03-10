@@ -5,18 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.responses.LoginResponse;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
+
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -31,22 +35,37 @@ public class LoginActivity extends SuperActivity {
         setContentView(R.layout.activity_login);
 
         initViews();
+
+        mEtPw.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    loginFun();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void loginFun() {
+        if (mEtEmail.getText().toString().equals("")) {
+            Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (mEtPw.getText().toString().equals("")) {
+            Toast.makeText(this, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // login validation
+        login();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
-                if (mEtEmail.getText().toString().equals("")) {
-                    Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                if (mEtPw.getText().toString().equals("")) {
-                    Toast.makeText(this, "비밀번호를 입력해주세요", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                // login validation
-                login();
+                loginFun();
                 break;
             case R.id.login_to_search_tv:
                 intent = new Intent(this, SearchActivity.class);

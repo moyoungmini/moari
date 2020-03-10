@@ -44,7 +44,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorBorder" />
+        android:background="@color/colorLightBorder" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,7 +69,6 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@color/colorBlack"
-            android:layout_marginTop="5dp"
             android:text="gamgsung@moari.com"
             />
 
@@ -88,7 +87,6 @@
             android:id="@+id/mypage_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/input_et_background"
             android:fontFamily="@font/noto_light_font"
             android:hint="닉네임"
@@ -119,10 +117,9 @@
             android:id="@+id/mypage_pw_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:background="@drawable/input_et_background"
             android:fontFamily="@font/noto_light_font"
-            android:hint="비밀번호"
+            android:hint="6자 이상 입력해 주세요."
             android:includeFontPadding="false"
             android:inputType="textPassword"
             android:lineSpacingExtra="10.2sp"
@@ -142,7 +139,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/input_et_background"
             android:fontFamily="@font/noto_light_font"
-            android:hint="비밀번호"
+            android:hint="비밀번호 확인"
             android:includeFontPadding="false"
             android:inputType="textPassword"
             android:lineSpacingExtra="10.2sp"
@@ -160,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17sp"
-            android:textColor="@color/colorBlack"
+            android:textColor="@drawable/button_text_black_selector_background"
             android:fontFamily="@font/noto_light_font"
             android:layout_marginTop="45dp"
             android:onClick="onClick"
@@ -172,9 +169,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17sp"
-            android:textColor="@color/colorBlack"
+            android:textColor="@drawable/button_text_black_selector_background"
             android:fontFamily="@font/noto_light_font"
-            android:layout_marginTop="20dp"
             android:onClick="onClick"
             android:text="회원탈퇴"
             />

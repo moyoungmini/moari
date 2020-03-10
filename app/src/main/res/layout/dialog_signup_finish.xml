@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
-    android:layout_height="180dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
     android:background="@drawable/empty_white_background"
     android:orientation="vertical"
     >
@@ -14,6 +16,8 @@
         android:lineSpacingExtra="6sp"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
         android:text="가입이 완료되었습니다!"
         android:fontFamily="@font/noto_light_font"
         android:layout_weight="1"
