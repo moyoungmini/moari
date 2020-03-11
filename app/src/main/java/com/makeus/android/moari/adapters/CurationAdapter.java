@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -64,17 +66,21 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView title, content, oneLine;
-        private ImageView image, rank;
-        private LinearLayout layout;
+        private ImageView image, rank, shadowImage;
+        private LinearLayout layout, gravityLayout;
+        private FrameLayout frameLayout;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.category_item_title_tv);
             content = itemView.findViewById(R.id.category_item_content_tv);
             oneLine = itemView.findViewById(R.id.category_item_oneline_tv);
-            image = itemView.findViewById(R.id.category_item_iv);
+            image = itemView.findViewById(R.id.curation_item_iv);
             rank = itemView.findViewById(R.id.category_item_rank_iv);
             layout = itemView.findViewById(R.id.category_item_layout);
+            frameLayout = itemView.findViewById(R.id.curation_item_layout);
+            gravityLayout = itemView.findViewById(R.id.curation_item_gravity_layout);
+            shadowImage = itemView.findViewById(R.id.curation_item_shadow_iv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -88,6 +94,20 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
 
                 }
             });
+
+            frameLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    frameLayout.setLayoutParams(new LinearLayout.LayoutParams(frameLayout.getMeasuredWidth(), frameLayout.getMeasuredWidth()));
+                    float margin = (frameLayout.getMeasuredWidth() - gravityLayout.getMeasuredHeight()) / 2;
+                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT
+                    );
+//                params.setMargins(0, (int)margin, 0, (int)margin);
+                    gravityLayout.setLayoutParams(params);
+                }
+            });
             // item click method
         }
 
@@ -99,10 +119,20 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
             content.setText(data.getContent());
             oneLine.setText(data.getReview());
 
-            Glide.with(activity)
-                    .load(data.getImage().toString())
-                    .fitCenter()
-                    .into(image);
+            if(data.getImage() == null || data.getImage().equals("")) {
+                Glide.with(activity)
+                        .load(R.drawable.default_background_img)
+                        .fitCenter()
+                        .into(image);
+                shadowImage.setVisibility(View.INVISIBLE);
+            }
+            else {
+                Glide.with(activity)
+                        .load(data.getImage())
+                        .fitCenter()
+                        .into(image);
+                shadowImage.setVisibility(View.VISIBLE);
+            }
 
             double grade = data.getGrade();
             if(grade ==0) {

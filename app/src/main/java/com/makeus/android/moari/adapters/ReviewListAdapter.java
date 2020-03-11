@@ -62,7 +62,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review_list, parent, false);
-        int height = parent.getMeasuredWidth() / 3;
+        int height = parent.getMeasuredWidth() / 2;
         view.setMinimumHeight(height);
         return new ItemViewHolder(view);
     }
@@ -79,7 +79,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        private ImageView image, rank;
+        private ImageView image, rank, shadow;
         private TextView title;
 
         ItemViewHolder(View itemView) {
@@ -87,6 +87,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
             image = itemView.findViewById(R.id.review_list_picture_show_iv);
             rank = itemView.findViewById(R.id.review_list_grade_iv);
             title = itemView.findViewById(R.id.review_list_title_tv);
+            shadow = itemView.findViewById(R.id.review_list_shadow_iv);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,10 +105,20 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
         void onBind(ReviewListData data) {
             int position = getAdapterPosition();
 
-            Glide.with(activity)
-                    .load(data.getImage().toString())
-                    .fitCenter()
-                    .into(image);
+            if(data.getImage() == null || data.getImage().equals("")) {
+                Glide.with(activity)
+                        .load(R.drawable.default_background_img)
+                        .fitCenter()
+                        .into(image);
+                shadow.setVisibility(View.INVISIBLE);
+            }
+            else {
+                Glide.with(activity)
+                        .load(data.getImage())
+                        .fitCenter()
+                        .into(image);
+                shadow.setVisibility(View.VISIBLE);
+            }
 
             double grade = data.getGrade();
             if(grade ==0) {

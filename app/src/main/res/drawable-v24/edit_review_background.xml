@@ -4,8 +4,8 @@
     <stroke
         android:color="@color/colorWhite"
         android:width="0.5dp"
-        android:dashWidth="5dp"
+        android:dashWidth="1dp"
         android:dashGap="2dp"/>
     <!--corners allow us to make the rounded corners button-->
-    <corners android:radius="5dp" />
+    <corners android:radius="2dp" />
 </shape>

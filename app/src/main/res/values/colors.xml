@@ -22,4 +22,6 @@
     <color name="colorSoftPink">#f8bbd0</color>
     <color name="colorSoftBlack">#bdbdbd</color>
     <color name="colorPinkLogin">#d4005b</color>
+    <color name="colorShadowBackground">#f22f2f2f</color>
+    <color name="colorShadowUploadBackground">#80000000</color>
 </resources>

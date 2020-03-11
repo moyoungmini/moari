@@ -8,36 +8,54 @@
 
 
     <FrameLayout
+        android:id="@+id/curation_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
-            android:id="@+id/category_item_iv"
+            android:id="@+id/curation_item_iv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY" />
 
         <ImageView
+            android:id="@+id/curation_item_shadow_iv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#80000000" />
 
         <LinearLayout
+            android:id="@+id/curation_item_gravity_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="@dimen/dimeUserWidthMargin"
-            android:paddingTop="@dimen/dimeUserWidthMargin"
-            android:paddingRight="@dimen/dimeUserWidthMargin"
-            android:paddingBottom="@dimen/dimeUserWidthMargin">
+            android:paddingRight="@dimen/dimeUserWidthMargin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/logo_line"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/category_item_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="50dp"
                 android:fontFamily="@font/noto_light_font"
                 android:gravity="center_horizontal"
                 android:includeFontPadding="false"
@@ -53,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:onClick="onClick"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"

@@ -39,7 +39,7 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_curation);
 
         initViews();
         initListener();

@@ -17,10 +17,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,10 +100,12 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private String url;
     private LoadingDialog loadingDialog;
     private int year, month, dates;
-    private ImageView mIvPictureShow, mIvRating, mIvDelete;
+    private ImageView mIvPictureShow, mIvRating, mIvDelete, mIvShadow;
     private TextView mTvDate, mTvCategory;
     private EditText mEtTitle, mEtOneLine, mEtContent;
     private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
+    private FrameLayout framelayout;
+    private LinearLayout gravitySetLayout;
 
     private String postTitle, postOneLine, postContent, postDate, postUri;
     private int postId; // 카테고리 아이디
@@ -175,6 +181,20 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         checkPermissions();
         getCategory();
 
+        framelayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                framelayout.setLayoutParams(new LinearLayout.LayoutParams(framelayout.getMeasuredWidth(), framelayout.getMeasuredWidth()));
+                float margin = (framelayout.getMeasuredWidth() - gravitySetLayout.getMeasuredHeight()) / 2;
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+//                params.setMargins(0, (int)margin, 0, (int)margin);
+                gravitySetLayout.setLayoutParams(params);
+            }
+        });
+
         int flag = getIntent().getIntExtra("flag", 0);
         if (flag == 0) {
             init();
@@ -201,6 +221,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
         int id = getIntent().getIntExtra("id", -1);
         gerReviewDetail(id);
+        mIvShadow.setVisibility(View.VISIBLE);
     }
 
     public void init() {
@@ -223,7 +244,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 .load(R.drawable.default_background_img)
                 .fitCenter()
                 .into(mIvPictureShow);
-
+        mIvShadow.setVisibility(View.INVISIBLE);
 
     }
 
@@ -277,6 +298,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.review_edit_layout:
             case R.id.review_edit_picture_select_iv:
                 if (mMode == BEFORE_IMAGE || mMode == AFTER_IMAGE) {
                     ReviewCameraDialog dialog = new ReviewCameraDialog(activity, mCameraInterface);
@@ -378,6 +400,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         mEtContent = findViewById(R.id.review_edit_content_et);
         mIvRating = findViewById(R.id.review_edit_rating_iv);
         mIvDelete = findViewById(R.id.review_edit_delete_iv);
+        framelayout = findViewById(R.id.review_edit_layout);
+        gravitySetLayout = findViewById(R.id.review_edit_gravity_layout);
+        mIvShadow = findViewById(R.id.review_edit_shadow_iv);
     }
 
     private void takePhoto() {
@@ -455,6 +480,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
 
                 mIvPictureShow.setImageBitmap(thumbImage);
+                mIvShadow.setVisibility(View.VISIBLE);
                 mMode = AFTER_IMAGE;
             } catch (Exception e) {
             }
@@ -629,7 +655,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                             .load(downloadUri.toString())
                             .fitCenter()
                             .into(mIvPictureShow);
-
+                    mIvShadow.setVisibility(View.VISIBLE);
                     url = downloadUri.toString();
                     loadingDialog.dismiss();
                     mMode = AFTER_SEVER_UPLOAD;

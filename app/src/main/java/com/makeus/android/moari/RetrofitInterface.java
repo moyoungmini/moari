@@ -70,4 +70,7 @@ public interface RetrofitInterface {
 
     @GET("category/{categoryId}/review/{reviewId}")
     Observable<ReviewListResponse> getReviewList(@Path("categoryId") int categoryId, @Path("reviewId") int reviewId);
+
+    @DELETE("review/{reviewId}")
+    Observable<BasicResponse> deleteReview(@Path("reviewId") int reviewId);
 }

@@ -68,7 +68,7 @@
                 android:paddingTop="7dp"
                 android:paddingBottom="7dp"
                 android:text="취소"
-                android:textColor="@color/colorEditText"
+                android:textColor="@drawable/button_soft_text_black_selector_background"
                 android:onClick="onClick"
                 android:textSize="15sp" />
 
@@ -87,7 +87,7 @@
                 android:paddingTop="7dp"
                 android:paddingBottom="7dp"
                 android:text="확인"
-                android:textColor="@color/colorEditText"
+                android:textColor="@drawable/button_text_pink_selector_background"
                 android:onClick="onClick"
                 android:textSize="15sp" />
         </LinearLayout>

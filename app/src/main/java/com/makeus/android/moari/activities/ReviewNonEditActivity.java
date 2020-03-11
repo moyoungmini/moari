@@ -13,9 +13,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +53,10 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class ReviewNonEditActivity extends SuperActivity {
    private TextView mTvTitle, mTvOneline, mTvCategory, mTvDate, mTvContent;
-   private ImageView mIvRating, mIvBackground;
+   private ImageView mIvRating, mIvBackground, mIvShadow;
    private Activity activity;
    private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
+   private LinearLayout gravityLayout;
    private FrameLayout layout;
    private int id;
 
@@ -66,6 +69,20 @@ public class ReviewNonEditActivity extends SuperActivity {
         init();
         getCategory();
         getReviewDetail(id);
+
+        layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                layout.setLayoutParams(new LinearLayout.LayoutParams(layout.getMeasuredWidth(), layout.getMeasuredWidth()));
+                float margin = (layout.getMeasuredWidth() - gravityLayout.getMeasuredHeight()) / 2;
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                );
+//                params.setMargins(0, (int)margin, 0, (int)margin);
+                gravityLayout.setLayoutParams(params);
+            }
+        });
     }
 
     public void init() {
@@ -82,6 +99,7 @@ public class ReviewNonEditActivity extends SuperActivity {
             case R.id.review_non_edit_pencil_iv:
                 Intent intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("id", id);
+                intent.putExtra("flag", 1);
                 finish();
                 startActivity(intent);
                 break;
@@ -128,6 +146,8 @@ public class ReviewNonEditActivity extends SuperActivity {
        mIvRating = findViewById(R.id.review_non_edit_rank_iv);
        mIvBackground = findViewById(R.id.review_non_edit_picture_show_iv);
        layout = findViewById(R.id.review_non_edit_layout);
+       gravityLayout = findViewById(R.id.review_non_edit_gravity_layout);
+       mIvShadow = findViewById(R.id.review_non_edit_shadow_iv);
     }
 
     public void setRate(float rate) {
@@ -190,10 +210,20 @@ public class ReviewNonEditActivity extends SuperActivity {
                             mTvContent.setText(data.getContent());
                             mTvOneline.setText(data.getReview());
                             mTvTitle.setText(data.getTitle());
-                            Glide.with(activity)
-                                    .load(data.getImage())
-                                    .fitCenter()
-                                    .into(mIvBackground);
+                            if(data.getImage() == null || data.getImage().equals("")) {
+                                Glide.with(activity)
+                                        .load(R.drawable.default_background_img)
+                                        .fitCenter()
+                                        .into(mIvBackground);
+                                mIvShadow.setVisibility(View.INVISIBLE);
+                            }
+                            else {
+                                Glide.with(activity)
+                                        .load(data.getImage())
+                                        .fitCenter()
+                                        .into(mIvBackground);
+                                mIvShadow.setVisibility(View.VISIBLE);
+                            }
 
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
