@@ -195,7 +195,7 @@ public class ReviewNonEditActivity extends SuperActivity {
                             ReviewDetailData data = res.getResult().get(0);
                             int postId = data.getCategoryType();
                             String date = data.getReviewDate();
-                            date = date.replace(".", "-");
+                            date = date.replace("-", ".");
                             date = date.replace(" ", "");
                             mTvDate.setText(date);
 

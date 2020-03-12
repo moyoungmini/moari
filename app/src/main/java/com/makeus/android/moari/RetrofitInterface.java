@@ -73,4 +73,10 @@ public interface RetrofitInterface {
 
     @DELETE("review/{reviewId}")
     Observable<BasicResponse> deleteReview(@Path("reviewId") int reviewId);
+
+    @PATCH("review/{reviewId}")
+    Observable<BasicResponse> patchReview(@Path("reviewId") int reviewId, @Body RequestBody params);
+
+    @GET("search/{page}")
+    Observable<ReviewListResponse> getSearchList(@Path("page") int page,  @Body RequestBody params);
 }

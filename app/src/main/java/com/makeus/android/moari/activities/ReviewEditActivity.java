@@ -110,7 +110,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private String postTitle, postOneLine, postContent, postDate, postUri;
     private int postId; // 카테고리 아이디
     private float postRating; // 별점
-    private int updateId;
+    private int reviewId;
 
     private DialogCategoryInterface mCategoryInterface = new DialogCategoryInterface() {
         @Override
@@ -170,6 +170,11 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         public void exit() {
             finish();
         }
+
+        @Override
+        public void delete() {
+            deleteReview(reviewId);
+        }
     };
 
     @Override
@@ -180,6 +185,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         initViews();
         checkPermissions();
         getCategory();
+
+        reviewId = getIntent().getIntExtra("id", -1);
 
         framelayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -219,8 +226,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
         postUri = "";
 
-        int id = getIntent().getIntExtra("id", -1);
-        gerReviewDetail(id);
+        gerReviewDetail(reviewId);
         mIvShadow.setVisibility(View.VISIBLE);
     }
 
@@ -339,6 +345,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                         postUri = "";
                     }
                     eidtReview();
+                    // 기존에 있는거 있을수도 있어 이말이야..
                 } else {
                     try {
                         uploadFileToFireBase(photoUri);
@@ -385,7 +392,10 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity, mCategoryList, mCategoryInterface);
                 break;
             case R.id.review_edit_exit_iv:
-                ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, mExitInterface);
+                ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, 0,mExitInterface);
+                break;
+            case R.id.review_edit_delete_iv:
+                ReviewEditExitDialog deleteDialog = new ReviewEditExitDialog(activity, 1,mExitInterface);
                 break;
         }
     }
@@ -701,7 +711,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 });
     }
 
-    public void eidtReview() {
+    public void postReview() {
 
         JsonObject params = new JsonObject();
         params.addProperty("title", postTitle);
@@ -745,6 +755,59 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 });
     }
 
+    public void updateReview() {
+        JsonObject params = new JsonObject();
+        params.addProperty("title", postTitle);
+        params.addProperty("content", postContent);
+        params.addProperty("image", postUri);
+        params.addProperty("grade", postRating);
+        params.addProperty("review", postOneLine);
+        params.addProperty("reviewDate", postDate);
+        params.addProperty("categoryType", postId);
+
+        MoariApp.getRetrofitMethod(getApplicationContext()).patchReview(reviewId, RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            finish();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void eidtReview() {
+        if(reviewId == -1) {
+            postReview();
+        }
+        else {
+            updateReview();
+        }
+    }
+
     public void gerReviewDetail(int id) {
         MoariApp.getRetrofitMethod(getApplicationContext()).getReviewDetail(id)
                 .subscribeOn(Schedulers.io())
@@ -760,9 +823,12 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     public void onNext(final ReviewDetailResponse res) {
                         if (res.getCode() == 200) {
                             ReviewDetailData data = res.getResult().get(0);
-                            updateId = data.getIdboard();
+                            reviewId = data.getIdboard();
                             postId = data.getCategoryType();
-                            mTvDate.setText(data.getReviewDate());
+                            String tmpDate = data.getReviewDate();
+                            tmpDate = tmpDate.replace("-", ".");
+                            tmpDate = tmpDate.replace(" ", "");
+                            mTvDate.setText(tmpDate);
                             if (data.getReviewDate().length() >= 10) {
                                 year = Integer.parseInt(data.getReviewDate().substring(0, 4));
                                 month = Integer.parseInt(data.getReviewDate().substring(5, 7))-1;
@@ -810,6 +876,40 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
     @Override
     public void onBackPressed() {
-        ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, mExitInterface);
+        ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, 0, mExitInterface);
+    }
+
+    public void deleteReview(int id) {
+        MoariApp.getRetrofitMethod(getApplicationContext()).deleteReview(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            finish();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
     }
 }

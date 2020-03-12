@@ -34,7 +34,7 @@ import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.LoginResponse;
-
+import com.makeus.android.moari.utils.GridSpacingItemDecoration;
 import java.util.ArrayList;
 
 import io.reactivex.Observer;
@@ -85,7 +85,6 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         initViews();
         initListener();
         InitializeLayout();
-        getCategory();
 
     }
 
@@ -96,7 +95,9 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
             String id = getIntent().getStringExtra("id");
             String pw = getIntent().getStringExtra("pw");
             login(id, pw);
-            SignupDialog dialog = new SignupDialog(this);
+        }
+        else {
+            getCategory();
         }
         // start dialog when signup finish
     }
@@ -106,6 +107,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_search_tv:
+                intent = new Intent(this, ReviewSearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.main_change_tv:
                 intent = new Intent(this, MypageActivity.class);
@@ -172,6 +175,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                 R.string.closed
         );
         drawLayout.addDrawerListener(actionBarDrawerToggle);
+
     }
     // set toolbar & main_view
 
@@ -211,6 +215,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                                 SharedPreferences.Editor editor = mSharedPreferences.edit();
                                 editor.putString(X_ACCESS_TOKEN, res.getJwt());
                                 editor.commit();
+
+                                getCategory();
 
                                 SignupDialog dialog = new SignupDialog(activity);
                                 // receive token and show success signup
@@ -284,6 +290,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                             }
 
                             mRVCategory.setLayoutManager(new GridLayoutManager(activity,3));
+                            mRVCategory.addItemDecoration(new GridSpacingItemDecoration(2, 0, 0));
                             mCategoryAdapter = new MainCategoryAdapter(activity, list, selectInterface);
                             mRVCategory.setAdapter(mCategoryAdapter);
 
