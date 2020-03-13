@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorWhite"
+    android:orientation="vertical"
     tools:context=".activities.MypageActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimenWidthPadding"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
@@ -18,8 +20,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="@dimen/dimeUserWidthMargin"
             android:onClick="onClick"
+            android:padding="5dp"
             android:src="@drawable/back_img" />
 
         <TextView
@@ -28,17 +30,19 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/noto_light_font"
             android:gravity="center"
+            android:includeFontPadding="false"
             android:text="계정"
             android:textColor="@color/colorSearchText"
             android:textSize="18sp" />
+
         <ImageView
             android:id="@+id/mypage_check_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right |center_vertical"
-            android:paddingRight="@dimen/dimeUserWidthMargin"
             android:onClick="onClick"
-            android:src="@drawable/check_img"/>
+            android:padding="5dp"
+            android:src="@drawable/check_img" />
     </FrameLayout>
 
     <View
@@ -56,31 +60,32 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/colorEditText"
-            android:fontFamily="@font/noto_light_font"
             android:layout_marginTop="25dp"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:text="이메일"
-            />
+            android:textColor="@color/colorEditText"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/mypage_email_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/colorBlack"
+            android:includeFontPadding="false"
             android:text="gamgsung@moari.com"
-            />
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/colorEditText"
-            android:fontFamily="@font/noto_light_font"
             android:layout_marginTop="40dp"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:text="닉네임"
-            />
+            android:textColor="@color/colorEditText"
+            android:textSize="13sp" />
 
 
         <EditText
@@ -92,6 +97,7 @@
             android:hint="닉네임"
             android:includeFontPadding="false"
             android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
             android:lineSpacingExtra="10.2sp"
             android:paddingLeft="11dp"
             android:paddingTop="12dp"
@@ -105,12 +111,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:textColor="@color/colorEditText"
-            android:fontFamily="@font/noto_light_font"
             android:layout_marginTop="40dp"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:text="비밀번호"
-            />
+            android:textColor="@color/colorEditText"
+            android:textSize="13sp" />
 
 
         <EditText
@@ -123,6 +129,7 @@
             android:includeFontPadding="false"
             android:inputType="textPassword"
             android:lineSpacingExtra="10.2sp"
+            android:layout_marginTop="8dp"
             android:paddingLeft="11dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
@@ -156,25 +163,25 @@
             android:id="@+id/mypage_logout_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@drawable/button_text_black_selector_background"
-            android:fontFamily="@font/noto_light_font"
             android:layout_marginTop="45dp"
+            android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:onClick="onClick"
             android:text="로그아웃"
-            />
+            android:textColor="@drawable/button_text_black_selector_background"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/mypage_delete_user_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@drawable/button_text_black_selector_background"
             android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
+            android:layout_marginTop="20dp"
             android:onClick="onClick"
             android:text="회원탈퇴"
-            />
-
+            android:textColor="@drawable/button_text_black_selector_background"
+            android:textSize="17sp" />
 
 
     </LinearLayout>

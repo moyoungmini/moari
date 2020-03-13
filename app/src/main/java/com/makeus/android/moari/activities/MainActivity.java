@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -179,6 +180,13 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     }
     // set toolbar & main_view
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("MainStart", "1");
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -294,8 +302,9 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                             mCategoryAdapter = new MainCategoryAdapter(activity, list, selectInterface);
                             mRVCategory.setAdapter(mCategoryAdapter);
 
-                            String text = "<b>"+userName+"</b>"+"님의<br>"+"모아 놓은 리뷰"+"";
-                            mTvNavigation.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+//                            String text = "<b>"+userName+"</b>"+"님의<br>"+"모아 놓은 리뷰"+"";
+//                            mTvNavigation.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+                            mTvNavigation.setText(userName+"님의");
                             startCounterAnimator();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();

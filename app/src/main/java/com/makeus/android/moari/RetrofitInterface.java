@@ -78,5 +78,5 @@ public interface RetrofitInterface {
     Observable<BasicResponse> patchReview(@Path("reviewId") int reviewId, @Body RequestBody params);
 
     @GET("search/{page}")
-    Observable<ReviewListResponse> getSearchList(@Path("page") int page,  @Body RequestBody params);
+    Observable<ReviewListResponse> getSearchList(@Path("page") int page, @Query("word") String word);
 }

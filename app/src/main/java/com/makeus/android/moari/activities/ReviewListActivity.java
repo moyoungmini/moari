@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -106,6 +107,12 @@ public class ReviewListActivity extends SuperActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("onstart", "1");
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.review_list_plus_iv:
@@ -157,6 +164,40 @@ public class ReviewListActivity extends SuperActivity {
                     public void onError(Throwable e) {
                         Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
 
+                        dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    public void deleteReview(int id) {
+        MoariApp.getRetrofitMethod(getApplicationContext()).deleteReview(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<BasicResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                        showProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(BasicResponse res) {
+
+                        if (res.getCode() == 200) {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
                         dismissProgressDialog();
                     }
 

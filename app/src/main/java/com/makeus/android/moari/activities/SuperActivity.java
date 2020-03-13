@@ -2,6 +2,7 @@ package com.makeus.android.moari.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -35,14 +36,18 @@ public abstract class SuperActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility( uiOption );
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-
-
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+////        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+//
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        Log.i("YES", "DF");
+//    }
 
     public void showProgressDialog() {
         if(pd == null)

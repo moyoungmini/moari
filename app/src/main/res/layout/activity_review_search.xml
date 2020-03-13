@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
         android:orientation="horizontal"
+        android:paddingLeft="@dimen/dimenWidthPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
@@ -20,34 +22,35 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:onClick="onClick"
-            android:paddingLeft="30dp"
+            android:padding="5dp"
             android:src="@drawable/back_img" />
 
         <EditText
             android:id="@+id/review_search_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/colorEditText"
             tools:text="제목 검색"
-            android:fontFamily="@font/noto_light_font"
             android:hint="제목 / 한줄평 검색"
             android:includeFontPadding="false"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="5dp"
+            android:paddingLeft="15dp"
             android:singleLine="true"
             android:background="@android:color/transparent"
             android:textColorHint="@color/colorEditText"
             android:textCursorDrawable="@drawable/et_cursor"
             android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/noto_light_font"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
             />
+
         <ImageView
             android:id="@+id/review_search_erase_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="5dp"
-            android:layout_marginRight="25dp"
+            android:onClick="onClick"
             android:src="@drawable/search_cancel_img"/>
     </LinearLayout>
 

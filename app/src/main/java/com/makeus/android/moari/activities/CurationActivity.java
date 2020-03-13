@@ -47,6 +47,12 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
         getCur();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("curationstart", "1");
+    }
+
     public void init() {
 
         mCurationAdapter = new CurationAdapter(this, list);

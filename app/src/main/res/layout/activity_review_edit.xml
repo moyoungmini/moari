@@ -10,7 +10,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimenWidthPadding"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:onClick="onClick"
-            android:paddingLeft="@dimen/dimeUserWidthMargin"
+            android:padding="5dp"
             android:src="@drawable/close_img" />
 
         <TextView
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:gravity="center"
             android:text="작성하기"
             android:textColor="@color/colorSearchText"
@@ -39,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right |center_vertical"
             android:onClick="onClick"
-            android:paddingRight="@dimen/dimeUserWidthMargin"
+            android:padding="5dp"
             android:src="@drawable/check_img" />
     </FrameLayout>
 
@@ -179,7 +182,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimeUserWidthMargin"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
                 android:orientation="horizontal">
 
@@ -189,6 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="@font/noto_light_font"
+                    android:includeFontPadding="false"
                     android:onClick="onClick"
                     android:text="카테고리 선택"
                     android:textColor="@drawable/button_soft_text_black_selector_background"
@@ -213,7 +217,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimeUserWidthMargin"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="20dp"
+                android:includeFontPadding="false"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
                 android:fontFamily="@font/noto_light_font"
                 android:onClick="onClick"
@@ -226,7 +231,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dimeUserWidthMargin"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
                 android:paddingBottom="20dp"
                 android:background="@drawable/edit_review_background"

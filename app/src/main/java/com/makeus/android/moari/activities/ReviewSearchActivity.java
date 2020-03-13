@@ -123,9 +123,7 @@ public class ReviewSearchActivity extends SuperActivity {
     }
 
     public void getReviewList() {
-        JsonObject params = new JsonObject();
-        params.addProperty("word", mEtSearch.getText().toString());
-        MoariApp.getRetrofitMethod(getApplicationContext()).getSearchList(mPage, RequestBody.create(MEDIA_TYPE_JSON, params.toString()))
+        MoariApp.getRetrofitMethod(getApplicationContext()).getSearchList(mPage, mEtSearch.getText().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ReviewListResponse>() {

@@ -99,20 +99,27 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                     // 리뷰 상세 수정x인걸로 ㄱㄱ
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.i("LONGCLICK", "LIST");
+                    return true;
+                }
+            });
             // item click method
         }
 
         void onBind(ReviewListData data) {
             int position = getAdapterPosition();
 
-            if(data.getImage() == null || data.getImage().equals("")) {
+            if (data.getImage() == null || data.getImage().equals("")) {
                 Glide.with(activity)
                         .load(R.drawable.default_background_img)
                         .fitCenter()
                         .into(image);
                 shadow.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
                 Glide.with(activity)
                         .load(data.getImage())
                         .fitCenter()
@@ -121,40 +128,29 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
             }
 
             double grade = data.getGrade();
-            if(grade ==0) {
+            if (grade == 0) {
                 rank.setImageResource(R.drawable.rate_white_00);
-            }
-            else if(grade == 0.5) {
+            } else if (grade == 0.5) {
                 rank.setImageResource(R.drawable.rate_white_01);
-            }
-            else if(grade == 1) {
+            } else if (grade == 1) {
                 rank.setImageResource(R.drawable.rate_white_10);
-            }
-            else if(grade == 1.5) {
+            } else if (grade == 1.5) {
                 rank.setImageResource(R.drawable.rate_white_11);
-            }
-            else if(grade == 2) {
+            } else if (grade == 2) {
                 rank.setImageResource(R.drawable.rate_white_20);
-            }
-            else if(grade == 2.5) {
+            } else if (grade == 2.5) {
                 rank.setImageResource(R.drawable.rate_white_21);
-            }
-            else if(grade == 3) {
+            } else if (grade == 3) {
                 rank.setImageResource(R.drawable.rate_white_30);
-            }
-            else if(grade == 3.5) {
+            } else if (grade == 3.5) {
                 rank.setImageResource(R.drawable.rate_white_31);
-            }
-            else if(grade == 4) {
+            } else if (grade == 4) {
                 rank.setImageResource(R.drawable.rate_white_40);
-            }
-            else if(grade == 4.5) {
+            } else if (grade == 4.5) {
                 rank.setImageResource(R.drawable.rate_white_41);
-            }
-            else if(grade == 5) {
+            } else if (grade == 5) {
                 rank.setImageResource(R.drawable.rate_white_50);
-            }
-            else {
+            } else {
                 rank.setImageResource(R.drawable.rate_white_30);
             }
 

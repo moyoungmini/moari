@@ -10,7 +10,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimenWidthPadding"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:onClick="onClick"
-            android:paddingLeft="30dp"
+            android:padding="5dp"
             android:src="@drawable/back_img" />
 
         <TextView
@@ -28,6 +30,7 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/noto_light_font"
             android:gravity="center"
+            android:includeFontPadding="false"
             android:text="계정/비밀번호 찾기"
             android:textColor="@color/colorSearchText"
             android:textSize="18sp" />
@@ -53,6 +56,8 @@
             android:layout_marginTop="35dp"
             android:text="먼저 가입된 계정인지 확인 후,\n임시 비밀번호를 발송할 수 있습니다."
             android:textColor="#757575"
+            android:lineSpacingExtra="5sp"
+            android:includeFontPadding="false"
             android:fontFamily="@font/noto_light_font"
             android:textSize="15sp" />
 

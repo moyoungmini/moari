@@ -10,7 +10,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dimenWidthPadding"
         android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
         android:paddingBottom="@dimen/dimenTopLayoutPadding">
 
         <ImageView
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:onClick="onClick"
-            android:paddingLeft="@dimen/dimeUserWidthMargin"
+            android:padding="5dp"
             android:src="@drawable/back" />
 
         <TextView
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/noto_light_font"
+            android:includeFontPadding="false"
             android:gravity="center"
             android:text="나의하루"
             android:textColor="@color/colorSearchText"
@@ -39,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right |center_vertical"
             android:onClick="onClick"
-            android:paddingRight="@dimen/dimeUserWidthMargin"
+            android:padding="5dp"
             android:src="@drawable/plus_dark_img" />
     </FrameLayout>
 
