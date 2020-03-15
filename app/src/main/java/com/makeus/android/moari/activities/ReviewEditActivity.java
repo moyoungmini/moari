@@ -60,6 +60,7 @@ import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.ReviewDetailResponse;
+import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONException;
 
@@ -389,7 +390,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 ReviewRatingDialog dialog = new ReviewRatingDialog(activity, postRating, mRatingInterface);
                 break;
             case R.id.review_edit_category_tv:
-                ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity, mCategoryList, mCategoryInterface);
+                ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity,mTvCategory.getText().toString(), mCategoryList, mCategoryInterface);
                 break;
             case R.id.review_edit_exit_iv:
                 ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, 0,mExitInterface);
@@ -558,59 +559,137 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    public void cropImage() {
-        this.grantUriPermission("com.android.camera", photoUri,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoUri, "image/*");
+//    public void cropImage() {
+//        this.grantUriPermission("com.android.camera", photoUri,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(photoUri, "image/*");
+//
+//        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
+//        grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        int size = list.size();
+//        if (size == 0) {
+//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else {
+//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            intent.putExtra("crop", "true");
+//            intent.putExtra("aspectX", 1);
+//            intent.putExtra("aspectY", 1);
+//            intent.putExtra("scale", true);
+//            File croppedFileName = null;
+//            try {
+//                croppedFileName = createImageFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//
+//            File folder = new File(Environment.getExternalStorageDirectory() + "/inha/");
+//            File tempFile = new File(folder.toString(), croppedFileName.getName());
+//
+//            photoUri = FileProvider.getUriForFile(this,
+//                    "com.makeus.android.moari.provider", tempFile);
+//
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//
+//            intent.putExtra("return-data", false);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
+//
+//            Intent i = new Intent(intent);
+//            ResolveInfo res = list.get(0);
+//            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            grantUriPermission(res.activityInfo.packageName, photoUri,
+//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//
+//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+//            startActivityForResult(i, CROP_FROM_CAMERA);
+//
+//        }
+//
+//    }
 
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        int size = list.size();
-        if (size == 0) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            intent.putExtra("scale", true);
-            File croppedFileName = null;
+    public void cropImage() {
+
+        File tempFile = null;
+        if(tempFile == null) {
             try {
-                croppedFileName = createImageFile();
+                tempFile = createImageFile();
             } catch (IOException e) {
+                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
                 e.printStackTrace();
             }
-
-            File folder = new File(Environment.getExternalStorageDirectory() + "/inha/");
-            File tempFile = new File(folder.toString(), croppedFileName.getName());
-
-            photoUri = FileProvider.getUriForFile(this,
-                    "com.makeus.android.moari.provider", tempFile);
-
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-
-            intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
-
-            Intent i = new Intent(intent);
-            ResolveInfo res = list.get(0);
-            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            grantUriPermission(res.activityInfo.packageName, photoUri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            startActivityForResult(i, CROP_FROM_CAMERA);
-
         }
+
+        //크롭 후 저장할 Uri
+        Uri savingUri = Uri.fromFile(tempFile);
+
+        Crop.of(photoUri, savingUri).asSquare().start(this);
+
+
+//        this.grantUriPermission("com.android.camera", photoUri,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//        intent.setDataAndType(photoUri, "image/*");
+//
+//        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
+//        grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
+//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        int size = list.size();
+//        if (size == 0) {
+//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else {
+//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            intent.putExtra("crop", "true");
+//            intent.putExtra("aspectX", 1);
+//            intent.putExtra("aspectY", 1);
+//            intent.putExtra("scale", true);
+//            File croppedFileName = null;
+//            try {
+//                croppedFileName = createImageFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//
+//            File folder = new File(Environment.getExternalStorageDirectory() + "/inha/");
+//            File tempFile = new File(folder.toString(), croppedFileName.getName());
+//
+//            photoUri = FileProvider.getUriForFile(this,
+//                    "com.makeus.android.moari.provider", tempFile);
+//
+//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//
+//            intent.putExtra("return-data", false);
+//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+//            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
+//
+//            Intent i = new Intent(intent);
+//            ResolveInfo res = list.get(0);
+//            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//            grantUriPermission(res.activityInfo.packageName, photoUri,
+//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//
+//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+//            startActivityForResult(i, CROP_FROM_CAMERA);
+
+//        }
 
     }
 

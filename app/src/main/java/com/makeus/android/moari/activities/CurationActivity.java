@@ -1,9 +1,12 @@
 package com.makeus.android.moari.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,8 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     private Intent intent;
     private ViewPager2 mViewPager;
     private CurationAdapter mCurationAdapter;
+    private ImageView mIvLogo;
+    private Toolbar mToolbar;
     ArrayList<CurationData> list = new ArrayList<>();
 
     @Override
@@ -44,13 +49,12 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
         initViews();
         initListener();
         InitializeLayout();
-        getCur();
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("curationstart", "1");
+    protected void onResume() {
+        super.onResume();
+        getCur();
     }
 
     public void init() {
@@ -65,6 +69,8 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.category_search_tv:
+                intent = new Intent(this, ReviewSearchActivity.class);
+                startActivity(intent);
                 break;
             case R.id.category_change_tv:
                 intent = new Intent(this, MypageActivity.class);
@@ -75,11 +81,23 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
                 intent.putExtra("flag", 0); // insert
                 startActivity(intent);
                 break;
-            case R.id.category_logo_iv:
+            case R.id.curation_logo_iv:
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+            case R.id.curation_instagram_tv:
+                Uri uri = Uri.parse("https://www.instagram.com/moari_review/?hl=ko");
+                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+                likeIng.setPackage("com.instagram.android");
+
+                try {
+                    startActivity(likeIng);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://instagram.com")));
+                }
+                break;
         }
     }
 
@@ -88,6 +106,7 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
         mTvSearch = findViewById(R.id.category_search_tv);
         mTvChange = findViewById(R.id.category_change_tv);
         mViewPager = findViewById(R.id.category_viewpager);
+        mIvLogo = findViewById(R.id.curation_logo_iv);
     }
 
     public void initListener() {
@@ -97,7 +116,7 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
 
     public void InitializeLayout()
     {
-        Toolbar toolbar = findViewById(R.id.category_toolbar);
+        Toolbar toolbar = findViewById(R.id.curation_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

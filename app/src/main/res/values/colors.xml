@@ -24,4 +24,5 @@
     <color name="colorPinkLogin">#d4005b</color>
     <color name="colorShadowBackground">#f22f2f2f</color>
     <color name="colorShadowUploadBackground">#80000000</color>
+    <color name="colorReviewItemPress">#b3000000</color>
 </resources>

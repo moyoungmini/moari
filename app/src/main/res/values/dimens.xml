@@ -4,6 +4,7 @@
     <dimen name="dimeRadius">2dp</dimen>
     <dimen name="dimenEtVertical">12dp</dimen>
     <dimen name="dimenStar">8dp</dimen>
-    <dimen name="dimenTopLayoutPadding">15dp</dimen>
-    <dimen name="dimenWidthPadding">30dp</dimen>
+    <dimen name="dimenTopLayoutPadding">12dp</dimen>
+    <dimen name="dimenWidthPadding">20dp</dimen>
+    <dimen name="dimenHeightPadding">12dp</dimen>
 </resources>

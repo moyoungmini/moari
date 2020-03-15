@@ -48,6 +48,7 @@
         <activity android:name=".activities.ReviewListActivity"/>
         <activity android:name=".activities.ReviewNonEditActivity"/>
         <activity android:name=".activities.ReviewSearchActivity"/>
+        <activity  android:name="com.soundcloud.android.crop.CropImageActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

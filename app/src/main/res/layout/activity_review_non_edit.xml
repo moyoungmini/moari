@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimenWidthPadding"
-        android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingTop="@dimen/dimenHeightPadding"
         android:paddingRight="@dimen/dimenWidthPadding"
-        android:paddingBottom="@dimen/dimenTopLayoutPadding">
+        android:paddingBottom="@dimen/dimenHeightPadding">
 
         <ImageView
             android:id="@+id/review_non_edit_back_iv"
@@ -160,7 +160,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/noto_light_font"
-                    android:onClick="onClick"
                     android:text="카테고리 선택"
                     android:layout_gravity="center_vertical"
                     android:includeFontPadding="false"
@@ -178,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:onClick="onClick"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="15dp"
                     android:src="@drawable/pencil_img" />
                 <ImageView
                     android:id="@+id/review_non_edit_share_iv"
@@ -197,7 +196,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
                 android:fontFamily="@font/noto_light_font"
-                android:onClick="onClick"
                 android:includeFontPadding="false"
                 android:text="날짜"
                 android:textColor="@drawable/button_soft_text_black_selector_background"

@@ -184,6 +184,7 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
             else if(data.getCategoryType() ==4) {
                 layout.setBackgroundResource(R.color.colorCuration4);
             }
+            // default
             else if(data.getCategoryType() ==5) {
                 layout.setBackgroundResource(R.color.colorCuration5);
             }

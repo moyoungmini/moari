@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimenWidthPadding"
-        android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingTop="@dimen/dimenHeightPadding"
         android:paddingRight="@dimen/dimenWidthPadding"
-        android:paddingBottom="@dimen/dimenTopLayoutPadding">
+        android:paddingBottom="@dimen/dimenHeightPadding">
 
         <ImageView
             android:id="@+id/review_edit_exit_iv"
@@ -195,7 +195,7 @@
                     android:includeFontPadding="false"
                     android:onClick="onClick"
                     android:text="카테고리 선택"
-                    android:textColor="@drawable/button_soft_text_black_selector_background"
+                    android:textColor="@drawable/button_text_pink_selector_background"
                     android:textSize="18sp" />
 
                 <View
@@ -223,7 +223,7 @@
                 android:fontFamily="@font/noto_light_font"
                 android:onClick="onClick"
                 android:text="날짜"
-                android:textColor="@drawable/button_soft_text_black_selector_background"
+                android:textColor="@drawable/button_text_pink_selector_background"
                 android:textSize="15sp" />
 
             <EditText

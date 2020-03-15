@@ -23,6 +23,7 @@ import com.makeus.android.moari.datas.CurationData;
 import com.makeus.android.moari.datas.ReviewListData;
 import com.makeus.android.moari.dialogs.CategoryChangeDialog;
 import com.makeus.android.moari.dialogs.CategorySelectDialog;
+import com.makeus.android.moari.dialogs.SignupDialog;
 import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                 @Override
                 public boolean onLongClick(View v) {
                     Log.i("LONGCLICK", "LIST");
+                    SignupDialog dialog =new SignupDialog(activity);
                     return true;
                 }
             });

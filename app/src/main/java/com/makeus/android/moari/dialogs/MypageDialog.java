@@ -41,7 +41,7 @@ public class MypageDialog implements View.OnClickListener{
             mTvMain.setText("탈퇴하시겠습니까?");
         }
         else if(flag ==2) {
-            mTvMain.setText("탈퇴시\n계졍을 복구할 수 없습니다.\n정말 탈퇴하시겠습니까?");
+            mTvMain.setText("탈퇴 시\n계정을 복구할 수 없습니다.\n정말 탈퇴하시겠습니까?");
         }
         else if(flag ==3) {
             mTvMain.setText("로그아웃하시겠습니까?");

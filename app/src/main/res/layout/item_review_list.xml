@@ -4,7 +4,7 @@
     android:id="@+id/main_category_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/main_exist_img"
+    android:background="@drawable/review_list_item_bk"
     android:gravity="center">
 
     <ImageView

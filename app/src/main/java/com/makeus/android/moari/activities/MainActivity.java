@@ -49,17 +49,19 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class MainActivity extends SuperActivity implements View.OnClickListener {
 
-    private TextView mTvSearch, mTvChange, mTvUserInfo, mTvNavigation;
+    private TextView mTvSearch, mTvChange, mTvUserInfo, mTvNavigation, mTvCount;
     private Intent intent;
     private Activity activity;
     private RecyclerView mRVCategory;
     private MainCategoryAdapter mCategoryAdapter;
     private String userName = "";
     private int userCnt = 0;
+    private boolean isFirst = true;
     int count =0;
     private DialogCategorySelectInterface selectInterface = new DialogCategorySelectInterface() {
         @Override
         public void change(int id, String name) {
+            Log.i("CHANGE", "123");
             changeCategory(id,name);
         }
 
@@ -86,7 +88,6 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         initViews();
         initListener();
         InitializeLayout();
-
     }
 
     public void startFlag() {
@@ -148,6 +149,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         mRVCategory = findViewById(R.id.main_category_rv);
         mTvUserInfo = findViewById(R.id.main_user_info_tv);
         mTvNavigation = findViewById(R.id.main_hamburgerbar_tv);
+        mTvCount = findViewById(R.id.main_count_tv);
     }
 
     public void initListener() {
@@ -180,11 +182,15 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     }
     // set toolbar & main_view
 
-
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("MainStart", "1");
+    protected void onResume() {
+        super.onResume();
+        if(isFirst) {
+            isFirst = false;
+        }
+        else {
+            getCategory();
+        }
     }
 
     @Override
@@ -446,8 +452,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
 //                mTvUserInfo.setText(userName+"님의 리뷰\n"+animation.getAnimatedValue().toString()+"개가 모였습니다.");
-                String text = "<font color='#ffffff'>"+userName+"</font><font color='#bebebe'>"+"님의 리뷰<br>"+animation.getAnimatedValue().toString()+"개가 모였습니다."+"</font>";
-                mTvUserInfo.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+//                String text = "<font color='#ffffff'>"+userName+"</font><font color='#bebebe'>"+"님의 리뷰<br>"+animation.getAnimatedValue().toString()+"개가 모였습니다."+"</font>";
+                mTvCount.setText(animation.getAnimatedValue().toString()+"개가 모였습니다.");
             }
         });
         animator.start();

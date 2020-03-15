@@ -10,11 +10,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingTop="@dimen/dimenHeightPadding"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/dimenWidthPadding"
         android:paddingRight="@dimen/dimenWidthPadding"
-        android:paddingBottom="@dimen/dimenTopLayoutPadding">
+        android:paddingBottom="@dimen/dimenHeightPadding">
 
         <ImageView
             android:id="@+id/review_search_back_iv"

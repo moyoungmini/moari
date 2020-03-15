@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/dialog_category_delete_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textColor="#424242"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="@color/colorEditText"
+            android:textColor="@drawable/button_soft_text_black_selector_background"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
             android:gravity="center_horizontal"
@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="@color/colorEditText"
+            android:textColor="@drawable/button_text_pink_selector_background"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
             android:gravity="center_horizontal"

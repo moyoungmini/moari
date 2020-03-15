@@ -68,7 +68,6 @@ public class ReviewNonEditActivity extends SuperActivity {
         initViews();
         init();
         getCategory();
-        getReviewDetail(id);
 
         layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -83,6 +82,12 @@ public class ReviewNonEditActivity extends SuperActivity {
                 gravityLayout.setLayoutParams(params);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getReviewDetail(id);
     }
 
     public void init() {

@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimenWidthPadding"
-        android:paddingTop="@dimen/dimenTopLayoutPadding"
+        android:paddingTop="@dimen/dimenHeightPadding"
         android:paddingRight="@dimen/dimenWidthPadding"
-        android:paddingBottom="@dimen/dimenTopLayoutPadding">
+        android:paddingBottom="@dimen/dimenHeightPadding">
 
         <ImageView
             android:id="@+id/search_back_iv"

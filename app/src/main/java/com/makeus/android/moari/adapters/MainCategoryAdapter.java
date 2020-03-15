@@ -124,6 +124,7 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
             if(data.isSelct()) {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhite));
                 layout.setBackgroundResource(R.drawable.main_exist_img);
+//                layout.setBackgroundResource(R.color.colorBlack);
             }
             else {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhiteOpacity));

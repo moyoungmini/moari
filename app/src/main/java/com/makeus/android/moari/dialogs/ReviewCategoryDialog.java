@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RatingBar;
@@ -22,13 +23,15 @@ public class ReviewCategoryDialog implements View.OnClickListener{
     private DialogCategoryInterface mInetface;
     private ArrayList<TextView> mTvList  = new ArrayList<>();
     private ArrayList<CategoryData> mReceivedDataList;
+    private String selectStr;
 
     public Dialog mDialog;
 
-    public ReviewCategoryDialog(Context context, ArrayList<CategoryData> list, DialogCategoryInterface tmpInterface) {
+    public ReviewCategoryDialog(Context context, String txt, ArrayList<CategoryData> list, DialogCategoryInterface tmpInterface) {
         mContext = context;
         mReceivedDataList = list;
         mInetface = tmpInterface;
+        selectStr = txt;
 
         mDialog = new Dialog(mContext);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,6 +63,12 @@ public class ReviewCategoryDialog implements View.OnClickListener{
 
         for(int i=0;i<mReceivedDataList.size();i++){
             mTvList.get(i).setText(mReceivedDataList.get(i).categoryName);
+        }
+
+        for(int i=0;i<mReceivedDataList.size();i++) {
+            if(mTvList.get(i).getText().equals(selectStr)) {
+                mTvList.get(i).setTextColor(mContext.getResources().getColorStateList(R.color.colorEditPinkText));
+            }
         }
     }
 

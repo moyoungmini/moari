@@ -48,9 +48,9 @@ public class ReviewListActivity extends SuperActivity {
     private Activity activity;
     private Intent intent;
 
-    private int mPage = 0;
-    boolean mNoMoreItem = false;
-    boolean mLoadLock = false;
+    private int mPage;
+    boolean mNoMoreItem;
+    boolean mLoadLock;
     // for paging
 
     @Override
@@ -60,8 +60,6 @@ public class ReviewListActivity extends SuperActivity {
 
         initViews();
         init();
-        getReviewList();
-//        getUser();
     }
 
     public void init() {
@@ -101,15 +99,18 @@ public class ReviewListActivity extends SuperActivity {
                         }
                     }
                 }
-
             }
         });
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("onstart", "1");
+    protected void onResume() {
+        super.onResume();
+        mPage = 0;
+        mNoMoreItem = false;
+        mLoadLock = false;
+        mCategoryAdapter.clearData();
+        getReviewList();
     }
 
     @Override
@@ -153,6 +154,7 @@ public class ReviewListActivity extends SuperActivity {
                             mCategoryAdapter.notifyItemRangeChanged(0, mCategoryAdapter.getListData().size());
                             mPage += res.getResult().size();
                             mLoadLock = false;
+                            mCategoryAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -208,47 +210,4 @@ public class ReviewListActivity extends SuperActivity {
                 });
     }
 
-//    public void getUser() {
-//        MoariApp.getRetrofitMethod(getApplicationContext()).getUser()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<UserResponse>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        mCompositeDisposable.add(d);
-//                        showProgressDialog();
-//                    }
-//
-//                    @Override
-//                    public void onNext(final UserResponse res) {
-//                        if (res.getCode() == 200) {
-//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    mTvEmail.setText(res.getUserInfo().get(0).getEmail());
-//                                    mEtName.setText(res.getUserInfo().get(0).getName());
-//                                }
-//                            });
-//                        } else {
-//                            intent = new Intent(activity, LoginActivity.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
-//                        // go to login activity when token error
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Toast.makeText(getApplicationContext(), catchAllThrowable(getApplicationContext(), e), Toast.LENGTH_SHORT).show();
-//
-//                        dismissProgressDialog();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        dismissProgressDialog();
-//                    }
-//                });
-//    }
 }

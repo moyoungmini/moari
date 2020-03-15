@@ -10,8 +10,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="@dimen/dimenWidthPadding"
+        android:paddingTop="@dimen/dimenHeightPadding"
+        android:paddingRight="@dimen/dimenWidthPadding"
+        android:paddingBottom="@dimen/dimenHeightPadding"
         android:background="#262626"
         >
 
@@ -23,16 +25,16 @@
             android:stateListAnimator="@null">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/category_toolbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/curation_toolbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 />
         </com.google.android.material.appbar.AppBarLayout>
         <ImageView
-            android:id="@+id/category_logo_iv"
+            android:id="@+id/curation_logo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo_line"
+            android:src="@drawable/logo_non_line"
             android:layout_centerHorizontal="true"
             android:onClick="onClick"
             android:layout_centerVertical="true"/>
