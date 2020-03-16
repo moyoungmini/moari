@@ -60,7 +60,7 @@ import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.ReviewDetailResponse;
-import com.soundcloud.android.crop.Crop;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 
@@ -94,7 +94,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private static final int AFTER_SEVER_UPLOAD = 6; // using crop
     private int mMode = BEFORE_IMAGE; // use in onActivityResult function for distinguishing flag
     private Activity activity;
-    private Uri photoUri;
+    private Uri photoUri, savingUri;
     public static final String FILE_NAME = "temp.jpg";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MAX_DIMENSION = 1200;
@@ -112,6 +112,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private int postId; // 카테고리 아이디
     private float postRating; // 별점
     private int reviewId;
+
+    private File tmpFile;
 
     private DialogCategoryInterface mCategoryInterface = new DialogCategoryInterface() {
         @Override
@@ -193,12 +195,10 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             @Override
             public void onGlobalLayout() {
                 framelayout.setLayoutParams(new LinearLayout.LayoutParams(framelayout.getMeasuredWidth(), framelayout.getMeasuredWidth()));
-                float margin = (framelayout.getMeasuredWidth() - gravitySetLayout.getMeasuredHeight()) / 2;
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
-//                params.setMargins(0, (int)margin, 0, (int)margin);
                 gravitySetLayout.setLayoutParams(params);
             }
         });
@@ -216,7 +216,6 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         year = cal.get(cal.YEAR);
         month = cal.get(cal.MONTH);
         dates = cal.get(cal.DATE);
-
 //        mIvDelete.setVisibility(View.VISIBLE);
 
         loadingDialog = new LoadingDialog(this);
@@ -341,7 +340,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 postDate = postDate.replace(".", "-");
                 postDate = postDate.replace(" ", "");
 
-                if (photoUri == null) {
+                if (savingUri == null) {
                     if (postUri == "" || postUri == null) {
                         postUri = "";
                     }
@@ -349,7 +348,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     // 기존에 있는거 있을수도 있어 이말이야..
                 } else {
                     try {
-                        uploadFileToFireBase(photoUri);
+                        uploadFileToFireBase(savingUri);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         return;
@@ -390,13 +389,13 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 ReviewRatingDialog dialog = new ReviewRatingDialog(activity, postRating, mRatingInterface);
                 break;
             case R.id.review_edit_category_tv:
-                ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity,mTvCategory.getText().toString(), mCategoryList, mCategoryInterface);
+                ReviewCategoryDialog categoryDialog = new ReviewCategoryDialog(activity, mTvCategory.getText().toString(), mCategoryList, mCategoryInterface);
                 break;
             case R.id.review_edit_exit_iv:
-                ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, 0,mExitInterface);
+                ReviewEditExitDialog exitDialog = new ReviewEditExitDialog(activity, 0, mExitInterface);
                 break;
             case R.id.review_edit_delete_iv:
-                ReviewEditExitDialog deleteDialog = new ReviewEditExitDialog(activity, 1,mExitInterface);
+                ReviewEditExitDialog deleteDialog = new ReviewEditExitDialog(activity, 1, mExitInterface);
                 break;
         }
     }
@@ -463,9 +462,18 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         }
         // 카메라 선택후 뒤로가기했을때 처리
 
-
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+
+            if(tmpFile != null) {
+                if (tmpFile.exists()) {
+
+                    if (tmpFile.delete()) {
+                        Log.e(TAG, tmpFile.getAbsolutePath() + " 삭제 성공");
+                        tmpFile = null;
+                    }
+                }
+            }
         }
         if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
@@ -474,17 +482,18 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             photoUri = data.getData();
             cropImage();
         } else if (requestCode == PICK_FROM_CAMERA) {
+//            photoUri = Uri.fromFile(tmpFile);
             cropImage();
-            MediaScannerConnection.scanFile(this, //앨범에 사진을 보여주기 위해 Scan을 합니다.
-                    new String[]{photoUri.getPath()}, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                        public void onScanCompleted(String path, Uri uri) {
-                        }
-                    });
+//            MediaScannerConnection.scanFile(this, //앨범에 사진을 보여주기 위해 Scan을 합니다.
+//                    new String[]{photoUri.getPath()}, null,
+//                    new MediaScannerConnection.OnScanCompletedListener() {
+//                        public void onScanCompleted(String path, Uri uri) {
+//                        }
+//                    });
         } else if (requestCode == CROP_FROM_CAMERA) {
             try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
 
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), savingUri);
                 Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 800, 800);
                 ByteArrayOutputStream bs = new ByteArrayOutputStream();
                 thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
@@ -496,9 +505,29 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
             } catch (Exception e) {
             }
             Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
-            if (data != null) {
-                uploadImage(data.getData());
+//            if (data != null) {
+//                uploadImage(data.getData());
+//            }
+        } else if (requestCode ==  UCrop.REQUEST_CROP) {
+            //set image
+            Log.i("CROPSDF", "!");
+            try { //저는 bitmap 형태의 이미지로 가져오기 위해 아래와 같이 작업하였으며 Thumbnail을 추출하였습니다.
+                Uri savingUri = UCrop.getOutput(data);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), savingUri);
+//                bitmap = rotate(bitmap,90);
+                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 800, 800);
+                ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
+
+                mIvPictureShow.setImageBitmap(thumbImage);
+                mIvShadow.setVisibility(View.VISIBLE);
+                mMode = AFTER_IMAGE;
+            } catch (Exception e) {
             }
+            Uri photoUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", getCameraFile());
+//            if (data != null) {
+//                uploadImage(data.getData());
+//            }
         }
     }
 
@@ -559,70 +588,17 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-//    public void cropImage() {
-//        this.grantUriPermission("com.android.camera", photoUri,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(photoUri, "image/*");
-//
-//        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-//        grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        int size = list.size();
-//        if (size == 0) {
-//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-//            return;
-//        } else {
-//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            intent.putExtra("crop", "true");
-//            intent.putExtra("aspectX", 1);
-//            intent.putExtra("aspectY", 1);
-//            intent.putExtra("scale", true);
-//            File croppedFileName = null;
-//            try {
-//                croppedFileName = createImageFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//
-//            File folder = new File(Environment.getExternalStorageDirectory() + "/inha/");
-//            File tempFile = new File(folder.toString(), croppedFileName.getName());
-//
-//            photoUri = FileProvider.getUriForFile(this,
-//                    "com.makeus.android.moari.provider", tempFile);
-//
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//
-//
-//            intent.putExtra("return-data", false);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
-//
-//            Intent i = new Intent(intent);
-//            ResolveInfo res = list.get(0);
-//            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            grantUriPermission(res.activityInfo.packageName, photoUri,
-//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-//            startActivityForResult(i, CROP_FROM_CAMERA);
-//
-//        }
-//
-//    }
-
     public void cropImage() {
+        Log.d(TAG, "tempFile : " + tmpFile);
 
-        File tempFile = null;
-        if(tempFile == null) {
+
+
+        /**
+         *  갤러리에서 선택한 경우에는 tempFile 이 없으므로 새로 생성해줍니다.
+         */
+        if(tmpFile == null) {
             try {
-                tempFile = createImageFile();
+                tmpFile = createImageFile();
             } catch (IOException e) {
                 Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                 finish();
@@ -631,67 +607,14 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         }
 
         //크롭 후 저장할 Uri
-        Uri savingUri = Uri.fromFile(tempFile);
+        savingUri = Uri.fromFile(tmpFile);
 
-        Crop.of(photoUri, savingUri).asSquare().start(this);
-
-
-//        this.grantUriPermission("com.android.camera", photoUri,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        Intent intent = new Intent("com.android.camera.action.CROP");
-//        intent.setDataAndType(photoUri, "image/*");
-//
-//        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-//        grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
-//                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        int size = list.size();
-//        if (size == 0) {
-//            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-//            return;
-//        } else {
-//            Toast.makeText(this, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.", Toast.LENGTH_SHORT).show();
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            intent.putExtra("crop", "true");
-//            intent.putExtra("aspectX", 1);
-//            intent.putExtra("aspectY", 1);
-//            intent.putExtra("scale", true);
-//            File croppedFileName = null;
-//            try {
-//                croppedFileName = createImageFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//
-//
-//            File folder = new File(Environment.getExternalStorageDirectory() + "/inha/");
-//            File tempFile = new File(folder.toString(), croppedFileName.getName());
-//
-//            photoUri = FileProvider.getUriForFile(this,
-//                    "com.makeus.android.moari.provider", tempFile);
-//
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//
-//
-//            intent.putExtra("return-data", false);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
-//
-//            Intent i = new Intent(intent);
-//            ResolveInfo res = list.get(0);
-//            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            grantUriPermission(res.activityInfo.packageName, photoUri,
-//                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//
-//            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-//            startActivityForResult(i, CROP_FROM_CAMERA);
-
-//        }
+        UCrop.of(photoUri, savingUri)
+                .withAspectRatio(16, 16)
+                .start(activity);
 
     }
+
 
     void uploadFileToFireBase(Uri mImageUri) throws JSONException {
         final LoadingDialog loadingDialog = new LoadingDialog(activity);
@@ -879,10 +802,9 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     }
 
     public void eidtReview() {
-        if(reviewId == -1) {
+        if (reviewId == -1) {
             postReview();
-        }
-        else {
+        } else {
             updateReview();
         }
     }
@@ -910,7 +832,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                             mTvDate.setText(tmpDate);
                             if (data.getReviewDate().length() >= 10) {
                                 year = Integer.parseInt(data.getReviewDate().substring(0, 4));
-                                month = Integer.parseInt(data.getReviewDate().substring(5, 7))-1;
+                                month = Integer.parseInt(data.getReviewDate().substring(5, 7)) - 1;
                                 dates = Integer.parseInt(data.getReviewDate().substring(8, 10));
                                 Log.i("TESF", String.valueOf(year));
                                 Log.i("TESF", String.valueOf(month));

@@ -48,7 +48,10 @@
         <activity android:name=".activities.ReviewListActivity"/>
         <activity android:name=".activities.ReviewNonEditActivity"/>
         <activity android:name=".activities.ReviewSearchActivity"/>
-        <activity  android:name="com.soundcloud.android.crop.CropImageActivity"/>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
