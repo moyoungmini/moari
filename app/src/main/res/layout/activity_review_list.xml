@@ -32,7 +32,6 @@
             android:fontFamily="@font/noto_light_font"
             android:includeFontPadding="false"
             android:gravity="center"
-            android:text="나의하루"
             android:textColor="@color/colorSearchText"
             android:textSize="18sp" />
 

@@ -70,10 +70,12 @@ public class LoginActivity extends SuperActivity {
             case R.id.login_to_search_tv:
                 intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
             case R.id.login_to_signup_tv:
                 intent = new Intent(this, SignupActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
 
         }
@@ -113,6 +115,7 @@ public class LoginActivity extends SuperActivity {
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
+                                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                                 finish();
                             } else {
                                 Toast.makeText(LoginActivity.this, "receive token error", Toast.LENGTH_SHORT).show();

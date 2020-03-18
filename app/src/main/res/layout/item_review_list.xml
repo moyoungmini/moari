@@ -4,7 +4,7 @@
     android:id="@+id/main_category_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/review_list_item_bk"
+    android:src="@drawable/review_list_item_bk"
     android:gravity="center">
 
     <ImageView
@@ -33,7 +33,6 @@
             android:fontFamily="@font/noto_light_font"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="5sp"
-            android:text="제목은 25자 제한 어떠신가요? 띄어쓰기도?"
             android:textColor="#ffffff"
             android:textSize="18sp" />
 

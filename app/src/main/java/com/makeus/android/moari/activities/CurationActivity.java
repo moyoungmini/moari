@@ -20,6 +20,8 @@ import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.CurationAdapter;
 import com.makeus.android.moari.datas.CurationData;
+import com.makeus.android.moari.dialogs.AppFinishDialog;
+import com.makeus.android.moari.interfaces.DialogAppFinishInterface;
 import com.makeus.android.moari.responses.CurationResponse;
 
 import java.util.ArrayList;
@@ -39,7 +41,13 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     private CurationAdapter mCurationAdapter;
     private ImageView mIvLogo;
     private Toolbar mToolbar;
-    ArrayList<CurationData> list = new ArrayList<>();
+    private ArrayList<CurationData> list = new ArrayList<>();
+    private DialogAppFinishInterface finishInterface = new DialogAppFinishInterface() {
+        @Override
+        public void appFinish() {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,21 +79,26 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
             case R.id.category_search_tv:
                 intent = new Intent(this, ReviewSearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_in_right);
                 break;
             case R.id.category_change_tv:
                 intent = new Intent(this, MypageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_in_right);
                 break;
             case R.id.category_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_in_up);
                 break;
             case R.id.curation_logo_iv:
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+                finish();
+                break;
             case R.id.curation_instagram_tv:
                 Uri uri = Uri.parse("https://www.instagram.com/moari_review/?hl=ko");
                 Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
@@ -144,10 +157,12 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            AppFinishDialog dialog = new AppFinishDialog(this, finishInterface);
         }
     }
     // set navigation drawaer backpress
+
+
 
     public void getCur() {
         MoariApp.getRetrofitMethod(getApplicationContext()).getCuration()

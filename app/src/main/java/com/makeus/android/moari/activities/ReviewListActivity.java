@@ -42,15 +42,15 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 public class ReviewListActivity extends SuperActivity {
     private TextView mTvCategory;
     private RecyclerView mRVCategory;
-    private ReviewListAdapter mCategoryAdapter;
+    public ReviewListAdapter mCategoryAdapter;
     private int categoryId;
     private String categoryName;
-    private Activity activity;
+    private ReviewListActivity activity;
     private Intent intent;
 
-    private int mPage;
-    boolean mNoMoreItem;
-    boolean mLoadLock;
+    public int mPage;
+    public boolean mNoMoreItem;
+    public boolean mLoadLock;
     // for paging
 
     @Override
@@ -120,11 +120,19 @@ public class ReviewListActivity extends SuperActivity {
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                 break;
             case R.id.review_list_back_iv:
                 finish();
+                overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
     }
 
     @Override

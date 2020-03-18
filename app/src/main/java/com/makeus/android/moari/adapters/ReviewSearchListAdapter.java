@@ -7,28 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
-import com.makeus.android.moari.activities.ReviewEditActivity;
 import com.makeus.android.moari.activities.ReviewListActivity;
 import com.makeus.android.moari.activities.ReviewNonEditActivity;
-import com.makeus.android.moari.datas.CategoryData;
-import com.makeus.android.moari.datas.CurationData;
+import com.makeus.android.moari.activities.ReviewSearchActivity;
 import com.makeus.android.moari.datas.ReviewListData;
-import com.makeus.android.moari.dialogs.CategoryChangeDialog;
-import com.makeus.android.moari.dialogs.CategorySelectDialog;
 import com.makeus.android.moari.dialogs.ReviewEditExitDialog;
-import com.makeus.android.moari.dialogs.SignupDialog;
-import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 
@@ -41,10 +33,10 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
-public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ItemViewHolder> {
+public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchListAdapter.ItemViewHolder> {
 
     private int deleteId = -1;
-    private ReviewListActivity activity;
+    private ReviewSearchActivity activity;
     private ArrayList<ReviewListData> listData = new ArrayList<>();
     private DialogReviewExitInterface mDeleteInterface = new DialogReviewExitInterface() {
         @Override
@@ -58,8 +50,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
         }
     };
 
-    public ReviewListAdapter(Activity activity) {
-        this.activity = (ReviewListActivity) activity;
+    public ReviewSearchListAdapter(Activity activity) {
+        this.activity = (ReviewSearchActivity) activity;
     }
     // constructor
 

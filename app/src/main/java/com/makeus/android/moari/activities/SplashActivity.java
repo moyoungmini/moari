@@ -55,7 +55,7 @@ public class SplashActivity extends SuperActivity {
                     finish();
                 }
             }
-        }, 1);
+        }, 1000);
     }
 
     public String getVersionInfo(Context context) {

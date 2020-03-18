@@ -24,7 +24,6 @@
             android:fontFamily="@font/noto_light_font"
             android:paddingTop="50dp"
             android:paddingBottom="50dp"
-            android:text="가입이 완료되었습니다!"
             android:textSize="17sp"
             android:textColor="#4b4b4b"
             android:gravity="center"

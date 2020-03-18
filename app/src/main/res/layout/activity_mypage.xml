@@ -72,7 +72,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="gamgsung@moari.com"
             android:textColor="@color/colorBlack"
             android:layout_marginTop="8dp"
             android:textSize="18sp" />

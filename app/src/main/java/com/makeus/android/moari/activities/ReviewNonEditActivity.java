@@ -100,6 +100,7 @@ public class ReviewNonEditActivity extends SuperActivity {
         switch (v.getId()) {
             case R.id.review_non_edit_back_iv:
                 finish();
+                overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                 break;
             case R.id.review_non_edit_pencil_iv:
                 Intent intent = new Intent(this, ReviewEditActivity.class);
@@ -107,6 +108,7 @@ public class ReviewNonEditActivity extends SuperActivity {
                 intent.putExtra("flag", 1);
                 finish();
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                 break;
             case R.id.review_non_edit_share_iv:
                 viewToJPG();
@@ -153,6 +155,12 @@ public class ReviewNonEditActivity extends SuperActivity {
        layout = findViewById(R.id.review_non_edit_layout);
        gravityLayout = findViewById(R.id.review_non_edit_gravity_layout);
        mIvShadow = findViewById(R.id.review_non_edit_shadow_iv);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        activity.overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
     }
 
     public void setRate(float rate) {

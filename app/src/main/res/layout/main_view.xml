@@ -68,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_light_font"
                 android:includeFontPadding="false"
-                android:text="감성님의"
                 android:textColor="@color/colorWhite"
                 android:textSize="28sp" />
             <TextView
@@ -76,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_thin_font"
                 android:includeFontPadding="false"
-                android:text=" 리뷰"
                 android:textColor="@color/colorWhite"
                 android:textSize="28sp" />
         </LinearLayout>
@@ -86,7 +84,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/noto_thin_font"
             android:includeFontPadding="false"
-            android:text=" 20개가 모였습니다."
             android:textColor="@color/colorWhite"
             android:layout_marginLeft="@dimen/dimenWidthPadding"
             android:layout_marginRight="@dimen/dimenWidthPadding"

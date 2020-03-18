@@ -172,6 +172,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         @Override
         public void exit() {
             finish();
+            overridePendingTransition(R.anim.amin_slide_in_up, R.anim.amin_slide_out_down);
         }
 
         @Override
@@ -738,6 +739,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
                         if (res.getCode() == 200) {
                             finish();
+                            overridePendingTransition(R.anim.amin_slide_in_up, R.anim.amin_slide_out_down);
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }

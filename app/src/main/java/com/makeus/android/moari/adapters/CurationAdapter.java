@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.activities.ReviewEditActivity;
+import com.makeus.android.moari.activities.ReviewNonEditActivity;
 import com.makeus.android.moari.datas.CurationData;
 
 import java.util.ArrayList;
@@ -86,10 +87,11 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
                 @Override
                 public void onClick(View v) {
                     int id = listData.get(getAdapterPosition()).getIdboard();
-                    Intent intent = new Intent(activity, ReviewEditActivity.class);
+                    Intent intent = new Intent(activity, ReviewNonEditActivity.class);
                     intent.putExtra("id", id);
-                    intent.putExtra("flag",1); // update
+//                    intent.putExtra("flag",1); // update
                     activity.startActivity(intent);
+                    activity.overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                     Log.i("CLICKLAYOUT", String.valueOf(getAdapterPosition()));
 
                 }

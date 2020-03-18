@@ -90,6 +90,7 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
                         intent.putExtra("categoryId",listData.get(position).getIdcategory());
                         intent.putExtra("categoryName",listData.get(position).getCategoryName());
                         activity.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                         Log.i("CLICK", "YES");
                     }
                     // intent 시작
@@ -123,12 +124,14 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
             category.setText(data.getCategoryName());
             if(data.isSelct()) {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhite));
-                layout.setBackgroundResource(R.drawable.main_exist_img);
+//                layout.setBackgroundResource(R.drawable.main_exist_img);
+                layout.setBackgroundResource(R.drawable.main_category_exist_background);
 //                layout.setBackgroundResource(R.color.colorBlack);
             }
             else {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhiteOpacity));
-                layout.setBackgroundResource(R.drawable.main_empty_img);
+//                layout.setBackgroundResource(R.drawable.main_empty_img);
+                layout.setBackgroundResource(R.drawable.main_category_empty_background);
             }
 
         }

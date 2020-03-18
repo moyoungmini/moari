@@ -58,6 +58,7 @@ public class MypageActivity extends SuperActivity {
             Intent intent = new Intent(activity, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // set intent flag
             startActivity(intent);
+            overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
         }
     };
     // dialog interface
@@ -81,6 +82,7 @@ public class MypageActivity extends SuperActivity {
         switch (v.getId()) {
             case R.id.mypage_back_iv:
                 finish();
+                overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                 break;
             case R.id.mypage_check_iv:
                 String name = mEtName.getText().toString();
@@ -166,6 +168,12 @@ public class MypageActivity extends SuperActivity {
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
+    }
+
     public void update() {
 
         JsonObject params = new JsonObject();
@@ -198,6 +206,7 @@ public class MypageActivity extends SuperActivity {
 
                             intent = new Intent(activity, LoginActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                             finish();
                         }
                     }
@@ -235,6 +244,7 @@ public class MypageActivity extends SuperActivity {
                         if (res.getCode() == 200) {
                             intent = new Intent(activity, LoginActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                             finish();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();

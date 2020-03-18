@@ -30,7 +30,9 @@ import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.MainCategoryAdapter;
 import com.makeus.android.moari.datas.CategoryData;
 import com.makeus.android.moari.datas.CategoryUserInfoData;
+import com.makeus.android.moari.dialogs.AppFinishDialog;
 import com.makeus.android.moari.dialogs.SignupDialog;
+import com.makeus.android.moari.interfaces.DialogAppFinishInterface;
 import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
@@ -78,6 +80,13 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
             plusCategory(name);
         }
     };
+    private DialogAppFinishInterface finishInterface = new DialogAppFinishInterface() {
+        @Override
+        public void appFinish() {
+            finish();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,21 +120,25 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
             case R.id.main_search_tv:
                 intent = new Intent(this, ReviewSearchActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
             case R.id.main_change_tv:
                 intent = new Intent(this, MypageActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
             case R.id.main_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert
                 startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                 break;
             case R.id.main_logo_iv:
                 Intent intent = new Intent(this, CurationActivity.class);
                 startActivity(intent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+                finish();
                 break;
             case R.id.main_instagram_tv:
                 Uri uri = Uri.parse("https://www.instagram.com/moari_review/?hl=ko");
@@ -199,7 +212,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            AppFinishDialog dialog = new AppFinishDialog(activity, finishInterface);
         }
     }
     // set navigation drawaer backpress
@@ -310,6 +323,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
 
 //                            String text = "<b>"+userName+"</b>"+"님의<br>"+"모아 놓은 리뷰"+"";
 //                            mTvNavigation.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+                            mTvUserInfo.setText(userName+"님의");
                             mTvNavigation.setText(userName+"님의");
                             startCounterAnimator();
                         } else {

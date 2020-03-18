@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.ReviewListAdapter;
+import com.makeus.android.moari.adapters.ReviewSearchListAdapter;
 import com.makeus.android.moari.responses.ReviewListResponse;
 
 import io.reactivex.Observer;
@@ -32,13 +33,13 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 public class ReviewSearchActivity extends SuperActivity {
     private EditText mEtSearch;
     private RecyclerView mRVCategory;
-    private ReviewListAdapter mCategoryAdapter;
-    private Activity activity;
+    public ReviewSearchListAdapter mCategoryAdapter;
+    public Activity activity;
     private Intent intent;
 
-    private int mPage = 0;
-    boolean mNoMoreItem = false;
-    boolean mLoadLock = false;
+    public int mPage = 0;
+    public boolean mNoMoreItem = false;
+    public boolean mLoadLock = false;
     // for paging
 
     @Override
@@ -70,7 +71,7 @@ public class ReviewSearchActivity extends SuperActivity {
         activity =this;
 
         mRVCategory.setLayoutManager(new GridLayoutManager(activity,2));
-        mCategoryAdapter = new ReviewListAdapter(activity);
+        mCategoryAdapter = new ReviewSearchListAdapter(activity);
         mRVCategory.setAdapter(mCategoryAdapter);
         mRVCategory.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -109,6 +110,7 @@ public class ReviewSearchActivity extends SuperActivity {
         switch (v.getId()) {
             case R.id.review_search_back_iv:
                finish();
+                overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                 break;
             case R.id.review_search_erase_iv:
                 mEtSearch.setText("");

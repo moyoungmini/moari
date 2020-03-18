@@ -44,6 +44,7 @@ public class SearchActivity extends SuperActivity {
         switch (v.getId()) {
             case R.id.search_back_iv:
                 finish();
+                overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
                 break;
             case R.id.search_email_check_btn:
                 validationUser();
@@ -52,6 +53,12 @@ public class SearchActivity extends SuperActivity {
                 temporaryPw();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
     }
 
     public void init() {

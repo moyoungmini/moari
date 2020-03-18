@@ -25,4 +25,8 @@
     <color name="colorShadowBackground">#f22f2f2f</color>
     <color name="colorShadowUploadBackground">#80000000</color>
     <color name="colorReviewItemPress">#b3000000</color>
+    <color name="colorExistNonPress">#33FFFFFF</color>
+    <color name="colorExistPress">#0DFFFFFF</color>
+    <color name="colorEmptyNonPress">#1AFFFFFF</color>
+    <color name="colorEmptyPress">#0DFFFFFF</color>
 </resources>
