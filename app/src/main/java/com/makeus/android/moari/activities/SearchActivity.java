@@ -76,6 +76,9 @@ public class SearchActivity extends SuperActivity {
 
     public void validationUser() {
 
+        if(mEtEmail.getText().equals("")) {
+            return;
+        }
         JsonObject params = new JsonObject();
         params.addProperty("email", mEtEmail.getText().toString());
 

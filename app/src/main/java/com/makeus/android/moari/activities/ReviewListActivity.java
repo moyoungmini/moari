@@ -119,6 +119,7 @@ public class ReviewListActivity extends SuperActivity {
             case R.id.review_list_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert
+                intent.putExtra("categoryId", categoryId);
                 startActivity(intent);
                 overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                 break;

@@ -253,6 +253,15 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 .into(mIvPictureShow);
         mIvShadow.setVisibility(View.INVISIBLE);
 
+        postId = getIntent().getIntExtra("categoryId", -1);
+        if(postId != -1) {
+            for (int i = 0; i < mCategoryList.size(); i++) {
+                if (postId == mCategoryList.get(i).getIdcategory()) {
+                    mTvCategory.setText(mCategoryList.get(i).categoryName);
+                    break;
+                }
+            }
+        }
     }
 
     private boolean checkPermissions() {
@@ -621,7 +630,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         final LoadingDialog loadingDialog = new LoadingDialog(activity);
         showProgressDialog();
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference storageRef = storage.getReferenceFromUrl("gs://fir-login-4684d.appspot.com/").child("user/" + mImageUri.getLastPathSegment());
+        final StorageReference storageRef = storage.getReferenceFromUrl("gs://moari-c6769.appspot.com/").child("android/" + mImageUri.getLastPathSegment());
         UploadTask uploadTask = storageRef.putFile(mImageUri);
         storageRef.putFile(mImageUri)
                 //성공시

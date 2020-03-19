@@ -36,7 +36,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:onClick="onClick"
-            android:src="@drawable/logo_non_line" />
+            android:src="@drawable/main_logo_line_img" />
 
         <ImageView
             android:id="@+id/main_plus_iv"
@@ -76,6 +76,7 @@
                 android:fontFamily="@font/noto_thin_font"
                 android:includeFontPadding="false"
                 android:textColor="@color/colorWhite"
+                android:text="님의 리뷰"
                 android:textSize="28sp" />
         </LinearLayout>
         <TextView

@@ -323,8 +323,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
 
 //                            String text = "<b>"+userName+"</b>"+"님의<br>"+"모아 놓은 리뷰"+"";
 //                            mTvNavigation.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-                            mTvUserInfo.setText(userName+"님의");
-                            mTvNavigation.setText(userName+"님의");
+                            mTvUserInfo.setText(userName);
+                            mTvNavigation.setText(userName);
                             startCounterAnimator();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();

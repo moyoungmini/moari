@@ -1,35 +1,42 @@
 {
   "project_info": {
-    "project_number": "8855869623",
-    "firebase_url": "https://fir-login-4684d.firebaseio.com",
-    "project_id": "fir-login-4684d",
-    "storage_bucket": "fir-login-4684d.appspot.com"
+    "project_number": "815359526367",
+    "firebase_url": "https://moari-c6769.firebaseio.com",
+    "project_id": "moari-c6769",
+    "storage_bucket": "moari-c6769.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:8855869623:android:62a6518c6a68413f409532",
+        "mobilesdk_app_id": "1:815359526367:android:94ef4b488062788969706a",
         "android_client_info": {
           "package_name": "com.makeus.android.moari"
         }
       },
       "oauth_client": [
         {
-          "client_id": "8855869623-n5ogd0a8jkl17ajhf6r8l21qu73npr6h.apps.googleusercontent.com",
+          "client_id": "815359526367-n4rqlb6insnonlq262nr1ia56cu8epvf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBTJ-TdKn0gki49hPVTJyWIKPbhWTLsmdQ"
+          "current_key": "AIzaSyBDeB3bJIIYvnmlp_252z2k3966J12ILow"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "8855869623-n5ogd0a8jkl17ajhf6r8l21qu73npr6h.apps.googleusercontent.com",
+              "client_id": "815359526367-n4rqlb6insnonlq262nr1ia56cu8epvf.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "815359526367-3f3bmgpq0k4jc2bvmj2acsm47qb71i9d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.softsquared.ios.Moari"
+              }
             }
           ]
         }
