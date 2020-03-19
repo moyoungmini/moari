@@ -136,7 +136,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
             case R.id.main_logo_iv:
                 Intent intent = new Intent(this, CurationActivity.class);
                 startActivity(intent);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                 finish();
                 break;

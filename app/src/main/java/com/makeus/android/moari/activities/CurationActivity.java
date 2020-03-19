@@ -79,22 +79,22 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
             case R.id.category_search_tv:
                 intent = new Intent(this, ReviewSearchActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_in_right);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
             case R.id.category_change_tv:
                 intent = new Intent(this, MypageActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_in_right);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
             case R.id.category_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert
                 startActivity(intent);
-                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_in_up);
+                overridePendingTransition(R.anim.amin_slide_in_down, R.anim.amin_slide_out_up);
                 break;
             case R.id.curation_logo_iv:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                 finish();

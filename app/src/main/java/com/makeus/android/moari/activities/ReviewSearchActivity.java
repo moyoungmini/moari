@@ -124,6 +124,12 @@ public class ReviewSearchActivity extends SuperActivity {
         mEtSearch = findViewById(R.id.review_search_et);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.amin_slide_in_right, R.anim.amin_slide_out_left);
+    }
+
     public void getReviewList() {
         MoariApp.getRetrofitMethod(getApplicationContext()).getSearchList(mPage, mEtSearch.getText().toString())
                 .subscribeOn(Schedulers.io())
