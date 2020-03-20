@@ -58,20 +58,6 @@ public class MoariApp extends Application {
         return retrofit.create(RetrofitInterface.class);
     }
 
-//    public static String catchAllException(final Context context, final Exception exception) {
-//        if (exception instanceof NullPointerException) {
-//            return context.getString(R.string.error_null);
-//        } else if (exception instanceof ConnectException) {
-//            return context.getString(R.string.error_network);
-//        } else {
-//            return context.getString(R.string.error_default);
-//            //개발할때 쓰던 코드
-////            return exception.getMessage();
-//        }
-//    }
-
-
-
     public static String catchAllThrowable(final Context context, final Throwable throwable) {
         if (throwable instanceof NullPointerException) {
             return context.getString(R.string.error_null);

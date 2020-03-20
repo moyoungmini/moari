@@ -45,6 +45,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:onClick="onClick"
+            android:padding="5dp"
             android:src="@drawable/plus_img" />
 
     </RelativeLayout>

@@ -112,7 +112,6 @@ public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchLi
                     intent.putExtra("id", listData.get(position).idboard);
                     activity.startActivity(intent);
                     activity.overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
-                    // 리뷰 상세 수정x인걸로 ㄱㄱ
                 }
             });
 
@@ -124,7 +123,6 @@ public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchLi
                     return true;
                 }
             });
-            // item click method
         }
 
         void onBind(ReviewListData data) {
@@ -171,14 +169,13 @@ public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchLi
                 rank.setImageResource(R.drawable.rate_white_30);
             }
 
-            title.setText(data.getTitle().toString());
+            title.setText(data.getTitle());
 
         }
         // set views
     }
 
     public void deleteReview(int id) {
-        Log.i("delete", String.valueOf(id));
         MoariApp.getRetrofitMethod(activity.getApplicationContext()).deleteReview(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

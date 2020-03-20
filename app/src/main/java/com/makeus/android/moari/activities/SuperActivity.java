@@ -36,19 +36,6 @@ public abstract class SuperActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility( uiOption );
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-////        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-//
-//    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        Log.i("YES", "DF");
-//    }
-
     public void showProgressDialog() {
         if(pd == null)
             pd = new ProgressDialog(this);

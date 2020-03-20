@@ -2,43 +2,28 @@ package com.makeus.android.moari.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
-import com.makeus.android.moari.activities.ReviewEditActivity;
 import com.makeus.android.moari.activities.ReviewListActivity;
 import com.makeus.android.moari.activities.ReviewNonEditActivity;
-import com.makeus.android.moari.datas.CategoryData;
-import com.makeus.android.moari.datas.CurationData;
 import com.makeus.android.moari.datas.ReviewListData;
-import com.makeus.android.moari.dialogs.CategoryChangeDialog;
-import com.makeus.android.moari.dialogs.CategorySelectDialog;
 import com.makeus.android.moari.dialogs.ReviewEditExitDialog;
-import com.makeus.android.moari.dialogs.SignupDialog;
-import com.makeus.android.moari.interfaces.DialogCategorySelectInterface;
 import com.makeus.android.moari.interfaces.DialogReviewExitInterface;
 import com.makeus.android.moari.responses.BasicResponse;
-
 import java.util.ArrayList;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ItemViewHolder> {
@@ -179,14 +164,13 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                 rank.setImageResource(R.drawable.rate_white_30);
             }
 
-            title.setText(data.getTitle().toString());
+            title.setText(data.getTitle());
 
         }
         // set views
     }
 
     public void deleteReview(int id) {
-        Log.i("delete", String.valueOf(id));
         MoariApp.getRetrofitMethod(activity.getApplicationContext()).deleteReview(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

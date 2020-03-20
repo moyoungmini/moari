@@ -4,12 +4,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -23,14 +20,11 @@ import com.makeus.android.moari.datas.CurationData;
 import com.makeus.android.moari.dialogs.AppFinishDialog;
 import com.makeus.android.moari.interfaces.DialogAppFinishInterface;
 import com.makeus.android.moari.responses.CurationResponse;
-
 import java.util.ArrayList;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class CurationActivity extends SuperActivity implements View.OnClickListener {
@@ -39,8 +33,6 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
     private Intent intent;
     private ViewPager2 mViewPager;
     private CurationAdapter mCurationAdapter;
-    private ImageView mIvLogo;
-    private Toolbar mToolbar;
     private ArrayList<CurationData> list = new ArrayList<>();
     private DialogAppFinishInterface finishInterface = new DialogAppFinishInterface() {
         @Override
@@ -94,7 +86,6 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
                 break;
             case R.id.curation_logo_iv:
                 intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                 finish();
@@ -119,7 +110,6 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
         mTvSearch = findViewById(R.id.category_search_tv);
         mTvChange = findViewById(R.id.category_change_tv);
         mViewPager = findViewById(R.id.category_viewpager);
-        mIvLogo = findViewById(R.id.curation_logo_iv);
     }
 
     public void initListener() {
@@ -179,7 +169,6 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
                     public void onNext(final CurationResponse res) {
                         if (res.getCode() == 200) {
                             list = res.getResult();
-                            Log.i("TESF", "SDV");
                             init();
                         }
                         else {

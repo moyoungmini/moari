@@ -1,6 +1,5 @@
 package com.makeus.android.moari.activities;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,18 +8,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.responses.LoginResponse;
-
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
-
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -121,7 +117,6 @@ public class LoginActivity extends SuperActivity {
                                 Toast.makeText(LoginActivity.this, "receive token error", Toast.LENGTH_SHORT).show();
                             }
                             // token error but login success
-                            //
                         } else if (res.getCode() == 403) {
                             SharedPreferences mSharedPreferences = LoginActivity.this.getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = mSharedPreferences.edit();

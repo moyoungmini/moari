@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/plus_img"
+            android:padding="5dp"
             android:onClick="onClick"
             android:layout_alignParentRight="true"/>
 

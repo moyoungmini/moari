@@ -1,7 +1,5 @@
 package com.makeus.android.moari;
 
-
-
 import com.makeus.android.moari.responses.BasicResponse;
 import com.makeus.android.moari.responses.CategoryResponse;
 import com.makeus.android.moari.responses.CurationResponse;
@@ -10,7 +8,6 @@ import com.makeus.android.moari.responses.ReviewDetailResponse;
 import com.makeus.android.moari.responses.ReviewListResponse;
 import com.makeus.android.moari.responses.SignupResponse;
 import com.makeus.android.moari.responses.UserResponse;
-
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -21,9 +18,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-/**
- * Retrofit에서 사용하는 통신 인터페이스
- */
+
 public interface RetrofitInterface {
 
     @POST("app/signup")

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -91,15 +92,10 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
                         intent.putExtra("categoryName",listData.get(position).getCategoryName());
                         activity.startActivity(intent);
                         activity.overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
-                        Log.i("CLICK", "YES");
                     }
-                    // intent 시작
-                    // 존재 o - 해당 카테고리로 들어간다.
                     else {
                         CategoryChangeDialog plusDialog = new CategoryChangeDialog(activity, -1, "", selectInterface);
-                        Log.i("CLICK", "NO");
                     }
-                    // 존재 x - 카테고리 추가
 
                 }
             });
@@ -109,6 +105,10 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
                 @Override
                 public boolean onLongClick(View v) {
                     if (listData.get(getAdapterPosition()).isSelct()) {
+                        if(listData.get(getAdapterPosition()).getIdcategory()<5) {
+                            Toast.makeText(activity, "기본카테고리 항목을 수정/삭제 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
                         CategorySelectDialog selectDialog = new CategorySelectDialog(activity, listData.get(getAdapterPosition()).getIdcategory(), listData.get(getAdapterPosition()).getCategoryName(), selectInterface);
                     }
                     return true;
@@ -120,17 +120,13 @@ public class MainCategoryAdapter extends RecyclerView.Adapter<MainCategoryAdapte
         void onBind(CategoryData data) {
             int position = getAdapterPosition();
 
-
             category.setText(data.getCategoryName());
             if(data.isSelct()) {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhite));
-//                layout.setBackgroundResource(R.drawable.main_exist_img);
                 layout.setBackgroundResource(R.drawable.main_category_exist_background);
-//                layout.setBackgroundResource(R.color.colorBlack);
             }
             else {
                 category.setTextColor(activity.getResources().getColorStateList(R.color.colorWhiteOpacity));
-//                layout.setBackgroundResource(R.drawable.main_empty_img);
                 layout.setBackgroundResource(R.drawable.main_category_empty_background);
             }
 

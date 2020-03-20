@@ -92,7 +92,6 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
 //                    intent.putExtra("flag",1); // update
                     activity.startActivity(intent);
                     activity.overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
-                    Log.i("CLICKLAYOUT", String.valueOf(getAdapterPosition()));
 
                 }
             });

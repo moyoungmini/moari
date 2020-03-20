@@ -2,15 +2,11 @@ package com.makeus.android.moari;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import androidx.annotation.NonNull;
-
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-
 import static com.makeus.android.moari.MoariApp.TAG;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 
