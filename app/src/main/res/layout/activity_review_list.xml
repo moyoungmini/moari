@@ -22,7 +22,7 @@
             android:layout_gravity="center_vertical"
             android:onClick="onClick"
             android:padding="5dp"
-            android:src="@drawable/back" />
+            android:src="@drawable/back_img" />
 
         <TextView
             android:id="@+id/review_list_category_tv"

@@ -48,6 +48,7 @@
         <activity android:name=".activities.ReviewListActivity"/>
         <activity android:name=".activities.ReviewNonEditActivity"/>
         <activity android:name=".activities.ReviewSearchActivity"/>
+        <activity android:name=".activities.ImageGuideActivity"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"

@@ -177,10 +177,10 @@ public class CurationAdapter extends RecyclerView.Adapter<CurationAdapter.ItemVi
                 layout.setBackgroundResource(R.color.colorCuration1);
             }
             else if(data.getCategoryType() ==2) {
-                layout.setBackgroundResource(R.color.colorCuration2);
+                layout.setBackgroundResource(R.color.colorCuration3);
             }
             else if(data.getCategoryType() ==3) {
-                layout.setBackgroundResource(R.color.colorCuration3);
+                layout.setBackgroundResource(R.color.colorCuration2);
             }
             else if(data.getCategoryType() ==4) {
                 layout.setBackgroundResource(R.color.colorCuration4);

@@ -35,6 +35,15 @@
             android:text=""
             android:textColor="@color/colorSearchText"
             android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/review_non_edit_check_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right |center_vertical"
+            android:onClick="onClick"
+            android:padding="5dp"
+            android:src="@drawable/check_img" />
     </FrameLayout>
 
     <View

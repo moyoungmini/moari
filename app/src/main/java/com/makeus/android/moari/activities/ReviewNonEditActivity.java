@@ -53,7 +53,7 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class ReviewNonEditActivity extends SuperActivity {
    private TextView mTvTitle, mTvOneline, mTvCategory, mTvDate, mTvContent;
-   private ImageView mIvRating, mIvBackground, mIvShadow;
+   private ImageView mIvRating, mIvBackground, mIvShadow, mIvCheck;
    private Activity activity;
    private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
    private LinearLayout gravityLayout;
@@ -93,6 +93,7 @@ public class ReviewNonEditActivity extends SuperActivity {
     public void init() {
         activity =this;
         id = getIntent().getIntExtra("id",-1);
+        mIvCheck.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -155,6 +156,7 @@ public class ReviewNonEditActivity extends SuperActivity {
        layout = findViewById(R.id.review_non_edit_layout);
        gravityLayout = findViewById(R.id.review_non_edit_gravity_layout);
        mIvShadow = findViewById(R.id.review_non_edit_shadow_iv);
+       mIvCheck = findViewById(R.id.review_non_edit_check_iv);
     }
 
     @Override

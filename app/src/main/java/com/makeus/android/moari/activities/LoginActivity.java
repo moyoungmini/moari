@@ -8,15 +8,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.gson.JsonObject;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
+import com.makeus.android.moari.datas.ImageGuideData;
 import com.makeus.android.moari.responses.LoginResponse;
+
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
+
 import static com.makeus.android.moari.MoariApp.MEDIA_TYPE_JSON;
 import static com.makeus.android.moari.MoariApp.X_ACCESS_TOKEN;
 import static com.makeus.android.moari.MoariApp.catchAllThrowable;
@@ -29,6 +33,14 @@ public class LoginActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences pref = getSharedPreferences(MoariApp.TAG, Context.MODE_PRIVATE);
+        boolean isGuide = pref.getBoolean("guide_access", true);
+        if (isGuide) {
+            Intent guideIntent = new Intent(this, ImageGuideActivity.class);
+            startActivity(guideIntent);
+        }
+
 
         initViews();
 

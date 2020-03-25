@@ -1,3 +1,17 @@
+//Copyright 2017, Yalantis
+//
+//        Licensed under the Apache License, Version 2.0 (the "License");
+//        you may not use this file except in compliance with the License.
+//        You may obtain a copy of the License at
+//
+//        http://www.apache.org/licenses/LICENSE-2.0
+//
+//        Unless required by applicable law or agreed to in writing, software
+//        distributed under the License is distributed on an "AS IS" BASIS,
+//        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//        See the License for the specific language governing permissions and
+//        limitations under the License.
+
 package com.makeus.android.moari.activities;
 
 import android.Manifest;
@@ -86,7 +100,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private static final String TAG = MainActivity.class.getSimpleName();
     private int year, month, dates;
     private ImageView mIvPictureShow, mIvRating, mIvDelete, mIvShadow;
-    private TextView mTvDate, mTvCategory;
+    private TextView mTvDate, mTvCategory, mTvMain;
     private EditText mEtTitle, mEtOneLine, mEtContent;
     private ArrayList<CategoryData> mCategoryList = new ArrayList<>();
     private FrameLayout framelayout;
@@ -173,6 +187,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         init();
 
         if (flag == 0) {
+            mTvMain.setText("작성하기");
             Glide.with(activity)
                     .load(R.drawable.default_background_img)
                     .fitCenter()
@@ -186,6 +201,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
         // flag : 0 -> new edit
 
         else {
+            mTvMain.setText("수정하기");
             getCategory();
             mIvShadow.setVisibility(View.VISIBLE);
         }
@@ -366,6 +382,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
     @Override
     void initViews() {
+        mTvMain = findViewById(R.id.rewview_edit_flag_tv);
         mIvPictureShow = findViewById(R.id.review_edit_picture_show_iv);
         mTvDate = findViewById(R.id.review_edit_date_tv);
         mTvCategory = findViewById(R.id.review_edit_category_tv);

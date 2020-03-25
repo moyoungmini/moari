@@ -2,10 +2,13 @@ package com.makeus.android.moari.activities;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,8 @@ import com.makeus.android.moari.R;
 import com.makeus.android.moari.adapters.ReviewListAdapter;
 import com.makeus.android.moari.adapters.ReviewSearchListAdapter;
 import com.makeus.android.moari.responses.ReviewListResponse;
+
+import java.util.ArrayList;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,11 +58,17 @@ public class ReviewSearchActivity extends SuperActivity {
         mEtSearch.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i("Vsdvds", String.valueOf(keyCode));
+                Log.i("SVDds1", String.valueOf(event.getAction()));
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    Log.i("SVDds2", String.valueOf(event.getAction()));
                     mPage =0;
                     mNoMoreItem = false;
                     mLoadLock = false;
                     getReviewList();
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow( mEtSearch.getWindowToken(), 0);    //hide keyboard
                     return true;
                 }
                 return false;
@@ -147,8 +158,16 @@ public class ReviewSearchActivity extends SuperActivity {
                             if(res.getResult().size() ==0 || res.getResult().size() % 10 !=0) {
                                 mNoMoreItem =  true;
                             }
-                            mCategoryAdapter.addListData(res.getResult());
-                            mCategoryAdapter.notifyItemRangeChanged(0, mCategoryAdapter.getListData().size());
+
+                            if(mPage ==0) {
+                                mCategoryAdapter.listData = res.getResult();
+                                Log.i("SDV","YES");
+                            }
+                            else {
+                                mCategoryAdapter.addListData(res.getResult());
+                                mCategoryAdapter.notifyItemRangeChanged(0, mCategoryAdapter.getListData().size());
+                            }
+                            mCategoryAdapter.notifyDataSetChanged();
                             mPage += res.getResult().size();
                             mLoadLock = false;
                         } else {

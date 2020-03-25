@@ -37,7 +37,7 @@ public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchLi
 
     private int deleteId = -1;
     private ReviewSearchActivity activity;
-    private ArrayList<ReviewListData> listData = new ArrayList<>();
+    public ArrayList<ReviewListData> listData = new ArrayList<>();
     private DialogReviewExitInterface mDeleteInterface = new DialogReviewExitInterface() {
         @Override
         public void exit() {
@@ -66,7 +66,8 @@ public class ReviewSearchListAdapter extends RecyclerView.Adapter<ReviewSearchLi
     }
 
     public void clearData() {
-        this.listData.clear();
+        listData = new ArrayList<>();
+//        this.listData.clear();
     }
 
     public void addData(ReviewListData data) {

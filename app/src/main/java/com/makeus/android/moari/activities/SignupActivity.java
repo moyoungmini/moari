@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,6 +35,9 @@ public class SignupActivity extends SuperActivity {
     private ImageView mIvMoariAgree, mIvBasicAgree;
     private boolean mIsMoari, mIsBasic;
     private Activity activity;
+    private String url;
+    private Uri uri;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +87,21 @@ public class SignupActivity extends SuperActivity {
                 break;
             case R.id.signup_moari_toagree_iv:
             case R.id.signup_moari_toagree_tv:
+                url = "https://webtoondaram.s3.ap-northeast-2.amazonaws.com/agree.html";
+                uri = Uri.parse(url);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
                 break;
             case R.id.signup_moari_tobasic_iv:
             case R.id.signup_moari_tobasic_tv:
+                url = "https://webtoondaram.s3.ap-northeast-2.amazonaws.com/infoagree.html";
+                uri = Uri.parse(url);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
                 break;
                 // go to webview
 

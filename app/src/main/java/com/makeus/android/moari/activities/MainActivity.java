@@ -46,7 +46,7 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 
 public class MainActivity extends SuperActivity implements View.OnClickListener {
 
-    private TextView mTvSearch, mTvChange, mTvUserInfo, mTvNavigation, mTvCount;
+    private TextView mTvSearch, mTvChange, mTvUserInfo, mTvNavigation, mTvCount, mTvGuide;
     private Intent intent;
     private Activity activity;
     private RecyclerView mRVCategory;
@@ -92,6 +92,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         initViews();
         initListener();
         InitializeLayout();
+
     }
 
     public void startFlag() {
@@ -114,6 +115,11 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         switch (v.getId()) {
             case R.id.main_search_tv:
                 intent = new Intent(this, ReviewSearchActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
+                break;
+            case R.id.main_guide_tv:
+                intent = new Intent(this, ImageGuideActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
@@ -157,11 +163,13 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
         mTvUserInfo = findViewById(R.id.main_user_info_tv);
         mTvNavigation = findViewById(R.id.main_hamburgerbar_tv);
         mTvCount = findViewById(R.id.main_count_tv);
+        mTvGuide = findViewById(R.id.main_guide_tv);
     }
 
     public void initListener() {
         mTvSearch.setOnClickListener(this);
         mTvChange.setOnClickListener(this);
+        mTvGuide.setOnClickListener(this);
     }
 
     public void InitializeLayout()
