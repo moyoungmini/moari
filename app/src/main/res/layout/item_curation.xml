@@ -119,6 +119,7 @@
             android:fontFamily="@font/noto_light_font"
             android:includeFontPadding="false"
             android:textColor="@color/colorWhite"
+            android:lineSpacingExtra="6sp"
             android:textSize="17sp" />
     </LinearLayout>
 </LinearLayout>

@@ -76,6 +76,18 @@
                     android:layout_marginTop="20dp"
                     android:textColor="@drawable/button_text_black_selector_background"
                     android:textSize="17sp" />
+
+                <TextView
+                    android:id="@+id/curation_guide_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_light_font"
+                    android:includeFontPadding="false"
+                    android:text="이용 가이드"
+                    android:onClick="onClick"
+                    android:textColor="@drawable/button_text_black_selector_background"
+                    android:textSize="17sp" />
             </LinearLayout>
 
             <LinearLayout

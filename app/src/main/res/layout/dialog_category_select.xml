@@ -15,8 +15,8 @@
         android:gravity="center"
         android:text="이름 수정하기"
         android:fontFamily="@font/noto_light_font"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         />
 
     <View
@@ -32,8 +32,8 @@
         android:gravity="center"
         android:fontFamily="@font/noto_light_font"
         android:text="삭제하기"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         />
 
 </LinearLayout>

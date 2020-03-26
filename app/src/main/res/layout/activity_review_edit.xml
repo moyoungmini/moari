@@ -234,6 +234,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="@dimen/dimeUserWidthMargin"
                 android:paddingBottom="20dp"
+                android:lineSpacingExtra="6sp"
                 android:background="@drawable/edit_review_background"
                 android:fontFamily="@font/noto_light_font"
                 android:hint="내용을 써주세요."

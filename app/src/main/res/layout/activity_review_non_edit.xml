@@ -220,6 +220,7 @@
                 android:background="@drawable/edit_review_background"
                 android:fontFamily="@font/noto_light_font"
                 tools:text="내용을 써주세요."
+                android:lineSpacingExtra="6sp"
                 android:includeFontPadding="false"
                 android:textColor="@color/colorEditText"
                 android:textSize="17sp" />

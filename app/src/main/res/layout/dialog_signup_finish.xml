@@ -35,8 +35,8 @@
         android:textColor="@color/colorEditPinkText"
         android:fontFamily="@font/noto_light_font"
         android:gravity="center_horizontal"
-        android:paddingTop="7dp"
-        android:paddingBottom="7dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:text="닫기"
         />
 

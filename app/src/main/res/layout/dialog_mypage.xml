@@ -48,8 +48,8 @@
             android:layout_weight="1"
             android:fontFamily="@font/noto_light_font"
             android:gravity="center_horizontal"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="취소"
             android:textColor="@drawable/button_soft_text_black_selector_background"
             android:textSize="15sp" />
@@ -66,8 +66,8 @@
             android:layout_weight="1"
             android:fontFamily="@font/noto_light_font"
             android:gravity="center_horizontal"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="확인"
             android:textColor="@drawable/button_text_pink_selector_background"
             android:textSize="15sp" />

@@ -78,6 +78,11 @@ public class CurationActivity extends SuperActivity implements View.OnClickListe
                 startActivity(intent);
                 overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
                 break;
+            case R.id.curation_guide_tv:
+                intent = new Intent(this, ImageGuideActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.amin_slide_in_left, R.anim.amin_slide_out_right);
+                break;
             case R.id.category_plus_iv:
                 intent = new Intent(this, ReviewEditActivity.class);
                 intent.putExtra("flag", 0); // insert

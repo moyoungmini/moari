@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#01498e</color>
-    <color name="colorPrimaryDark">#01498e</color>
-    <color name="colorAccent">#01498e</color>
 
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
@@ -22,8 +19,6 @@
     <color name="colorSoftPink">#f8bbd0</color>
     <color name="colorSoftBlack">#bdbdbd</color>
     <color name="colorPinkLogin">#d4005b</color>
-    <color name="colorShadowBackground">#f22f2f2f</color>
-    <color name="colorShadowUploadBackground">#80000000</color>
     <color name="colorReviewItemPress">#b3000000</color>
     <color name="colorExistNonPress">#33FFFFFF</color>
     <color name="colorExistPress">#0DFFFFFF</color>
