@@ -58,11 +58,13 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
     private DialogCategorySelectInterface selectInterface = new DialogCategorySelectInterface() {
         @Override
         public void change(int id, String name) {
+            Log.i("TESTTESTTESTTESTTES", "changeInterface");
             changeCategory(id,name);
         }
 
         @Override
         public void remove(int id) {
+            Log.i("TESTTESTTESTTESTTES", "changeremove");
             if(id==1 || id ==2 || id==3 || id ==4) {
                 return;
             }
@@ -72,6 +74,7 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
 
         @Override
         public void plus(String name) {
+            Log.i("TESTTESTTESTTESTTES", "changePlus");
             plusCategory(name);
         }
     };

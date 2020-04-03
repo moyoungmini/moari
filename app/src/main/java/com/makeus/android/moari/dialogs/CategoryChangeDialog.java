@@ -32,7 +32,7 @@ public class CategoryChangeDialog implements View.OnClickListener{
             select = false; // category 추가
         }
         else {
-            select = false;
+            select = true;
         }
 
         mDialog = new Dialog(mContext);

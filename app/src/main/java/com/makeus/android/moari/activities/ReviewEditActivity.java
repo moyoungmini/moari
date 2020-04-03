@@ -328,7 +328,11 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     eidtReview();
                 } else {
                     try {
-                        uploadFileToFireBase(savingUri);
+                        try {
+                            uploadFileToFireBase(savingUri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                         return;
@@ -530,13 +534,21 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     }
 
 
-    void uploadFileToFireBase(Uri mImageUri) throws JSONException {
+    void uploadFileToFireBase(Uri mImageUri) throws JSONException, IOException {
         final LoadingDialog loadingDialog = new LoadingDialog(activity);
         showProgressDialog();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference storageRef = storage.getReferenceFromUrl("gs://moari-c6769.appspot.com/").child("android/" + mImageUri.getLastPathSegment());
-        UploadTask uploadTask = storageRef.putFile(mImageUri);
-        storageRef.putFile(mImageUri)
+
+        Bitmap bmp = MediaStore.Images.Media.getBitmap(this.getContentResolver(), savingUri);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 15, baos); // 이걸로 줄이는거긴한데
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+
+
+       uploadTask
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -779,11 +791,20 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                             mEtContent.setText(data.getContent());
                             mEtOneLine.setText(data.getReview());
                             mEtTitle.setText(data.getTitle());
-                            imageUrl = data.getImage();
-                            Glide.with(activity)
-                                    .load(data.getImage())
-                                    .fitCenter()
-                                    .into(mIvPictureShow);
+
+                            Log.i("TESTTESFS", data.getImage());
+                            if(data.getImage() != "" && data.getImage() != null) {
+                                Glide.with(activity)
+                                        .load(data.getImage())
+                                        .fitCenter()
+                                        .into(mIvPictureShow);
+                            }
+                            else {
+                                Glide.with(activity)
+                                        .load(R.drawable.default_background_img)
+                                        .fitCenter()
+                                        .into(mIvPictureShow);
+                            }
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }
