@@ -2,6 +2,7 @@ package com.makeus.android.moari.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.makeus.android.moari.MoariApp;
 import com.makeus.android.moari.R;
 import com.makeus.android.moari.activities.ReviewListActivity;
@@ -29,6 +34,7 @@ import static com.makeus.android.moari.MoariApp.catchAllThrowable;
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ItemViewHolder> {
 
     private int deleteId = -1;
+    private String deleteImage = "";
     private ReviewListActivity activity;
     private ArrayList<ReviewListData> listData = new ArrayList<>();
     private DialogReviewExitInterface mDeleteInterface = new DialogReviewExitInterface() {
@@ -39,7 +45,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
 
         @Override
         public void delete() {
-            deleteReview(deleteId);
+            deleteReview(deleteId, deleteImage);
         }
     };
 
@@ -113,6 +119,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                 @Override
                 public boolean onLongClick(View v) {
                     deleteId = listData.get(getAdapterPosition()).idboard;
+                    deleteImage = listData.get(getAdapterPosition()).getImage();
                     ReviewEditExitDialog dialog = new ReviewEditExitDialog(activity, 1, mDeleteInterface);
                     return true;
                 }
@@ -170,7 +177,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
         // set views
     }
 
-    public void deleteReview(int id) {
+    public void deleteReview(int id, final String img) {
         MoariApp.getRetrofitMethod(activity.getApplicationContext()).deleteReview(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -185,6 +192,21 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.It
                     public void onNext(BasicResponse res) {
 
                         if (res.getCode() == 200) {
+                            if(!img.equals("")) {
+                                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(img);
+                                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.i("TESTTESTSET", "success");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        Log.i("TESTTESTSET", "fail");
+                                    }
+                                });
+                            }
+
                             activity.mPage = 0;
                             activity.mNoMoreItem = false;
                             activity.mLoadLock = false;

@@ -110,6 +110,8 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
     private float grade;
     private int reviewId, flag;
     private File tmpFile;
+    private String dataImgUrl = "";
+    private boolean changeImg = false;
 
     private DialogCategoryInterface mCategoryInterface = new DialogCategoryInterface() {
         @Override
@@ -485,6 +487,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 mIvPictureShow.setImageBitmap(thumbImage);
                 mIvShadow.setVisibility(View.VISIBLE);
                 mMode = AFTER_IMAGE;
+                changeImg = true;
             } catch (Exception e) {
             }
         }
@@ -492,7 +495,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
         else if (requestCode == UCrop.REQUEST_CROP) {
             try {
-                Uri savingUri = UCrop.getOutput(data);
+                savingUri = UCrop.getOutput(data);
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), savingUri);
                 Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 800, 800);
                 ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -501,6 +504,7 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                 mIvPictureShow.setImageBitmap(thumbImage);
                 mIvShadow.setVisibility(View.VISIBLE);
                 mMode = AFTER_IMAGE;
+                changeImg = true;
             } catch (Exception e) {
             }
         }
@@ -535,6 +539,24 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
 
 
     void uploadFileToFireBase(Uri mImageUri) throws JSONException, IOException {
+        if(changeImg) {
+            if(!dataImgUrl.equals("")) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(dataImgUrl);
+                storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.i("TESTTESTSET", "success");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.i("TESTTESTSET", "fail");
+                    }
+                });
+            }
+        }
+
+
         final LoadingDialog loadingDialog = new LoadingDialog(activity);
         showProgressDialog();
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -792,18 +814,23 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                             mEtOneLine.setText(data.getReview());
                             mEtTitle.setText(data.getTitle());
 
-                            Log.i("TESTTESFS", data.getImage());
-                            if(data.getImage() != "" && data.getImage() != null) {
+                            Log.i("TESTTESFS", "ASASC");
+                            if(!data.getImage().equals("") && data.getImage() != null) {
+                                dataImgUrl = data.getImage();
+                                imageUrl = data.getImage();
                                 Glide.with(activity)
                                         .load(data.getImage())
                                         .fitCenter()
                                         .into(mIvPictureShow);
+                                Log.i("VDsvsdvds", data.getImage());
                             }
                             else {
+                                Log.i("VDsvsdvds", "FSD");
                                 Glide.with(activity)
                                         .load(R.drawable.default_background_img)
                                         .fitCenter()
                                         .into(mIvPictureShow);
+                                mIvShadow.setVisibility(View.INVISIBLE);
                             }
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
@@ -845,7 +872,23 @@ public class ReviewEditActivity extends SuperActivity implements View.OnClickLis
                     public void onNext(BasicResponse res) {
 
                         if (res.getCode() == 200) {
-                            finish();
+                            if(dataImgUrl.equals("")) {
+                                finish();
+                                return;
+                            }
+                            FirebaseStorage.getInstance().getReferenceFromUrl(dataImgUrl).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.i("TESTTESTSET", "success");
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    Log.i("TESTTESTSET", "fail");
+                                    finish();
+                                }
+                            });
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
                         }

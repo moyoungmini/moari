@@ -318,6 +318,8 @@ public class MainActivity extends SuperActivity implements View.OnClickListener 
                             mRVCategory.setAdapter(mCategoryAdapter);
                             mTvUserInfo.setText(userName);
                             mTvNavigation.setText(userName);
+
+
                             startCounterAnimator();
                         } else {
                             Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
